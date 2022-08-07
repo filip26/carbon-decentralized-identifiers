@@ -186,11 +186,11 @@ public class Did implements Serializable {
     }
     
     static final boolean isNotBlank(String value) {
-        return value != null && !value.isBlank();
+        return value != null && !value.trim().isEmpty();
     }
 
     static final boolean isBlank(String value) {
-        return value == null || value.isBlank();
+        return value == null || value.trim().isEmpty();
     }
 
 }
