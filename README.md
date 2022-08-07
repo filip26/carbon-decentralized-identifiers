@@ -64,7 +64,7 @@ All PR's welcome!
 
 Fork and clone the project repository.
 
-#### Java 11
+#### Java 17
 ```bash
 > cd carbon-decentralized-identifiers
 > mvn clean package
