@@ -5,7 +5,7 @@
    <parent>
     <groupId>com.apicatalog</groupId>
     <artifactId>carbon</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <relativePath>pom_parent.xml</relativePath>
   </parent>
   <artifactId>carbon-did</artifactId>
@@ -22,4 +22,12 @@
     <maven.compiler.source>17</maven.compiler.source>
     <envSources>src/main/java17</envSources>
   </properties>
+  <dependencies>
+    <dependency>
+      <groupId>com.apicatalog</groupId>
+      <artifactId>titanium-json-ld</artifactId>
+      <version>${titanium.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 </project>
