@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.apicatalog</groupId>
     <artifactId>carbon</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <packaging>pom</packaging>
 
     <name>Carbon DIDs</name>
@@ -78,19 +78,12 @@
 	    </dependency>
 
         <dependency>
-            <groupId>com.apicatalog</groupId>
-            <artifactId>titanium-json-ld-jre8</artifactId>
-            <version>${titanium.version}</version>
-            <scope>test</scope>
-        </dependency>
-      
-        <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>jakarta.json</artifactId>
             <version>${jakarta.json.version}</version>
             <scope>test</scope>
         </dependency>
-      
+
     </dependencies>
     
     <repositories>
