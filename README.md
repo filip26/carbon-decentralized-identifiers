@@ -20,7 +20,7 @@ An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.
 <dependency>
     <groupId>com.apicatalog</groupId>
     <artifactId>carbon-did</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
 </dependency>
 
 ```
@@ -32,9 +32,23 @@ or
 <dependency>
     <groupId>com.apicatalog</groupId>
     <artifactId>carbon-did-jre8</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
 </dependency>
 ```
+
+#### JSON-P Provider
+
+Add JSON-P provider, if it is not on the classpath already.
+
+
+```xml
+<dependency>
+    <groupId>org.glassfish</groupId>
+    <artifactId>jakarta.json</artifactId>
+    <version>2.0.1</version>
+</dependency>
+```
+
 
 ## Documentation
 
