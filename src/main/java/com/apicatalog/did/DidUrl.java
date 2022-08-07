@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class DidUrl extends Did {
 
-    private static final long serialVersionUID = -3952644987975446496L;
+    private static final long serialVersionUID = 5752880077497569763L;
 
     protected final String path;
     protected final String query;
