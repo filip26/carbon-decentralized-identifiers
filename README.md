@@ -52,7 +52,7 @@ Add JSON-P provider, if it is not on the classpath already.
 
 ## Documentation
 
-[![javadoc](https://javadoc.io/badge2/com.apicatalog/carbon-decentralized-identifiers/javadoc.svg)](https://javadoc.io/doc/com.apicatalog/carbon-decentralized-identifiers)
+[![javadoc](https://javadoc.io/badge2/com.apicatalog/carbon-did/javadoc.svg)](https://javadoc.io/doc/com.apicatalog/carbon-did)
 
 
 ## Contributing
