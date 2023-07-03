@@ -20,7 +20,7 @@ An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.
 <dependency>
     <groupId>com.apicatalog</groupId>
     <artifactId>carbon-did</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 </dependency>
 
 ```
@@ -32,7 +32,7 @@ or
 <dependency>
     <groupId>com.apicatalog</groupId>
     <artifactId>carbon-did-jre8</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 </dependency>
 ```
 
