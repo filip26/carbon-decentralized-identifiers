@@ -22,8 +22,14 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
     <envSources>src/main/java8</envSources>
+    <multiformats.version>1.1.0</multiformats.version>    
   </properties>
   <dependencies>
+    <dependency>
+        <groupId>com.github.multiformats</groupId>
+        <artifactId>java-multibase</artifactId>
+        <version>${multiformats.version}</version>
+    </dependency>  
     <dependency>
       <groupId>com.apicatalog</groupId>
       <artifactId>titanium-json-ld-jre8</artifactId>
