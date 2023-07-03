@@ -65,7 +65,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>apicatalog.com</groupId>
+			<groupId>com.apicatalog</groupId>
 			<artifactId>copper-multicodec</artifactId>
 			<version>${copper.version}</version>
 			<scope>provided</scope>
