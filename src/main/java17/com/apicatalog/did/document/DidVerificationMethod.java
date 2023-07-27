@@ -16,7 +16,7 @@ public record DidVerificationMethod(
     public DidVerificationMethod {
         Objects.requireNonNull(id);
         Objects.requireNonNull(controller);
-        Objects.requireNonNull(type);
+//        Objects.requireNonNull(type);
     }
     
 }

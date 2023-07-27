@@ -13,7 +13,7 @@ public class Multibase {
     public static byte[] decode(String encoded) {
         return io.ipfs.multibase.Multibase.decode(encoded);
     }
-    
+
     public static String encode(Algorithm algorithm, byte[] data) {
 
         if (algorithm == null) {

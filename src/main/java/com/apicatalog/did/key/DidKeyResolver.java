@@ -5,11 +5,10 @@ import com.apicatalog.did.DidResolver;
 import com.apicatalog.did.DidUrl;
 import com.apicatalog.did.document.DidDocument;
 import com.apicatalog.did.document.DidVerificationMethod;
-import com.apicatalog.multicodec.Multicodec;
 
 public class DidKeyResolver implements DidResolver {
 
-    private static final String ED25519_VERIFICATION_KEY_2020_TYPE =  "https://w3id.org/security#Ed25519VerificationKey2020";
+//    private static final String ED25519_VERIFICATION_KEY_2020_TYPE =  "https://w3id.org/security#Ed25519VerificationKey2020";
 
     @Override
     public DidDocument resolve(final Did did) {
@@ -52,16 +51,17 @@ public class DidKeyResolver implements DidResolver {
      */
     public static DidVerificationMethod createSignatureMethod(DidKey didKey) {
 
-        if (!Multicodec.Codec.Ed25519PublicKey.equals(didKey.getCodec())) {
-            throw new IllegalArgumentException();
-        }
+//        if (!Multicodec.Codec.Ed25519PublicKey.equals(didKey.getCodec())) {
+//            throw new IllegalArgumentException();
+//        }
         // 5.
-        String encodingType = ED25519_VERIFICATION_KEY_2020_TYPE;
+//        String encodingType = ED25519_VERIFICATION_KEY_2020_TYPE;
 
         return new DidVerificationMethod(
                     DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
                     DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
-                    encodingType,
+                    //encodingType,
+                    null,
                     didKey.getRawKey()
                     );
      }
