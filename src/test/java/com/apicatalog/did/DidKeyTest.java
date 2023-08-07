@@ -16,7 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.apicatalog.did.key.DidKey;
 import com.apicatalog.jsonld.JsonLdError;
-import com.apicatalog.multicodec.Multicodec.Codec;
+import com.apicatalog.multicodec.Multicodec;
 
 @DisplayName("DID Key")
 @TestMethodOrder(OrderAnnotation.class)
@@ -57,32 +57,32 @@ class DidKeyTest {
     static final DidKeyTestCase testCases[] = new DidKeyTestCase[] {
             DidKeyTestCase.create(
                     "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
-                    Codec.Ed25519PublicKey,
+                    Multicodec.Ed25519_PUBLIC_KEY,
                     32
                     ),
             DidKeyTestCase.create(
                     "did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp",
-                    Codec.Ed25519PublicKey,
+                    Multicodec.Ed25519_PUBLIC_KEY,
                     32
                     ),
             DidKeyTestCase.create(
                     "did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG",
-                    Codec.Ed25519PublicKey,
+                    Multicodec.Ed25519_PUBLIC_KEY,
                     32
                     ),
             DidKeyTestCase.create(
                     "did:key:z6MknGc3ocHs3zdPiJbnaaqDi58NGb4pk1Sp9WxWufuXSdxf",
-                    Codec.Ed25519PublicKey,
+                    Multicodec.Ed25519_PUBLIC_KEY,
                     32
                     ),
             DidKeyTestCase.create(
                     "did:key:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2",
-                    Codec.Ed25519PublicKey,
+                    Multicodec.Ed25519_PUBLIC_KEY,
                     32
                     ),
             DidKeyTestCase.create(
                     "did:key:z6MkiVQTYk3L2XKY6yg6MyeN2QLE5QkKcXByUeY1dkdiLx4j",
-                    Codec.Ed25519PublicKey,
+                    Multicodec.Ed25519_PUBLIC_KEY,
                     32
                     ),
             // invalid keys
@@ -93,13 +93,13 @@ class DidKeyTest {
             // versioned keys
             DidKeyTestCase.create(
                     "did:key:1.1:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2",
-                    Codec.Ed25519PublicKey,
+                    Multicodec.Ed25519_PUBLIC_KEY,
                     32,
                     "1.1"
                     ),
             DidKeyTestCase.create(
                     "did:key:0.7:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2",
-                    Codec.Ed25519PublicKey,
+                    Multicodec.Ed25519_PUBLIC_KEY,
                     32,
                     "0.7"
                     ),

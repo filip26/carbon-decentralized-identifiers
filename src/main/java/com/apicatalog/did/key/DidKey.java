@@ -5,8 +5,8 @@ import java.net.URI;
 import com.apicatalog.did.Did;
 import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multicodec.Multicodec;
-import com.apicatalog.multicodec.Multicodec.Codec;
-import com.apicatalog.multicodec.Multicodec.Type;
+import com.apicatalog.multicodec.Multicodec.Tag;
+import com.apicatalog.multicodec.Multicoder;
 
 /**
  * Immutable DID Key
@@ -22,12 +22,20 @@ public class DidKey extends Did {
     private static final long serialVersionUID = 582726516478574544L;
 
     public static final String METHOD_KEY = "key";
+    
+    protected static final Multicoder MULTICODER = Multicoder.getEmptyInstance()
+            .add(Multicodec.X25519_PUBLIC_KEY)
+            .add(Multicodec.Ed25519_PUBLIC_KEY)
+            .add(Multicodec.P256_PUBLIC_KEY)
+            .add(Multicodec.P384_PUBLIC_KEY)
+            .add(Multicodec.P521_PUBLIC_KEY)
+            ;
 
-    private final Codec codec;
+    private final Multicodec codec;
 
     private final byte[] rawKey;
 
-    protected DidKey(Did did, Codec codec, byte[] rawValue) {
+    protected DidKey(Did did, Multicodec codec, byte[] rawValue) {
         super(did.getMethod(), did.getVersion(), did.getMethodSpecificId());
         this.codec = codec;
         this.rawKey = rawValue;
@@ -68,9 +76,9 @@ public class DidKey extends Did {
 
         final byte[] decoded = Multibase.decode(did.getMethodSpecificId());
 
-        final Codec codec = Multicodec.codec(Type.Key, decoded).orElseThrow(IllegalArgumentException::new);
+        final Multicodec codec = MULTICODER.getCodec(Tag.Key, decoded).orElseThrow(IllegalArgumentException::new);
 
-        final byte[] rawKey = Multicodec.decode(codec, decoded);
+        final byte[] rawKey = codec.decode(decoded);
 
         return new DidKey(did, codec, rawKey);
     }
@@ -91,7 +99,7 @@ public class DidKey extends Did {
                 ;
     }
 
-    public Codec getCodec() {
+    public Multicodec getCodec() {
         return codec;
     }
 
