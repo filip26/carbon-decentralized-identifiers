@@ -5,16 +5,19 @@ import java.net.URI;
 import com.apicatalog.did.Did;
 import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multicodec.Multicodec;
-import com.apicatalog.multicodec.Multicodec.Tag;
+import com.apicatalog.multicodec.MulticodecRegistry;
 import com.apicatalog.multicodec.Multicoder;
 
 /**
  * Immutable DID Key
  * <p>
- * did-key-format := did:key:MULTIBASE(base58-btc, MULTICODEC(public-key-type, raw-public-key-bytes))
+ * did-key-format := did:key:MULTIBASE(base58-btc, MULTICODEC(public-key-type,
+ * raw-public-key-bytes))
  * </p>
  *
- * @see <a href="https://pr-preview.s3.amazonaws.com/w3c-ccg/did-method-key/pull/51.html">DID method key</a>
+ * @see <a href=
+ *      "https://pr-preview.s3.amazonaws.com/w3c-ccg/did-method-key/pull/51.html">DID
+ *      method key</a>
  *
  */
 public class DidKey extends Did {
@@ -22,14 +25,13 @@ public class DidKey extends Did {
     private static final long serialVersionUID = 582726516478574544L;
 
     public static final String METHOD_KEY = "key";
-    
+
     protected static final Multicoder MULTICODER = Multicoder.getEmptyInstance()
-            .add(Multicodec.X25519_PUBLIC_KEY)
-            .add(Multicodec.Ed25519_PUBLIC_KEY)
-            .add(Multicodec.P256_PUBLIC_KEY)
-            .add(Multicodec.P384_PUBLIC_KEY)
-            .add(Multicodec.P521_PUBLIC_KEY)
-            ;
+            .add(MulticodecRegistry.X25519_PUBLIC_KEY)
+            .add(MulticodecRegistry.ED25519_PUBLIC_KEY)
+            .add(MulticodecRegistry.P256_PUBLIC_KEY)
+            .add(MulticodecRegistry.P384_PUBLIC_KEY)
+            .add(MulticodecRegistry.P521_PUBLIC_KEY);
 
     private final Multicodec codec;
 
@@ -47,11 +49,10 @@ public class DidKey extends Did {
      * @param uri The source URI to be transformed into DID key
      * @return The new DID key
      *
-     * @throws NullPointerException
-     *         If {@code uri} is {@code null}
+     * @throws NullPointerException     If {@code uri} is {@code null}
      *
-     * @throws IllegalArgumentException
-     *         If the given {@code uri} is not valid DID key
+     * @throws IllegalArgumentException If the given {@code uri} is not valid DID
+     *                                  key
      */
     public static final DidKey from(final URI uri) {
 
@@ -76,27 +77,25 @@ public class DidKey extends Did {
 
         final byte[] decoded = Multibase.decode(did.getMethodSpecificId());
 
-        final Multicodec codec = MULTICODER.getCodec(Tag.Key, decoded).orElseThrow(IllegalArgumentException::new);
+        final Multicodec codec = MULTICODER.getCodec(decoded).orElseThrow(IllegalArgumentException::new);
 
         final byte[] rawKey = codec.decode(decoded);
 
         return new DidKey(did, codec, rawKey);
     }
-    
+
     public static boolean isDidKey(final Did did) {
         return METHOD_KEY.equalsIgnoreCase(did.getMethod());
     }
 
     public static boolean isDidKey(final URI uri) {
         return Did.isDid(uri)
-                && uri.getSchemeSpecificPart().toLowerCase().startsWith(METHOD_KEY + ":")
-                ;
+                && uri.getSchemeSpecificPart().toLowerCase().startsWith(METHOD_KEY + ":");
     }
 
     public static boolean isDidKey(final String uri) {
         return Did.isDid(uri)
-                && uri.toLowerCase().startsWith(SCHEME + ":" + METHOD_KEY + ":")
-                ;
+                && uri.toLowerCase().startsWith(SCHEME + ":" + METHOD_KEY + ":");
     }
 
     public Multicodec getCodec() {

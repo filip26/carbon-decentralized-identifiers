@@ -46,8 +46,8 @@
 
 		<jakarta.json.version>2.0.1</jakarta.json.version>
 		<titanium.version>1.3.2</titanium.version>
-		<cbor-java.version>0.9</cbor-java.version>
-		<copper.version>0.0.2-SNAPSHOT</copper.version>
+
+		<copper.version>0.0.3-SNAPSHOT</copper.version>
 		<argLine>-Dfile.encoding=UTF-8</argLine>
 		<!-- test resources -->
 		<junit.version>5.9.3</junit.version>
@@ -133,6 +133,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.5.0</version>
+                <configuration>
+                    <doclint>all,-missing</doclint>
+                </configuration>				
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
