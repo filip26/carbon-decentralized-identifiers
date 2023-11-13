@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.apicatalog</groupId>
     <artifactId>carbon</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.6-SNAPSHOT</version>
     <relativePath>pom_parent.xml</relativePath>
   </parent>
   <artifactId>carbon-did-jre8</artifactId>

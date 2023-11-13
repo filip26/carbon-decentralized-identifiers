@@ -5,7 +5,7 @@ import java.net.URI;
 import com.apicatalog.did.Did;
 import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multicodec.Multicodec;
-import com.apicatalog.multicodec.MulticodecRegistry;
+import com.apicatalog.multicodec.Multicodec.Tag;
 import com.apicatalog.multicodec.Multicoder;
 
 /**
@@ -26,12 +26,7 @@ public class DidKey extends Did {
 
     public static final String METHOD_KEY = "key";
 
-    protected static final Multicoder MULTICODER = Multicoder.getEmptyInstance()
-            .add(MulticodecRegistry.X25519_PUBLIC_KEY)
-            .add(MulticodecRegistry.ED25519_PUBLIC_KEY)
-            .add(MulticodecRegistry.P256_PUBLIC_KEY)
-            .add(MulticodecRegistry.P384_PUBLIC_KEY)
-            .add(MulticodecRegistry.P521_PUBLIC_KEY);
+    protected static final Multicoder MULTICODER = Multicoder.getInstance(Tag.Key);
 
     private final Multicodec codec;
 
@@ -77,7 +72,7 @@ public class DidKey extends Did {
 
         final byte[] decoded = Multibase.decode(did.getMethodSpecificId());
 
-        final Multicodec codec = MULTICODER.getCodec(decoded).orElseThrow(IllegalArgumentException::new);
+        final Multicodec codec = MULTICODER.getCodec(decoded).orElseThrow(() -> new IllegalArgumentException("Cannot detect did:key codec."));
 
         final byte[] rawKey = codec.decode(decoded);
 
