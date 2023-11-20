@@ -7,7 +7,7 @@ public class Multibase {
     }
 
     public static boolean isAlgorithmSupported(String encoded) {
-        return encoded != null && !encoded.isEmpty() && 'z' == encoded.toCharArray()[0];
+        return encoded != null && !encoded.isEmpty() && 'z' == encoded.charAt(0);
     }
 
     public static byte[] decode(String encoded) {

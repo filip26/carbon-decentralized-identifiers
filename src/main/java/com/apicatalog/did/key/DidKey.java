@@ -5,16 +5,19 @@ import java.net.URI;
 import com.apicatalog.did.Did;
 import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multicodec.Multicodec;
-import com.apicatalog.multicodec.Multicodec.Codec;
-import com.apicatalog.multicodec.Multicodec.Type;
+import com.apicatalog.multicodec.Multicodec.Tag;
+import com.apicatalog.multicodec.Multicoder;
 
 /**
  * Immutable DID Key
  * <p>
- * did-key-format := did:key:MULTIBASE(base58-btc, MULTICODEC(public-key-type, raw-public-key-bytes))
+ * did-key-format := did:key:MULTIBASE(base58-btc, MULTICODEC(public-key-type,
+ * raw-public-key-bytes))
  * </p>
  *
- * @see <a href="https://pr-preview.s3.amazonaws.com/w3c-ccg/did-method-key/pull/51.html">DID method key</a>
+ * @see <a href=
+ *      "https://pr-preview.s3.amazonaws.com/w3c-ccg/did-method-key/pull/51.html">DID
+ *      method key</a>
  *
  */
 public class DidKey extends Did {
@@ -23,11 +26,13 @@ public class DidKey extends Did {
 
     public static final String METHOD_KEY = "key";
 
-    private final Codec codec;
+    protected static final Multicoder MULTICODER = Multicoder.getInstance(Tag.Key);
+
+    private final Multicodec codec;
 
     private final byte[] rawKey;
 
-    protected DidKey(Did did, Codec codec, byte[] rawValue) {
+    protected DidKey(Did did, Multicodec codec, byte[] rawValue) {
         super(did.getMethod(), did.getVersion(), did.getMethodSpecificId());
         this.codec = codec;
         this.rawKey = rawValue;
@@ -39,11 +44,10 @@ public class DidKey extends Did {
      * @param uri The source URI to be transformed into DID key
      * @return The new DID key
      *
-     * @throws NullPointerException
-     *         If {@code uri} is {@code null}
+     * @throws NullPointerException     If {@code uri} is {@code null}
      *
-     * @throws IllegalArgumentException
-     *         If the given {@code uri} is not valid DID key
+     * @throws IllegalArgumentException If the given {@code uri} is not valid DID
+     *                                  key
      */
     public static final DidKey from(final URI uri) {
 
@@ -68,30 +72,28 @@ public class DidKey extends Did {
 
         final byte[] decoded = Multibase.decode(did.getMethodSpecificId());
 
-        final Codec codec = Multicodec.codec(Type.Key, decoded).orElseThrow(IllegalArgumentException::new);
+        final Multicodec codec = MULTICODER.getCodec(decoded).orElseThrow(() -> new IllegalArgumentException("Cannot detect did:key codec."));
 
-        final byte[] rawKey = Multicodec.decode(codec, decoded);
+        final byte[] rawKey = codec.decode(decoded);
 
         return new DidKey(did, codec, rawKey);
     }
-    
+
     public static boolean isDidKey(final Did did) {
         return METHOD_KEY.equalsIgnoreCase(did.getMethod());
     }
 
     public static boolean isDidKey(final URI uri) {
         return Did.isDid(uri)
-                && uri.getSchemeSpecificPart().toLowerCase().startsWith(METHOD_KEY + ":")
-                ;
+                && uri.getSchemeSpecificPart().toLowerCase().startsWith(METHOD_KEY + ":");
     }
 
     public static boolean isDidKey(final String uri) {
         return Did.isDid(uri)
-                && uri.toLowerCase().startsWith(SCHEME + ":" + METHOD_KEY + ":")
-                ;
+                && uri.toLowerCase().startsWith(SCHEME + ":" + METHOD_KEY + ":");
     }
 
-    public Codec getCodec() {
+    public Multicodec getCodec() {
         return codec;
     }
 

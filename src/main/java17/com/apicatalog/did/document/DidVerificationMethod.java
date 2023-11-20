@@ -8,15 +8,12 @@ import com.apicatalog.did.DidUrl;
 public record DidVerificationMethod(
                     DidUrl id, 
                     Did controller, 
-                    String type,
-                    //TODO publicKeyJwk
+                    String curve,
                     byte[] publicKey
                 ) {
 
     public DidVerificationMethod {
         Objects.requireNonNull(id);
         Objects.requireNonNull(controller);
-//        Objects.requireNonNull(type);
     }
-    
 }

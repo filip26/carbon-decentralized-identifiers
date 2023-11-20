@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -15,8 +14,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.apicatalog.did.key.DidKey;
-import com.apicatalog.jsonld.JsonLdError;
-import com.apicatalog.multicodec.Multicodec.Codec;
+import com.apicatalog.multicodec.MulticodecRegistry;
 
 @DisplayName("DID Key")
 @TestMethodOrder(OrderAnnotation.class)
@@ -25,8 +23,7 @@ class DidKeyTest {
     @DisplayName("Create DID key from string")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "testVectors" })
-    void createFromString(DidKeyTestCase testCase) {
-
+    void fromString(DidKeyTestCase testCase) {
         try {
 
             final DidKey didKey = DidKey.from(testCase.uri);
@@ -50,41 +47,87 @@ class DidKeyTest {
         }
     }
 
-    static final Stream<DidKeyTestCase> testVectors() throws JsonLdError, IOException {
+    static Stream<DidKeyTestCase> testVectors() {
         return Arrays.stream(testCases);
     }
 
     static final DidKeyTestCase testCases[] = new DidKeyTestCase[] {
             DidKeyTestCase.create(
                     "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
-                    Codec.Ed25519PublicKey,
+                    MulticodecRegistry.ED25519_PUBLIC_KEY,
                     32
                     ),
             DidKeyTestCase.create(
                     "did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp",
-                    Codec.Ed25519PublicKey,
+                    MulticodecRegistry.ED25519_PUBLIC_KEY,
                     32
                     ),
             DidKeyTestCase.create(
                     "did:key:z6MkjchhfUsD6mmvni8mCdXHw216Xrm9bQe2mBH1P5RDjVJG",
-                    Codec.Ed25519PublicKey,
+                    MulticodecRegistry.ED25519_PUBLIC_KEY,
                     32
                     ),
             DidKeyTestCase.create(
                     "did:key:z6MknGc3ocHs3zdPiJbnaaqDi58NGb4pk1Sp9WxWufuXSdxf",
-                    Codec.Ed25519PublicKey,
+                    MulticodecRegistry.ED25519_PUBLIC_KEY,
                     32
                     ),
             DidKeyTestCase.create(
                     "did:key:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2",
-                    Codec.Ed25519PublicKey,
+                    MulticodecRegistry.ED25519_PUBLIC_KEY,
                     32
                     ),
             DidKeyTestCase.create(
                     "did:key:z6MkiVQTYk3L2XKY6yg6MyeN2QLE5QkKcXByUeY1dkdiLx4j",
-                    Codec.Ed25519PublicKey,
+                    MulticodecRegistry.ED25519_PUBLIC_KEY,
                     32
                     ),
+            DidKeyTestCase.create(
+                    "did:key:zQ3shokFTS3brHcDQrn82RUDfCZESWL1ZdCEJwekUDPQiYBme",
+                    MulticodecRegistry.SECP256K1_PUBLIC_KEY,
+                    33
+                    ),
+            DidKeyTestCase.create(
+                    "did:key:zQ3shtxV1FrJfhqE1dvxYRcCknWNjHc3c5X1y3ZSoPDi2aur2",
+                    MulticodecRegistry.SECP256K1_PUBLIC_KEY,
+                    33
+                    ),
+            DidKeyTestCase.create(
+                    "did:key:zQ3shZc2QzApp2oymGvQbzP8eKheVshBHbU4ZYjeXqwSKEn6N",
+                    MulticodecRegistry.SECP256K1_PUBLIC_KEY,
+                    33
+                    ),            
+            DidKeyTestCase.create(
+                    "did:key:zDnaerDaTF5BXEavCrfRZEk316dpbLsfPDZ3WJ5hRTPFU2169",
+                    MulticodecRegistry.P256_PUBLIC_KEY,
+                    33
+                    ),
+            DidKeyTestCase.create(
+                    "did:key:zDnaerx9CtbPJ1q36T5Ln5wYt3MQYeGRG5ehnPAmxcf5mDZpv",
+                    MulticodecRegistry.P256_PUBLIC_KEY,
+                    33
+                    ),
+            DidKeyTestCase.create(
+                    "did:key:z82Lm1MpAkeJcix9K8TMiLd5NMAhnwkjjCBeWHXyu3U4oT2MVJJKXkcVBgjGhnLBn2Kaau9",
+                    MulticodecRegistry.P384_PUBLIC_KEY,
+                    49
+                    ),
+            DidKeyTestCase.create(
+                    "did:key:z82LkvCwHNreneWpsgPEbV3gu1C6NFJEBg4srfJ5gdxEsMGRJUz2sG9FE42shbn2xkZJh54",
+                    MulticodecRegistry.P384_PUBLIC_KEY,
+                    49
+                    ),
+            DidKeyTestCase.create(
+                    "did:key:z2J9gaYxrKVpdoG9A4gRnmpnRCcxU6agDtFVVBVdn1JedouoZN7SzcyREXXzWgt3gGiwpoHq7K68X4m32D8HgzG8wv3sY5j7",
+                    MulticodecRegistry.P521_PUBLIC_KEY,
+                    67
+                    ),
+            DidKeyTestCase.create(
+                    "did:key:z2J9gcGdb2nEyMDmzQYv2QZQcM1vXktvy1Pw4MduSWxGabLZ9XESSWLQgbuPhwnXN7zP7HpTzWqrMTzaY5zWe6hpzJ2jnw4f",
+                    MulticodecRegistry.P521_PUBLIC_KEY,
+                    67
+                    ),
+
             // invalid keys
             DidKeyTestCase.create("http:key:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2"),
             DidKeyTestCase.create("did:example:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2"),
@@ -93,13 +136,13 @@ class DidKeyTest {
             // versioned keys
             DidKeyTestCase.create(
                     "did:key:1.1:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2",
-                    Codec.Ed25519PublicKey,
+                    MulticodecRegistry.ED25519_PUBLIC_KEY,
                     32,
                     "1.1"
                     ),
             DidKeyTestCase.create(
                     "did:key:0.7:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2",
-                    Codec.Ed25519PublicKey,
+                    MulticodecRegistry.ED25519_PUBLIC_KEY,
                     32,
                     "0.7"
                     ),

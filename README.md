@@ -1,4 +1,4 @@
-# Carbon DIDs
+# Carbon DID
 An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.org/TR/did-core/) in Java.
 
 [![Java 17 CI](https://github.com/filip26/carbon-decentralized-identifiers/actions/workflows/java17-build.yml/badge.svg)](https://github.com/filip26/carbon-decentralized-identifiers/actions/workflows/java17-build.yml)
@@ -13,10 +13,13 @@ An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.
 
 ## Installation
 
-### Maven
+### Carbon DID
+
+#### Maven
+
+Java 17+
 
 ```xml
-<!-- Java 17 -->
 <dependency>
     <groupId>com.apicatalog</groupId>
     <artifactId>carbon-did</artifactId>
@@ -25,21 +28,19 @@ An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.
 
 ```
 
-or
+#### Gradle 
+Java 8+, Android API Level >=24
 
-```xml
-<!-- Android (Java 8) -->
-<dependency>
-    <groupId>com.apicatalog</groupId>
-    <artifactId>carbon-did-jre8</artifactId>
-    <version>0.0.3</version>
-</dependency>
+```gradle
+implementation("com.apicatalog:carbon-did-jre8:0.0.3")
 ```
 
-#### JSON-P Provider
+
+### JSON-P Provider
 
 Add JSON-P provider, if it is not on the classpath already.
 
+#### Maven
 
 ```xml
 <dependency>
@@ -47,6 +48,12 @@ Add JSON-P provider, if it is not on the classpath already.
     <artifactId>jakarta.json</artifactId>
     <version>2.0.1</version>
 </dependency>
+```
+
+#### Gradle
+
+```gradle
+implementation("org.glassfish:jakarta.json:2.0.1")
 ```
 
 
