@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -15,7 +14,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.apicatalog.did.key.DidKey;
-import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.multicodec.MulticodecRegistry;
 
 @DisplayName("DID Key")
@@ -26,7 +24,6 @@ class DidKeyTest {
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "testVectors" })
     void fromString(DidKeyTestCase testCase) {
-
         try {
 
             final DidKey didKey = DidKey.from(testCase.uri);
@@ -50,7 +47,7 @@ class DidKeyTest {
         }
     }
 
-    static final Stream<DidKeyTestCase> testVectors() throws JsonLdError, IOException {
+    static Stream<DidKeyTestCase> testVectors() {
         return Arrays.stream(testCases);
     }
 

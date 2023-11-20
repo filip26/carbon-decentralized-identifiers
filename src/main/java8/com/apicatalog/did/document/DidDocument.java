@@ -1,12 +1,8 @@
 package com.apicatalog.did.document;
 
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import com.apicatalog.did.Did;
-import com.apicatalog.did.DidUrl;
 
 /**
  * DID Document

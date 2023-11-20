@@ -60,9 +60,7 @@ public class DidKeyResolver implements DidResolver {
         return new DidVerificationMethod(
                     DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
                     DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
-                    //encodingType,
-                    null,
-                    didKey.getCodec(),
+                    didKey.getCodec().name(),
                     didKey.getRawKey()
                     );
      }
@@ -72,7 +70,7 @@ public class DidKeyResolver implements DidResolver {
         // 3.
 
         // 5.
-        String encodingType = "MultiKey";
+//        String encodingType = "MultiKey";
 
         // 6.
 
@@ -82,8 +80,7 @@ public class DidKeyResolver implements DidResolver {
         return new DidVerificationMethod(
                     DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
                     DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
-                    encodingType,
-                    didKey.getCodec(),
+                    didKey.getCodec().name(),
                     didKey.getRawKey()
                     );
     }

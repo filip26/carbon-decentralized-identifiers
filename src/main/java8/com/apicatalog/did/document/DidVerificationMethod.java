@@ -1,7 +1,5 @@
 package com.apicatalog.did.document;
 
-import java.util.Objects;
-
 import com.apicatalog.did.Did;
 import com.apicatalog.did.DidUrl;
 
@@ -9,19 +7,18 @@ public class DidVerificationMethod {
     
     final DidUrl id;
     final Did controller; 
-    final String type;
-    //TODO publicKeyJwk
+    final String curve;
     final byte[] publicKey;
 
     public DidVerificationMethod(
             DidUrl id, 
             Did controller, 
-            String type,
+            String curve,
             byte[] publicKey
         ) {
         this.id = id;
         this.controller = controller;
-        this.type = type;
+        this.curve = curve;
         this.publicKey = publicKey;
     }
     
@@ -33,8 +30,8 @@ public class DidVerificationMethod {
         return controller;
     }
     
-    public String type() {
-        return type;
+    public String curve() {
+        return curve;
     }
     
     public byte[] publicKey() {

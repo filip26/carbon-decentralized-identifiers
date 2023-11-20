@@ -9,15 +9,12 @@ import com.apicatalog.multicodec.Multicodec;
 public record DidVerificationMethod(
                     DidUrl id, 
                     Did controller, 
-                    String type,
-                    Multicodec codec,
+                    String curve,
                     byte[] publicKey
                 ) {
 
     public DidVerificationMethod {
         Objects.requireNonNull(id);
         Objects.requireNonNull(controller);
-//        Objects.requireNonNull(type);
     }
-    
 }
