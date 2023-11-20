@@ -43,15 +43,16 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<argLine>-Dfile.encoding=UTF-8</argLine>
 
 		<jakarta.json.version>2.0.1</jakarta.json.version>
-		<titanium.version>1.3.2</titanium.version>
+		<multiformats.version>1.1.1</multiformats.version>
 
+		<titanium.version>1.3.3</titanium.version>
 		<copper.version>0.0.5</copper.version>
-		<argLine>-Dfile.encoding=UTF-8</argLine>
+
 		<!-- test resources -->
 		<junit.version>5.9.3</junit.version>
-		<jakarta.json.version>2.0.1</jakarta.json.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -66,6 +67,12 @@
 			<artifactId>copper-multicodec</artifactId>
 			<version>${copper.version}</version>
 			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.multiformats</groupId>
+			<artifactId>java-multibase</artifactId>
+			<version>${multiformats.version}</version>
 		</dependency>
 
 		<!-- Tests -->
@@ -133,9 +140,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.5.0</version>
-                <configuration>
-                    <doclint>all,-missing</doclint>
-                </configuration>				
+				<configuration>
+					<doclint>all,-missing</doclint>
+				</configuration>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
