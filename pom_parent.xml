@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.apicatalog</groupId>
 	<artifactId>carbon</artifactId>
-	<version>0.0.7-SNAPSHOT</version>
+	<version>0.0.7</version>
 	<packaging>pom</packaging>
 
 	<name>Carbon DIDs</name>
@@ -69,12 +69,12 @@
 			<scope>provided</scope>
 		</dependency>
 
-        <dependency>
-            <groupId>com.apicatalog</groupId>
-            <artifactId>copper-multibase</artifactId>
-            <version>${copper.multibase.version}</version>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>com.apicatalog</groupId>
+			<artifactId>copper-multibase</artifactId>
+			<version>${copper.multibase.version}</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<!-- Tests -->
 		<dependency>
