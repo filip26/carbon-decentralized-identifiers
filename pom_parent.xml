@@ -93,13 +93,6 @@
 
 	</dependencies>
 
-	<repositories>
-		<repository>
-			<id>scijava.org</id>
-			<url>https://maven.scijava.org/content/repositories/public/</url>
-		</repository>
-	</repositories>
-
 	<build>
 		<plugins>
 			<plugin>

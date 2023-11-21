@@ -4,6 +4,7 @@ import java.net.URI;
 
 import com.apicatalog.did.Did;
 import com.apicatalog.multibase.Multibase;
+import com.apicatalog.multibase.MultibaseDecoder;
 import com.apicatalog.multicodec.Multicodec;
 import com.apicatalog.multicodec.Multicodec.Tag;
 import com.apicatalog.multicodec.MulticodecDecoder;
@@ -26,7 +27,8 @@ public class DidKey extends Did {
 
     public static final String METHOD_KEY = "key";
 
-    protected static final MulticodecDecoder MULTICODER = MulticodecDecoder.getInstance(Tag.Key);
+    protected static final MulticodecDecoder MULTICODEC = MulticodecDecoder.getInstance(Tag.Key);
+    protected static final MultibaseDecoder MULTIBASE = MultibaseDecoder.getInstance(Multibase.BASE_58_BTC);
 
     private final Multicodec codec;
 
@@ -66,13 +68,9 @@ public class DidKey extends Did {
             throw new IllegalArgumentException("The given DID method [" + did.getMethod() + "] is not 'key'. DID [" + did.toString() + "].");
         }
 
-        if (!Multibase.isAlgorithmSupported(did.getMethodSpecificId())) {
-            throw new IllegalArgumentException();
-        }
+        final byte[] decoded = MULTIBASE.decode(did.getMethodSpecificId());
 
-        final byte[] decoded = Multibase.decode(did.getMethodSpecificId());
-
-        final Multicodec codec = MULTICODER.getCodec(decoded).orElseThrow(() -> new IllegalArgumentException("Cannot detect did:key codec."));
+        final Multicodec codec = MULTICODEC.getCodec(decoded).orElseThrow(() -> new IllegalArgumentException("Cannot detect did:key codec."));
 
         final byte[] rawKey = codec.decode(decoded);
 
