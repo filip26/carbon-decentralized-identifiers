@@ -6,7 +6,7 @@ import com.apicatalog.did.Did;
 import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multicodec.Multicodec;
 import com.apicatalog.multicodec.Multicodec.Tag;
-import com.apicatalog.multicodec.Multicoder;
+import com.apicatalog.multicodec.MulticodecDecoder;
 
 /**
  * Immutable DID Key
@@ -26,7 +26,7 @@ public class DidKey extends Did {
 
     public static final String METHOD_KEY = "key";
 
-    protected static final Multicoder MULTICODER = Multicoder.getInstance(Tag.Key);
+    protected static final MulticodecDecoder MULTICODER = MulticodecDecoder.getInstance(Tag.Key);
 
     private final Multicodec codec;
 

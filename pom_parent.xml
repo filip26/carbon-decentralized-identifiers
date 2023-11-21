@@ -48,7 +48,8 @@
 		<jakarta.json.version>2.0.1</jakarta.json.version>
 
 		<titanium.version>1.3.3</titanium.version>
-		<copper.version>0.0.5</copper.version>
+		<copper.multicodec.version>0.0.6</copper.multicodec.version>
+		<copper.multibase.version>0.0.1</copper.multibase.version>
 
 		<!-- test resources -->
 		<junit.version>5.10.1</junit.version>
@@ -64,9 +65,16 @@
 		<dependency>
 			<groupId>com.apicatalog</groupId>
 			<artifactId>copper-multicodec</artifactId>
-			<version>${copper.version}</version>
+			<version>${copper.multicodec.version}</version>
 			<scope>provided</scope>
 		</dependency>
+
+        <dependency>
+            <groupId>com.apicatalog</groupId>
+            <artifactId>copper-multibase</artifactId>
+            <version>${copper.multibase.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
 		<!-- Tests -->
 		<dependency>
