@@ -83,11 +83,11 @@ Fork and clone the project repository.
 > mvn -f pom_jre8.xml clean package
 ```
 
-## Resources
-
-* [Decentralized Identifiers (DIDs) v1.0](https://www.w3.org/TR/did-core/)
-* [The did:key Method v0.7](https://w3c-ccg.github.io/did-method-key/)
-
+## Resources- 
+- [Decentralized Identifiers (DIDs) v1.0](https://www.w3.org/TR/did-core/)
+- [The did:key Method v0.7](https://w3c-ccg.github.io/did-method-key/)
+- [Copper Multicodec](https://github.com/filip26/copper-multicodec)
+- [Copper Multibase](https://github.com/filip26/copper-multibase)
 
 ## Sponsors
 
