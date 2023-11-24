@@ -35,7 +35,7 @@ public class DidVerificationMethod {
         return publicKey;
     }
     
-    private void codec() {
+    private Multicodec codec() {
         return codec;
     }
 }
