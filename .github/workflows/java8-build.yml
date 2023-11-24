@@ -19,4 +19,4 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: mvn -f pom_jre8.xml package
+      run: mvn -f pom.xml package
