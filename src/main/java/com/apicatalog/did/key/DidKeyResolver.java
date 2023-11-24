@@ -8,8 +8,6 @@ import com.apicatalog.did.document.DidVerificationMethod;
 
 public class DidKeyResolver implements DidResolver {
 
-//    private static final String ED25519_VERIFICATION_KEY_2020_TYPE =  "https://w3id.org/security#Ed25519VerificationKey2020";
-
     @Override
     public DidDocument resolve(final Did did) {
 
@@ -60,7 +58,7 @@ public class DidKeyResolver implements DidResolver {
         return new DidVerificationMethod(
                     DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
                     DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
-                    didKey.getCodec().name(),
+                    didKey.getCodec(),
                     didKey.getRawKey()
                     );
      }
@@ -80,7 +78,7 @@ public class DidKeyResolver implements DidResolver {
         return new DidVerificationMethod(
                     DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
                     DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
-                    didKey.getCodec().name(),
+                    didKey.getCodec(),
                     didKey.getRawKey()
                     );
     }

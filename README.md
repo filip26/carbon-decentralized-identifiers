@@ -1,8 +1,8 @@
 # Carbon DID
 An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.org/TR/did-core/) in Java.
 
-[![Java 17 CI](https://github.com/filip26/carbon-decentralized-identifiers/actions/workflows/java17-build.yml/badge.svg)](https://github.com/filip26/carbon-decentralized-identifiers/actions/workflows/java17-build.yml)
-[![Android (Java 8) CI](https://github.com/filip26/carbon-decentralized-identifiers/actions/workflows/java8-build.yml/badge.svg)](https://github.com/filip26/carbon-decentralized-identifiers/actions/workflows/java8-build.yml)
+
+[![Java 8 CI](https://github.com/filip26/carbon-decentralized-identifiers/actions/workflows/java8-build.yml/badge.svg)](https://github.com/filip26/carbon-decentralized-identifiers/actions/workflows/java8-build.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/com.apicatalog/carbon-did.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:com.apicatalog%20AND%20a:carbon-did)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
@@ -17,22 +17,20 @@ An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.
 
 #### Maven
 
-Java 17+
-
 ```xml
 <dependency>
     <groupId>com.apicatalog</groupId>
     <artifactId>carbon-did</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.7</version>
 </dependency>
 
 ```
 
 #### Gradle 
-Java 8+, Android API Level >=24
+Android API Level >=24
 
 ```gradle
-implementation("com.apicatalog:carbon-did-jre8:0.0.3")
+implementation("com.apicatalog:carbon-did:0.0.7")
 ```
 
 
