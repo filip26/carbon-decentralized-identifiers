@@ -4,11 +4,12 @@ import java.util.Objects;
 
 import com.apicatalog.did.Did;
 import com.apicatalog.did.DidUrl;
+import com.apicatalog.multicodec.Multicodec;
 
 public record DidVerificationMethod(
                     DidUrl id, 
                     Did controller, 
-                    String curve,
+                    Multicodec codec,
                     byte[] publicKey
                 ) {
 

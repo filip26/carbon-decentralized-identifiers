@@ -2,23 +2,24 @@ package com.apicatalog.did.document;
 
 import com.apicatalog.did.Did;
 import com.apicatalog.did.DidUrl;
+import com.apicatalog.multicodec.Multicodec;
 
 public class DidVerificationMethod {
     
     final DidUrl id;
     final Did controller; 
-    final String curve;
+    final Multicodec codec;
     final byte[] publicKey;
 
     public DidVerificationMethod(
             DidUrl id, 
             Did controller, 
-            String curve,
+            Multicodec codec,
             byte[] publicKey
         ) {
         this.id = id;
         this.controller = controller;
-        this.curve = curve;
+        this.codec = codec;
         this.publicKey = publicKey;
     }
     
@@ -29,12 +30,12 @@ public class DidVerificationMethod {
     public Did controller() {
         return controller;
     }
-    
-    public String curve() {
-        return curve;
-    }
-    
+        
     public byte[] publicKey() {
         return publicKey;
+    }
+    
+    private void codec() {
+        return codec;
     }
 }
