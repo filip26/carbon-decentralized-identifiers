@@ -3,7 +3,6 @@ package com.apicatalog.did.key;
 import java.net.URI;
 
 import com.apicatalog.did.Did;
-import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multibase.MultibaseDecoder;
 import com.apicatalog.multicodec.Multicodec;
 import com.apicatalog.multicodec.Multicodec.Tag;
@@ -28,7 +27,7 @@ public class DidKey extends Did {
     public static final String METHOD_KEY = "key";
 
     protected static final MulticodecDecoder MULTICODEC = MulticodecDecoder.getInstance(Tag.Key);
-    protected static final MultibaseDecoder MULTIBASE = MultibaseDecoder.getInstance(Multibase.BASE_58_BTC);
+    protected static final MultibaseDecoder MULTIBASE = MultibaseDecoder.getInstance();
 
     private final Multicodec codec;
 
