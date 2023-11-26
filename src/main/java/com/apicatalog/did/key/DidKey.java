@@ -3,6 +3,7 @@ package com.apicatalog.did.key;
 import java.net.URI;
 
 import com.apicatalog.did.Did;
+import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multibase.MultibaseDecoder;
 import com.apicatalog.multicodec.Multicodec;
 import com.apicatalog.multicodec.Multicodec.Tag;
@@ -67,7 +68,9 @@ public class DidKey extends Did {
             throw new IllegalArgumentException("The given DID method [" + did.getMethod() + "] is not 'key'. DID [" + did.toString() + "].");
         }
 
-        final byte[] decoded = MULTIBASE.decode(did.getMethodSpecificId());
+        final Multibase base = MULTIBASE.getBase(did.getMethodSpecificId()).orElseThrow(() -> new IllegalArgumentException("Cannot detect did:key base encoding."));
+        
+        final byte[] decoded = base.decode(did.getMethodSpecificId());
 
         final Multicodec codec = MULTICODEC.getCodec(decoded).orElseThrow(() -> new IllegalArgumentException("Cannot detect did:key codec."));
 
