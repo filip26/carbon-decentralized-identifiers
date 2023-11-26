@@ -23,12 +23,12 @@ import com.apicatalog.multicodec.MulticodecDecoder;
  */
 public class DidKey extends Did {
 
-    private static final long serialVersionUID = 582726516478574544L;
+    private static final long serialVersionUID = 3710900614215756688L;
 
     public static final String METHOD_KEY = "key";
 
     protected static final MulticodecDecoder MULTICODEC = MulticodecDecoder.getInstance(Tag.Key);
-    protected static final MultibaseDecoder MULTIBASE = MultibaseDecoder.getInstance(Multibase.BASE_58_BTC);
+    protected static final MultibaseDecoder MULTIBASE = MultibaseDecoder.getInstance();
 
     private final Multicodec codec;
 
@@ -68,7 +68,9 @@ public class DidKey extends Did {
             throw new IllegalArgumentException("The given DID method [" + did.getMethod() + "] is not 'key'. DID [" + did.toString() + "].");
         }
 
-        final byte[] decoded = MULTIBASE.decode(did.getMethodSpecificId());
+        final Multibase base = MULTIBASE.getBase(did.getMethodSpecificId()).orElseThrow(() -> new IllegalArgumentException("Cannot detect did:key base encoding."));
+        
+        final byte[] decoded = base.decode(did.getMethodSpecificId());
 
         final Multicodec codec = MULTICODEC.getCodec(decoded).orElseThrow(() -> new IllegalArgumentException("Cannot detect did:key codec."));
 

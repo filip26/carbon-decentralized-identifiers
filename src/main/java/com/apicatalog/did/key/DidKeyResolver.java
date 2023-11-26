@@ -48,13 +48,6 @@ public class DidKeyResolver implements DidResolver {
      * @return The new verification key
      */
     public static DidVerificationMethod createSignatureMethod(DidKey didKey) {
-
-//        if (!Multicodec.Codec.Ed25519PublicKey.equals(didKey.getCodec())) {
-//            throw new IllegalArgumentException();
-//        }
-        // 5.
-//        String encodingType = ED25519_VERIFICATION_KEY_2020_TYPE;
-
         return new DidVerificationMethod(
                     DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
                     DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),

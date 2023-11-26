@@ -21,7 +21,7 @@ An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.
 <dependency>
     <groupId>com.apicatalog</groupId>
     <artifactId>carbon-did</artifactId>
-    <version>0.0.7</version>
+    <version>0.1.0</version>
 </dependency>
 
 ```
@@ -30,7 +30,7 @@ An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.
 Android API Level >=24
 
 ```gradle
-implementation("com.apicatalog:carbon-did:0.0.7")
+implementation("com.apicatalog:carbon-did:0.1.0")
 ```
 
 
