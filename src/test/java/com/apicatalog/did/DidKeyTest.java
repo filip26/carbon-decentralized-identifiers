@@ -14,6 +14,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.apicatalog.did.key.DidKey;
+import com.apicatalog.multibase.MultibaseDecoder;
+import com.apicatalog.multicodec.Multicodec.Tag;
+import com.apicatalog.multicodec.MulticodecDecoder;
 import com.apicatalog.multicodec.codec.KeyCodec;
 
 @DisplayName("DID Key")
@@ -26,7 +29,7 @@ class DidKeyTest {
     void fromString(DidKeyTestCase testCase) {
         try {
 
-            final DidKey didKey = DidKey.from(testCase.uri);
+            final DidKey didKey = DidKey.from(testCase.uri, MultibaseDecoder.getInstance(), MulticodecDecoder.getInstance(Tag.Key));
 
             if (testCase.negative) {
                 fail("Expected failure but got " + didKey);
