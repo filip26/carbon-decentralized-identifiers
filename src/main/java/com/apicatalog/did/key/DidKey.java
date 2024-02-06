@@ -64,11 +64,11 @@ public class DidKey extends Did {
             throw new IllegalArgumentException("The given DID method [" + did.getMethod() + "] is not 'key'. DID [" + did.toString() + "].");
         }
 
-        final Multibase base = bases.getBase(did.getMethodSpecificId()).orElseThrow(() -> new IllegalArgumentException("Cannot detect did:key base encoding."));
+        final Multibase base = bases.getBase(did.getMethodSpecificId()).orElseThrow(() -> new IllegalArgumentException("Unsupported did:key base encoding. DID [" + did.toString() + "]."));
         
         final byte[] decoded = base.decode(did.getMethodSpecificId());
 
-        final Multicodec codec = codecs.getCodec(decoded).orElseThrow(() -> new IllegalArgumentException("Cannot detect did:key codec."));
+        final Multicodec codec = codecs.getCodec(decoded).orElseThrow(() -> new IllegalArgumentException("Unsupported did:key codec. DID [" + did.toString() + "]."));
 
         final byte[] rawKey = codec.decode(decoded);
 
