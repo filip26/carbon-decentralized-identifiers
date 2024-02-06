@@ -9,7 +9,9 @@ An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.
 
 ## Features
 
-* [did:key method v0.7](https://w3c-ccg.github.io/did-method-key/)
+* DID, DID URL, DID Document
+* Methods
+  * [did:key method v0.7](https://w3c-ccg.github.io/did-method-key/)
 
 ## Installation
 

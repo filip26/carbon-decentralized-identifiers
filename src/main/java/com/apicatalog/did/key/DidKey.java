@@ -6,7 +6,6 @@ import com.apicatalog.did.Did;
 import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multibase.MultibaseDecoder;
 import com.apicatalog.multicodec.Multicodec;
-import com.apicatalog.multicodec.Multicodec.Tag;
 import com.apicatalog.multicodec.MulticodecDecoder;
 
 /**
@@ -26,9 +25,6 @@ public class DidKey extends Did {
     private static final long serialVersionUID = 3710900614215756688L;
 
     public static final String METHOD_KEY = "key";
-
-    protected static final MulticodecDecoder MULTICODEC = MulticodecDecoder.getInstance(Tag.Key);
-    protected static final MultibaseDecoder MULTIBASE = MultibaseDecoder.getInstance();
 
     private final Multicodec codec;
 
@@ -51,7 +47,7 @@ public class DidKey extends Did {
      * @throws IllegalArgumentException If the given {@code uri} is not valid DID
      *                                  key
      */
-    public static final DidKey from(final URI uri) {
+    public static final DidKey from(final URI uri, final MultibaseDecoder bases, final MulticodecDecoder codecs) {
 
         final Did did = Did.from(uri);
 
@@ -59,20 +55,20 @@ public class DidKey extends Did {
             throw new IllegalArgumentException("The given URI [" + uri + "] is not valid DID key, does not start with 'did:key'.");
         }
 
-        return from(did);
+        return from(did, bases, codecs);
     }
 
-    public static final DidKey from(final Did did) {
+    public static final DidKey from(final Did did, final MultibaseDecoder bases, final MulticodecDecoder codecs) {
 
         if (!METHOD_KEY.equalsIgnoreCase(did.getMethod())) {
             throw new IllegalArgumentException("The given DID method [" + did.getMethod() + "] is not 'key'. DID [" + did.toString() + "].");
         }
 
-        final Multibase base = MULTIBASE.getBase(did.getMethodSpecificId()).orElseThrow(() -> new IllegalArgumentException("Cannot detect did:key base encoding."));
+        final Multibase base = bases.getBase(did.getMethodSpecificId()).orElseThrow(() -> new IllegalArgumentException("Unsupported did:key base encoding. DID [" + did.toString() + "]."));
         
         final byte[] decoded = base.decode(did.getMethodSpecificId());
 
-        final Multicodec codec = MULTICODEC.getCodec(decoded).orElseThrow(() -> new IllegalArgumentException("Cannot detect did:key codec."));
+        final Multicodec codec = codecs.getCodec(decoded).orElseThrow(() -> new IllegalArgumentException("Unsupported did:key codec. DID [" + did.toString() + "]."));
 
         final byte[] rawKey = codec.decode(decoded);
 
