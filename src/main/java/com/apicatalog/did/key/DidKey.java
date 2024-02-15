@@ -26,12 +26,14 @@ public class DidKey extends Did {
 
     public static final String METHOD_KEY = "key";
 
-    private final Multicodec codec;
+    protected final Multibase base;
+    protected final Multicodec codec;
 
-    private final byte[] rawKey;
+    protected final byte[] rawKey;
 
-    protected DidKey(Did did, Multicodec codec, byte[] rawValue) {
-        super(did.getMethod(), did.getVersion(), did.getMethodSpecificId());
+    protected DidKey(String version, String encoded, Multibase base, Multicodec codec, byte[] rawValue) {
+        super(METHOD_KEY, version, encoded);
+        this.base = base;
         this.codec = codec;
         this.rawKey = rawValue;
     }
@@ -65,14 +67,18 @@ public class DidKey extends Did {
         }
 
         final Multibase base = bases.getBase(did.getMethodSpecificId()).orElseThrow(() -> new IllegalArgumentException("Unsupported did:key base encoding. DID [" + did.toString() + "]."));
-        
+
         final byte[] decoded = base.decode(did.getMethodSpecificId());
 
         final Multicodec codec = codecs.getCodec(decoded).orElseThrow(() -> new IllegalArgumentException("Unsupported did:key codec. DID [" + did.toString() + "]."));
 
         final byte[] rawKey = codec.decode(decoded);
 
-        return new DidKey(did, codec, rawKey);
+        return new DidKey(did.getVersion(), did.getMethodSpecificId(), base, codec, rawKey);
+    }
+
+    public static final DidKey create(Multibase base, Multicodec codec, byte[] rawKey) {
+        return new DidKey(null, base.encode(codec.encode(rawKey)), base, codec, rawKey);
     }
 
     public static boolean isDidKey(final Did did) {
@@ -91,6 +97,10 @@ public class DidKey extends Did {
 
     public Multicodec getCodec() {
         return codec;
+    }
+
+    public Multibase getBase() {
+        return base;
     }
 
     public byte[] getRawKey() {
