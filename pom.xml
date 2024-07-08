@@ -58,7 +58,6 @@
 
 		<jakarta.json.version>2.0.1</jakarta.json.version>
 
-		<copper.multicodec.version>1.0.0</copper.multicodec.version>
 		<copper.multibase.version>0.5.0</copper.multibase.version>
 
 		<!-- test resources -->
@@ -70,13 +69,6 @@
 			<groupId>jakarta.json</groupId>
 			<artifactId>jakarta.json-api</artifactId>
 			<version>${jakarta.json.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.apicatalog</groupId>
-			<artifactId>copper-multicodec</artifactId>
-			<version>${copper.multicodec.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
