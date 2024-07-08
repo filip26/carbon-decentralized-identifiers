@@ -5,8 +5,6 @@ import java.net.URI;
 import com.apicatalog.did.Did;
 import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multibase.MultibaseDecoder;
-import com.apicatalog.multicodec.Multicodec;
-import com.apicatalog.multicodec.MulticodecDecoder;
 
 /**
  * Immutable DID Key
@@ -27,21 +25,20 @@ public class DidKey extends Did {
     public static final String METHOD_KEY = "key";
 
     protected final Multibase base;
-    protected final Multicodec codec;
 
-    protected final byte[] rawKey;
+    protected final byte[] encodedKey;
 
-    protected DidKey(String version, String encoded, Multibase base, Multicodec codec, byte[] rawValue) {
+    protected DidKey(String version, String encoded, Multibase base, byte[] debased) {
         super(METHOD_KEY, version, encoded);
         this.base = base;
-        this.codec = codec;
-        this.rawKey = rawValue;
+        this.encodedKey = debased;
     }
 
     /**
      * Creates a new DID key instance from the given {@link URI}.
      *
-     * @param uri The source URI to be transformed into DID key
+     * @param uri   The source URI to be transformed into DID key
+     * @param bases
      * @return The new DID key
      *
      * @throws NullPointerException     If {@code uri} is {@code null}
@@ -49,7 +46,7 @@ public class DidKey extends Did {
      * @throws IllegalArgumentException If the given {@code uri} is not valid DID
      *                                  key
      */
-    public static final DidKey from(final URI uri, final MultibaseDecoder bases, final MulticodecDecoder codecs) {
+    public static final DidKey from(final URI uri, final MultibaseDecoder bases) {
 
         final Did did = Did.from(uri);
 
@@ -57,10 +54,10 @@ public class DidKey extends Did {
             throw new IllegalArgumentException("The given URI [" + uri + "] is not valid DID key, does not start with 'did:key'.");
         }
 
-        return from(did, bases, codecs);
+        return from(did, bases);
     }
 
-    public static final DidKey from(final Did did, final MultibaseDecoder bases, final MulticodecDecoder codecs) {
+    public static final DidKey from(final Did did, final MultibaseDecoder bases) {
 
         if (!METHOD_KEY.equalsIgnoreCase(did.getMethod())) {
             throw new IllegalArgumentException("The given DID method [" + did.getMethod() + "] is not 'key'. DID [" + did.toString() + "].");
@@ -68,17 +65,13 @@ public class DidKey extends Did {
 
         final Multibase base = bases.getBase(did.getMethodSpecificId()).orElseThrow(() -> new IllegalArgumentException("Unsupported did:key base encoding. DID [" + did.toString() + "]."));
 
-        final byte[] decoded = base.decode(did.getMethodSpecificId());
+        final byte[] debased = base.decode(did.getMethodSpecificId());
 
-        final Multicodec codec = codecs.getCodec(decoded).orElseThrow(() -> new IllegalArgumentException("Unsupported did:key codec. DID [" + did.toString() + "]."));
-
-        final byte[] rawKey = codec.decode(decoded);
-
-        return new DidKey(did.getVersion(), did.getMethodSpecificId(), base, codec, rawKey);
+        return new DidKey(did.getVersion(), did.getMethodSpecificId(), base, debased);
     }
 
-    public static final DidKey create(Multibase base, Multicodec codec, byte[] rawKey) {
-        return new DidKey(null, base.encode(codec.encode(rawKey)), base, codec, rawKey);
+    public static final DidKey create(Multibase base, byte[] key) {
+        return new DidKey(null, base.encode(key), base, key);
     }
 
     public static boolean isDidKey(final Did did) {
@@ -95,15 +88,11 @@ public class DidKey extends Did {
                 && uri.toLowerCase().startsWith(SCHEME + ":" + METHOD_KEY + ":");
     }
 
-    public Multicodec getCodec() {
-        return codec;
-    }
-
     public Multibase getBase() {
         return base;
     }
 
-    public byte[] getRawKey() {
-        return rawKey;
+    public byte[] getKey() {
+        return encodedKey;
     }
 }

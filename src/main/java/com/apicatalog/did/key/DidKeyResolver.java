@@ -6,16 +6,13 @@ import com.apicatalog.did.DidUrl;
 import com.apicatalog.did.document.DidDocument;
 import com.apicatalog.did.document.DidVerificationMethod;
 import com.apicatalog.multibase.MultibaseDecoder;
-import com.apicatalog.multicodec.MulticodecDecoder;
 
 public class DidKeyResolver implements DidResolver {
 
     protected final MultibaseDecoder bases;
-    protected final MulticodecDecoder codecs;
     
-    public DidKeyResolver(final MultibaseDecoder bases, final MulticodecDecoder codecs) {
+    public DidKeyResolver(final MultibaseDecoder bases) {
         this.bases = bases;
-        this.codecs = codecs;
     }
     
     @Override
@@ -25,7 +22,7 @@ public class DidKeyResolver implements DidResolver {
             throw new IllegalArgumentException();
         }
 
-        final DidKey didKey = DidKey.from(did, bases, codecs);
+        final DidKey didKey = DidKey.from(did, bases);
 
         final DidDocumentBuilder builder = DidDocumentBuilder.create();
 
@@ -61,8 +58,7 @@ public class DidKeyResolver implements DidResolver {
         return new DidVerificationMethod(
                     DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
                     DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
-                    didKey.getCodec(),
-                    didKey.getRawKey()
+                    didKey.getKey()
                     );
      }
 
@@ -81,8 +77,7 @@ public class DidKeyResolver implements DidResolver {
         return new DidVerificationMethod(
                     DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
                     DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
-                    didKey.getCodec(),
-                    didKey.getRawKey()
+                    didKey.getKey()
                     );
     }
 }
