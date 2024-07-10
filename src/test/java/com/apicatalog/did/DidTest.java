@@ -20,7 +20,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 @TestMethodOrder(OrderAnnotation.class)
 class DidTest {
 
-    @DisplayName("DID.from(String)")
+    @DisplayName("from(String)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "validVectors" })
     void fromString(String uri, String method, String specificId) {
@@ -38,7 +38,7 @@ class DidTest {
         }
     }
 
-    @DisplayName("DID.from(URI)")
+    @DisplayName("from(URI)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "validVectors" })
     void fromUri(String input, String method, String specificId) {

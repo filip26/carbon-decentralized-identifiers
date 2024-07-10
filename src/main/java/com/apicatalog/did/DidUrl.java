@@ -36,6 +36,18 @@ public class DidUrl extends Did {
         return new DidUrl(did, uri.getPath(), uri.getQuery(), uri.getFragment());
     }
 
+    public static DidUrl from(final String uri) {
+
+//        if (!isDidUrl(uri)) {
+//            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID URL, does not start with 'did:'.");
+//        }
+//        
+//        Did did = Did.from(uri);
+//
+//        return new DidUrl(did, uri.getPath(), uri.getQuery(), uri.getFragment());
+        return null;
+    }
+
 
     public static boolean isDidUrl(final URI uri) {
         return Did.SCHEME.equals(uri.getScheme());
