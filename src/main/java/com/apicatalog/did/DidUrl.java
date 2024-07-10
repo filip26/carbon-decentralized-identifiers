@@ -9,7 +9,7 @@ import java.util.Objects;
 public class DidUrl extends Did {
 
     private static final long serialVersionUID = 5752880077497569763L;
-    
+
     protected final String path;
     protected final String query;
     protected final String fragment;
@@ -27,13 +27,41 @@ public class DidUrl extends Did {
 
     public static DidUrl from(final URI uri) {
 
-        if (!isDidUrl(uri)) {
-            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID URL, does not start with 'did:'.");
+        if (uri == null) {
+            throw new IllegalArgumentException("The DID URL must not be null.");
+        }
+
+        if (!Did.SCHEME.equalsIgnoreCase(uri.getScheme())) {
+            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID URL, must start with 'did:' prefix.");
         }
         
-        Did did = Did.from(uri);
+        final String[] didParts = uri.getSchemeSpecificPart().split(":", 2);
+        
+        if (didParts.length != 2) {
+            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must be in form 'did:method:method-specific-id'.");
+        }
 
-        return new DidUrl(did, uri.getPath(), uri.getQuery(), uri.getFragment());
+        String specificId = didParts[1];
+        
+        String path = null;
+        String query = null;
+        
+        int urlPartIndex = specificId.indexOf('?');
+        if (urlPartIndex != -1) {
+            query = specificId.substring(urlPartIndex + 1);
+            specificId = specificId.substring(0, urlPartIndex);
+        }
+        
+        
+        urlPartIndex = specificId.indexOf('/');
+        if (urlPartIndex != -1) {
+            path = specificId.substring(urlPartIndex);
+            specificId = specificId.substring(0, urlPartIndex);
+        }
+        
+        Did did = from(uri, didParts[0], specificId);
+        
+        return new DidUrl(did, path, query, uri.getFragment());
     }
 
     public static DidUrl from(final String uri) {
@@ -48,7 +76,6 @@ public class DidUrl extends Did {
         return null;
     }
 
-
     public static boolean isDidUrl(final URI uri) {
         return Did.SCHEME.equals(uri.getScheme());
     }
@@ -61,8 +88,7 @@ public class DidUrl extends Did {
         final String[] parts = uri.split(":");
 
         return (parts.length == 3 || parts.length == 4)
-                && Did.SCHEME.equalsIgnoreCase(parts[0])
-                ;
+                && Did.SCHEME.equalsIgnoreCase(parts[0]);
     }
 
     @Override

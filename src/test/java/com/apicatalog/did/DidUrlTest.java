@@ -28,6 +28,7 @@ class DidUrlTest {
             final DidUrl didUrl = DidUrl.from(uri);
 
             assertNotNull(didUrl);
+            assertTrue(didUrl.isDidUrl());
             assertEquals(method, didUrl.getMethod());
             assertEquals(specificId, didUrl.getMethodSpecificId());
             assertEquals(path, didUrl.getPath());
@@ -49,6 +50,7 @@ class DidUrlTest {
             final DidUrl didUrl = DidUrl.from(URI.create(input));
 
             assertNotNull(didUrl);
+            assertTrue(didUrl.isDidUrl());
             assertEquals(method, didUrl.getMethod());
             assertEquals(specificId, didUrl.getMethodSpecificId());
             assertEquals(path, didUrl.getPath());
@@ -140,7 +142,24 @@ class DidUrlTest {
                         null,
                         "service=files&relativeRef=/resume.pdf",
                         null
+                },
+                {
+                        "did:example:123?",
+                        "example",
+                        "123",
+                        null,
+                        "",
+                        null
+                },
+                {
+                        "did:example:123#",
+                        "example",
+                        "123",
+                        null,
+                        null,
+                        ""
                 }
+
         });
     }
 }

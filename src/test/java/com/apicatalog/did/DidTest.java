@@ -29,6 +29,7 @@ class DidTest {
             final Did did = Did.from(uri);
             
             assertNotNull(did);
+            assertFalse(did.isDidUrl());
             assertEquals(method, did.getMethod());
             assertEquals(specificId, did.getMethodSpecificId());
 
@@ -47,6 +48,7 @@ class DidTest {
             final Did did = Did.from(URI.create(input));
 
             assertNotNull(did);
+            assertFalse(did.isDidUrl());
             assertEquals(method, did.getMethod());
             assertEquals(specificId, did.getMethodSpecificId());
 
