@@ -13,7 +13,6 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import com.apicatalog.did.key.DidKey;
 import com.apicatalog.multibase.MultibaseDecoder;
 
 @DisplayName("DID Key")
