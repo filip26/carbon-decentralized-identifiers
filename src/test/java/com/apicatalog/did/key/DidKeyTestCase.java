@@ -1,4 +1,4 @@
-package com.apicatalog.did;
+package com.apicatalog.did.key;
 
 import java.net.URI;
 

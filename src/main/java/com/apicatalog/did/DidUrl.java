@@ -9,13 +9,13 @@ import java.util.Objects;
 public class DidUrl extends Did {
 
     private static final long serialVersionUID = 5752880077497569763L;
-
+    
     protected final String path;
     protected final String query;
     protected final String fragment;
 
     protected DidUrl(Did did, String path, String query, String fragment) {
-        super(did.method, did.version, did.methodSpecificId);
+        super(did.method, did.specificId);
         this.path = path;
         this.query = query;
         this.fragment = fragment;
@@ -31,7 +31,7 @@ public class DidUrl extends Did {
             throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID URL, does not start with 'did:'.");
         }
         
-        Did did = from(uri, uri.getSchemeSpecificPart().split(":"), 3);
+        Did did = from(uri, uri.getSchemeSpecificPart().split(":", 2));
 
         return new DidUrl(did, uri.getPath(), uri.getQuery(), uri.getFragment());
     }
@@ -56,7 +56,7 @@ public class DidUrl extends Did {
     @Override
     public URI toUri() {
         try {
-            return new URI(SCHEME, method + ":" + methodSpecificId, path, query, fragment);
+            return new URI(SCHEME, method + ":" + specificId, path, query, fragment);
         } catch (URISyntaxException e) {
             throw new IllegalStateException(e);
         }

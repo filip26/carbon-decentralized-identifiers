@@ -24,7 +24,7 @@ An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.
 <dependency>
     <groupId>com.apicatalog</groupId>
     <artifactId>carbon-did</artifactId>
-    <version>0.4.0</version>
+    <version>0.5.0</version>
 </dependency>
 <dependency>
     <groupId>com.apicatalog</groupId>
@@ -39,7 +39,7 @@ Android 12+ (API Level >=32)
 
 
 ```gradle
-implementation("com.apicatalog:carbon-did:0.4.0")
+implementation("com.apicatalog:carbon-did:0.5.0")
 implementation("com.apicatalog:copper-multibase:0.5.0")
 ```
 
