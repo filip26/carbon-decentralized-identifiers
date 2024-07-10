@@ -125,7 +125,21 @@ class DidTest {
                 "did:example:123?",
                 "did:example:123/",
                 null,
-                ""
+                "",
+                "https://example.com",
+                "irc:example:channel",
+                "did:example.com:channel",
+                "did:example: ",
+                "did:example:",
+                "did:example",
+                "did:",
+                "did",
+                ":example:channel",
+                " :example:channel",
+                "did::channel",
+                "did: :channel",
+                " did:method:id",
+                "did:method:id ",
         });
     }
 
