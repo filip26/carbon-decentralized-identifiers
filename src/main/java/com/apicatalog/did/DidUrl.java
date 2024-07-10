@@ -40,10 +40,38 @@ public class DidUrl extends Did {
         if (didParts.length != 2) {
             throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must be in form 'did:method:method-specific-id'.");
         }
-        
+
         return from(uri, didParts[0], didParts[1], uri.getFragment());
     }
-    
+
+    public static DidUrl from(final String uri) {
+
+        if (uri == null || uri.length() == 0) {
+            throw new IllegalArgumentException("The DID must not be null or blank string.");
+        }
+
+        final String[] parts = uri.split(":", 3);
+
+        if (parts.length != 3) {
+            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must be in form 'did:method:method-specific-id'.");
+        }
+
+        if (!Did.SCHEME.equalsIgnoreCase(parts[0])) {
+            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must start with 'did:' prefix.");
+        }
+
+        String rest = parts[2];
+        String fragment = null;
+
+        int fragmentIndex = rest.indexOf('#');
+        if (fragmentIndex != -1) {
+            fragment = rest.substring(fragmentIndex + 1);
+            rest = rest.substring(0, fragmentIndex);
+        }
+
+        return from(uri, parts[1], rest, fragment);
+    }
+
     protected static DidUrl from(Object uri, final String method, final String rest, final String fragment) {
         String specificId = rest;
 
@@ -67,47 +95,25 @@ public class DidUrl extends Did {
         return new DidUrl(did, path, query, fragment);
     }
 
-    public static DidUrl from(final String uri) {
-
-        if (uri == null || uri.length() == 0) {
-            throw new IllegalArgumentException("The DID must not be null or blank string.");
-        }
-
-        final String[] parts = uri.split(":", 3);
-
-        if (parts.length != 3) {
-            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must be in form 'did:method:method-specific-id'.");
-        }
-
-        if (!Did.SCHEME.equalsIgnoreCase(parts[0])) {
-            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must start with 'did:' prefix.");
-        }
-
-        String rest = parts[2];
-        String fragment = null;
-        
-        int fragmentIndex = rest.indexOf('#');
-        if (fragmentIndex != -1) {
-            fragment = rest.substring(fragmentIndex + 1);
-            rest = rest.substring(0, fragmentIndex);
-        }
-
-        return from(uri, parts[1], rest, fragment);
-    }
-
     public static boolean isDidUrl(final URI uri) {
         return Did.SCHEME.equals(uri.getScheme());
     }
 
     public static boolean isDidUrl(final String uri) {
-        if (Did.isBlank(uri)) {
+        if (uri == null) {
             return false;
         }
 
-        final String[] parts = uri.split(":");
+        final String[] parts = uri.split(":", 3);
 
-        return (parts.length == 3 || parts.length == 4)
-                && Did.SCHEME.equalsIgnoreCase(parts[0]);
+        return parts.length == 3
+                && Did.SCHEME.equalsIgnoreCase(parts[0])
+                && parts[1].length() > 0
+                && parts[2].length() > 0
+                && parts[1].codePoints().allMatch(METHOD_CHAR)
+                // FIXME does not validate pct-encoded correctly
+                && parts[2].codePoints().allMatch(ID_CHAR.or(ch -> ch == ':' || ch == '%'));
+
     }
 
     @Override

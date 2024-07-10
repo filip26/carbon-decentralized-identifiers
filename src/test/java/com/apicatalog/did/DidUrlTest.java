@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -23,46 +25,52 @@ class DidUrlTest {
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "validVectors" })
     void fromString(String uri, String method, String specificId, String path, String query, String fragment) {
-        try {
+        final DidUrl didUrl = DidUrl.from(uri);
 
-            final DidUrl didUrl = DidUrl.from(uri);
-
-            assertNotNull(didUrl);
-            assertTrue(didUrl.isDidUrl());
-            assertEquals(method, didUrl.getMethod());
-            assertEquals(specificId, didUrl.getMethodSpecificId());
-            assertEquals(path, didUrl.getPath());
-            assertEquals(query, didUrl.getQuery());
-            assertEquals(fragment, didUrl.getFragment());
-
-        } catch (IllegalArgumentException | NullPointerException e) {
-            e.printStackTrace();
-            fail(e);
-        }
+        assertNotNull(didUrl);
+        assertTrue(didUrl.isDidUrl());
+        assertEquals(method, didUrl.getMethod());
+        assertEquals(specificId, didUrl.getMethodSpecificId());
+        assertEquals(path, didUrl.getPath());
+        assertEquals(query, didUrl.getQuery());
+        assertEquals(fragment, didUrl.getFragment());
     }
 
     @DisplayName("from(URI)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "validVectors" })
     void fromUri(String input, String method, String specificId, String path, String query, String fragment) {
-        try {
+        final DidUrl didUrl = DidUrl.from(URI.create(input));
 
-            final DidUrl didUrl = DidUrl.from(URI.create(input));
-
-            assertNotNull(didUrl);
-            assertTrue(didUrl.isDidUrl());
-            assertEquals(method, didUrl.getMethod());
-            assertEquals(specificId, didUrl.getMethodSpecificId());
-            assertEquals(path, didUrl.getPath());
-            assertEquals(query, didUrl.getQuery());
-            assertEquals(fragment, didUrl.getFragment());
-
-        } catch (IllegalArgumentException | NullPointerException e) {
-            e.printStackTrace();
-            fail(e);
-        }
+        assertNotNull(didUrl);
+        assertTrue(didUrl.isDidUrl());
+        assertEquals(method, didUrl.getMethod());
+        assertEquals(specificId, didUrl.getMethodSpecificId());
+        assertEquals(path, didUrl.getPath());
+        assertEquals(query, didUrl.getQuery());
+        assertEquals(fragment, didUrl.getFragment());
     }
 
+    @DisplayName("toUri()")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource({ "validVectors" })
+    void toUri(String input, String method, String specificId, String path, String query, String fragment) {
+        final DidUrl didUrl = DidUrl.from(URI.create(input));
+
+        assertNotNull(didUrl);
+        assertEquals(URI.create(input), didUrl.toUri());
+    }
+
+    @DisplayName("toUrl()")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource({ "validVectors" })
+    void toUrl(String input, String method, String specificId, String path, String query, String fragment) throws MalformedURLException {
+        final DidUrl didUrl = DidUrl.from(URI.create(input));
+
+        assertNotNull(didUrl);
+        assertEquals(new URL(input), didUrl.toUrl());
+    }
+    
     @DisplayName("isDidUrl(String)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "validVectors" })
