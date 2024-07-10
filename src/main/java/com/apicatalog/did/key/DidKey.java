@@ -9,8 +9,7 @@ import com.apicatalog.multibase.MultibaseDecoder;
 /**
  * Immutable DID Key
  * <p>
- * did-key-format := did:key:MULTIBASE(base58-btc, MULTICODEC(public-key-type,
- * raw-public-key-bytes))
+ * did-key-format := did:key:[version]:MULTIBASE(multiencodedKey)
  * </p>
  *
  * @see <a href=
@@ -20,18 +19,23 @@ import com.apicatalog.multibase.MultibaseDecoder;
  */
 public class DidKey extends Did {
 
-    private static final long serialVersionUID = 3710900614215756688L;
+    private static final long serialVersionUID = 1343361455801198884L;
 
     public static final String METHOD_KEY = "key";
 
+    public static final String DEFAULT_VERSION = "1";
+
+    protected final String version;
+
     protected final Multibase base;
 
-    protected final byte[] encodedKey;
+    protected final byte[] debased;
 
-    protected DidKey(String version, String encoded, Multibase base, byte[] debased) {
-        super(METHOD_KEY, version, encoded);
+    protected DidKey(String version, String specificId, Multibase base, byte[] debased) {
+        super(METHOD_KEY, specificId);
         this.base = base;
-        this.encodedKey = debased;
+        this.version = version;
+        this.debased = debased;
     }
 
     /**
@@ -63,11 +67,21 @@ public class DidKey extends Did {
             throw new IllegalArgumentException("The given DID method [" + did.getMethod() + "] is not 'key'. DID [" + did.toString() + "].");
         }
 
-        final Multibase base = bases.getBase(did.getMethodSpecificId()).orElseThrow(() -> new IllegalArgumentException("Unsupported did:key base encoding. DID [" + did.toString() + "]."));
+        final String[] parts = did.getMethodSpecificId().split(":", 2);
+        
+        String version = DEFAULT_VERSION;
+        String encoded = parts[0];
+        
+        if (parts.length == 2) {
+            version = parts[0];
+            encoded = parts[1];
+        }
+        
+        final Multibase base = bases.getBase(encoded).orElseThrow(() -> new IllegalArgumentException("Unsupported did:key base encoding. DID [" + did.toString() + "]."));
 
-        final byte[] debased = base.decode(did.getMethodSpecificId());
+        final byte[] debased = base.decode(encoded);
 
-        return new DidKey(did.getVersion(), did.getMethodSpecificId(), base, debased);
+        return new DidKey(version, encoded, base, debased);
     }
 
     public static final DidKey create(Multibase base, byte[] key) {
@@ -93,6 +107,10 @@ public class DidKey extends Did {
     }
 
     public byte[] getKey() {
-        return encodedKey;
+        return debased;
+    }
+
+    public String getVersion() {
+        return version;
     }
 }
