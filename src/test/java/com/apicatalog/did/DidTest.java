@@ -66,7 +66,7 @@ class DidTest {
     }
 
     @DisplayName("isNotDid(String)")
-    @ParameterizedTest(name = "{0}")
+    @ParameterizedTest()
     @MethodSource({ "negativeVectors" })
     void stringIsNotDid(String uri) {
         assertFalse(Did.isDid(uri));
@@ -111,6 +111,11 @@ class DidTest {
                 "did:example:123#public-key-0",
                 "did:example:123?service=agent&relativeRef=/credentials#degree",
                 "did:example:123?service=files&relativeRef=/resume.pdf",
+                "did:example:123#",
+                "did:example:123?",
+                "did:example:123/",
+                null,
+                ""
         });
     }
 
