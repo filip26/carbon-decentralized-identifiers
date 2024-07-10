@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -24,38 +23,34 @@ class DidTest {
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "validVectors" })
     void fromString(String uri, String method, String specificId) {
-        try {
+        final Did did = Did.from(uri);
 
-            final Did did = Did.from(uri);
-
-            assertNotNull(did);
-            assertFalse(did.isDidUrl());
-            assertEquals(method, did.getMethod());
-            assertEquals(specificId, did.getMethodSpecificId());
-
-        } catch (IllegalArgumentException | NullPointerException e) {
-            e.printStackTrace();
-            fail(e);
-        }
+        assertNotNull(did);
+        assertFalse(did.isDidUrl());
+        assertEquals(method, did.getMethod());
+        assertEquals(specificId, did.getMethodSpecificId());
     }
 
     @DisplayName("from(URI)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "validVectors" })
     void fromUri(String input, String method, String specificId) {
-        try {
+        final Did did = Did.from(URI.create(input));
 
-            final Did did = Did.from(URI.create(input));
+        assertNotNull(did);
+        assertFalse(did.isDidUrl());
+        assertEquals(method, did.getMethod());
+        assertEquals(specificId, did.getMethodSpecificId());
+    }
 
-            assertNotNull(did);
-            assertFalse(did.isDidUrl());
-            assertEquals(method, did.getMethod());
-            assertEquals(specificId, did.getMethodSpecificId());
+    @DisplayName("toUri()")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource({ "validVectors" })
+    void toUri(String input, String method, String specificId) {
+        final Did did = Did.from(URI.create(input));
 
-        } catch (IllegalArgumentException | NullPointerException e) {
-            e.printStackTrace();
-            fail(e);
-        }
+        assertNotNull(did);
+        assertEquals(URI.create(input), did.toUri());
     }
 
     @DisplayName("isDid(String)")
