@@ -1,4 +1,4 @@
-package com.apicatalog.did;
+package com.apicatalog.did.key;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
