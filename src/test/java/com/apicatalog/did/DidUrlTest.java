@@ -144,17 +144,17 @@ class DidUrlTest {
                         null
                 },
                 {
-                        "did:example:123?",
+                        "did:example:1?",
                         "example",
-                        "123",
+                        "1",
                         null,
                         "",
                         null
                 },
                 {
-                        "did:example:123#",
+                        "did:example:a#",
                         "example",
-                        "123",
+                        "a",
                         null,
                         null,
                         ""

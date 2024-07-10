@@ -88,7 +88,7 @@ public class Did implements Serializable {
         }
 
         final String[] parts = uri.getSchemeSpecificPart().split(":", 2);
-        
+
         if (parts.length != 2) {
             throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must be in form 'did:method:method-specific-id'.");
         }

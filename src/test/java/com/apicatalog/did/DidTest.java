@@ -27,7 +27,7 @@ class DidTest {
         try {
 
             final Did did = Did.from(uri);
-            
+
             assertNotNull(did);
             assertFalse(did.isDidUrl());
             assertEquals(method, did.getMethod());
@@ -103,7 +103,7 @@ class DidTest {
                 },
         });
     }
-    
+
     static Stream<String> negativeVectors() {
         return Arrays.stream(new String[] {
                 "did:example:123456/path",

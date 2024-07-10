@@ -34,46 +34,65 @@ public class DidUrl extends Did {
         if (!Did.SCHEME.equalsIgnoreCase(uri.getScheme())) {
             throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID URL, must start with 'did:' prefix.");
         }
-        
+
         final String[] didParts = uri.getSchemeSpecificPart().split(":", 2);
-        
+
         if (didParts.length != 2) {
             throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must be in form 'did:method:method-specific-id'.");
         }
-
-        String specificId = didParts[1];
         
+        return from(uri, didParts[0], didParts[1], uri.getFragment());
+    }
+    
+    protected static DidUrl from(Object uri, final String method, final String rest, final String fragment) {
+        String specificId = rest;
+
         String path = null;
         String query = null;
-        
+
         int urlPartIndex = specificId.indexOf('?');
         if (urlPartIndex != -1) {
             query = specificId.substring(urlPartIndex + 1);
             specificId = specificId.substring(0, urlPartIndex);
         }
-        
-        
+
         urlPartIndex = specificId.indexOf('/');
         if (urlPartIndex != -1) {
             path = specificId.substring(urlPartIndex);
             specificId = specificId.substring(0, urlPartIndex);
         }
-        
-        Did did = from(uri, didParts[0], specificId);
-        
-        return new DidUrl(did, path, query, uri.getFragment());
+
+        Did did = from(uri, method, specificId);
+
+        return new DidUrl(did, path, query, fragment);
     }
 
     public static DidUrl from(final String uri) {
 
-//        if (!isDidUrl(uri)) {
-//            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID URL, does not start with 'did:'.");
-//        }
-//        
-//        Did did = Did.from(uri);
-//
-//        return new DidUrl(did, uri.getPath(), uri.getQuery(), uri.getFragment());
-        return null;
+        if (uri == null || uri.length() == 0) {
+            throw new IllegalArgumentException("The DID must not be null or blank string.");
+        }
+
+        final String[] parts = uri.split(":", 3);
+
+        if (parts.length != 3) {
+            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must be in form 'did:method:method-specific-id'.");
+        }
+
+        if (!Did.SCHEME.equalsIgnoreCase(parts[0])) {
+            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must start with 'did:' prefix.");
+        }
+
+        String rest = parts[2];
+        String fragment = null;
+        
+        int fragmentIndex = rest.indexOf('#');
+        if (fragmentIndex != -1) {
+            fragment = rest.substring(fragmentIndex + 1);
+            rest = rest.substring(0, fragmentIndex);
+        }
+
+        return from(uri, parts[1], rest, fragment);
     }
 
     public static boolean isDidUrl(final URI uri) {
