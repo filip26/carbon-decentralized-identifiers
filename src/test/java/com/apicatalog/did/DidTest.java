@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.net.URI;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -23,7 +25,7 @@ class DidTest {
 
     @DisplayName("Create DID from string")
     @ParameterizedTest(name = "{0}")
-    @MethodSource({ "testVectors" })
+    @MethodSource({ "stringValidVectors" })
     void fromString(String input) {
         try {
 
@@ -40,15 +42,36 @@ class DidTest {
         }
     }
 
-    static Stream<String> testVectors() {
-        return Arrays.stream(testCases);
+    @DisplayName("Create DID from URI")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource({ "uriValidVectors" })
+    void fromUri(URI input) {
+        try {
+
+            final Did did = Did.from(input);
+
+            assertNotNull(did);
+//            assertNotNull(didKey.getKey());
+//            assertEquals(testCase.version, didKey.getVersion());
+//            assertEquals(testCase.keyLength, didKey.getKey().length);
+
+        } catch (IllegalArgumentException | NullPointerException e) {
+            e.printStackTrace();
+            fail(e);
+        }
     }
 
-    static final String testCases[] = new String[] {
-            "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
-            "did:example:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2",
-            "did:key:1.1:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2",
-            "did:web:method:specific:identifier",
-    };
+    static Stream<String> stringValidVectors() {
+        return Arrays.stream(new String[] {
+                "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
+                "did:example:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2",
+                "did:key:1.1:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2",
+                "did:web:method:specific:identifier",
+        });
+    }
+
+    static Stream<URI> uriValidVectors() {
+        return stringValidVectors().map(URI::create);
+    }
 
 }
