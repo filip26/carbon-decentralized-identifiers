@@ -1,6 +1,7 @@
 package com.apicatalog.did;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -19,7 +20,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 @TestMethodOrder(OrderAnnotation.class)
 class DidTest {
 
-    @DisplayName("Create DID from string")
+    @DisplayName("DID.from(String)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "validVectors" })
     void fromString(String uri, String method, String specificId) {
@@ -37,7 +38,7 @@ class DidTest {
         }
     }
 
-    @DisplayName("Create DID from URI")
+    @DisplayName("DID.from(URI)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "validVectors" })
     void fromUri(String input, String method, String specificId) {
@@ -60,6 +61,13 @@ class DidTest {
     @MethodSource({ "validVectors" })
     void stringIsDid(String uri) {
         assertTrue(Did.isDid(uri));
+    }
+
+    @DisplayName("isNotDid(String)")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource({ "negativeVectors" })
+    void stringIsNotDid(String uri) {
+        assertFalse(Did.isDid(uri));
     }
 
     @DisplayName("isDid(URI)")
@@ -93,4 +101,15 @@ class DidTest {
                 },
         });
     }
+    
+    static Stream<String> negativeVectors() {
+        return Arrays.stream(new String[] {
+                "did:example:123456/path",
+                "did:example:123456?versionId=1",
+                "did:example:123#public-key-0",
+                "did:example:123?service=agent&relativeRef=/credentials#degree",
+                "did:example:123?service=files&relativeRef=/resume.pdf",
+        });
+    }
+
 }

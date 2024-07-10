@@ -31,7 +31,7 @@ public class DidUrl extends Did {
             throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID URL, does not start with 'did:'.");
         }
         
-        Did did = from(uri, uri.getSchemeSpecificPart().split(":", 2));
+        Did did = Did.from(uri);
 
         return new DidUrl(did, uri.getPath(), uri.getQuery(), uri.getFragment());
     }
