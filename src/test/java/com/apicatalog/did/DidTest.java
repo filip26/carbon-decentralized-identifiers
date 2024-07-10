@@ -2,6 +2,7 @@ package com.apicatalog.did;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.net.URI;
@@ -59,6 +60,20 @@ class DidTest {
             e.printStackTrace();
             fail(e);
         }
+    }
+
+    @DisplayName("isDid(String)")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource({ "stringValidVectors" })
+    void isDid(String input) {
+        assertTrue(Did.isDid(input));
+    }
+
+    @DisplayName("isDid(URI)")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource({ "uriValidVectors" })
+    void isDid(URI input) {
+        assertTrue(Did.isDid(input));
     }
 
     static Stream<String> stringValidVectors() {
