@@ -96,6 +96,21 @@ class DidTest {
                         "web",
                         "method:specific:identifier"
                 },
+                {
+                        "did:tdw:example.com:dids:12345",
+                        "tdw",
+                        "example.com:dids:12345"
+                },
+                {
+                        "did:tdw:12345.example.com",
+                        "tdw",
+                        "12345.example.com",
+                },
+                {
+                        "did:tdw:example.com_12345",
+                        "tdw",
+                        "example.com_12345"
+                }
         });
     }
 
