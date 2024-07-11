@@ -117,7 +117,12 @@ public class DidUrl extends Did {
     @Override
     public URI toUri() {
         try {
-            return new URI(SCHEME, method + ":" + specificId, path, query, fragment);
+            return new URI(SCHEME,
+                    appendPathQuery(new StringBuilder()
+                            .append(method)
+                            .append(':')
+                            .append(specificId)).toString(),
+                    fragment);
         } catch (URISyntaxException e) {
             throw new IllegalStateException(e);
         }
@@ -137,6 +142,21 @@ public class DidUrl extends Did {
     public String toString() {
         final StringBuilder builder = new StringBuilder(super.toString());
 
+        appendPathQuery(builder);
+
+        if (fragment != null) {
+            if (fragment.length() == 0 || fragment.charAt(0) != '#') {
+                builder.append('#');
+            }
+            if (fragment.length() > 0) {
+                builder.append(fragment);
+            }
+        }
+
+        return builder.toString();
+    }
+
+    protected StringBuilder appendPathQuery(final StringBuilder builder) {
         if (path != null) {
             if (path.length() == 0 || path.charAt(0) != '/') {
                 builder.append('/');
@@ -151,20 +171,10 @@ public class DidUrl extends Did {
                 builder.append('?');
             }
             if (query.length() > 0) {
-                builder.append(query);                
+                builder.append(query);
             }
         }
-
-        if (fragment != null) {
-            if (fragment.length() == 0 || fragment.charAt(0) != '#') {
-                builder.append('#');
-            }
-            if (fragment.length() > 0) {
-                builder.append(fragment);
-            }
-        }
-
-        return builder.toString();
+        return builder;
     }
 
     @Override
