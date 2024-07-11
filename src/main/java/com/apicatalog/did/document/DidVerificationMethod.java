@@ -27,6 +27,11 @@ public class DidVerificationMethod {
         return controller;
     }
         
+    /**
+     * A public key encoded with multicodec
+     * 
+     * @return a multicodec encoded public key
+     */
     public byte[] publicKey() {
         return publicKey;
     }
