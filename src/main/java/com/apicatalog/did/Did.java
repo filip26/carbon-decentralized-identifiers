@@ -8,15 +8,20 @@ import java.util.function.IntPredicate;
 
 public class Did implements Serializable {
 
-    private static final long serialVersionUID = -3127318269811273712L;
+    private static final long serialVersionUID = 8800667526627004412L;
 
     /*
      * method-char = %x61-7A / DIGIT
      */
     static final IntPredicate METHOD_CHAR = ch -> (0x61 <= ch && ch <= 0x7A) || ('0' <= ch && ch <= '9');
 
+    /*
+     * idchar = ALPHA / DIGIT / "." / "-" / "_" / pct-encoded
+     */
+    static final IntPredicate ID_CHAR = ch -> Character.isLetter(ch) || Character.isDigit(ch) || ch == '.' || ch == '-' || ch == '_';
+
     public static final String SCHEME = "did";
-    
+
     protected final String method;
     protected final String specificId;
 
@@ -43,7 +48,9 @@ public class Did implements Serializable {
                 && parts[0].length() > 0
                 && parts[1].length() > 0
                 && parts[0].codePoints().allMatch(METHOD_CHAR)
-                ;
+                // FIXME does not validate pct-encoded correctly
+                && parts[1].codePoints().allMatch(ID_CHAR.or(ch -> ch == ':' || ch == '%'));
+
     }
 
     public static boolean isDid(final String uri) {
@@ -59,7 +66,8 @@ public class Did implements Serializable {
                 && parts[1].length() > 0
                 && parts[2].length() > 0
                 && parts[1].codePoints().allMatch(METHOD_CHAR)
-                ;
+                // FIXME does not validate pct-encoded correctly
+                && parts[2].codePoints().allMatch(ID_CHAR.or(ch -> ch == ':' || ch == '%'));
     }
 
     /**
@@ -81,8 +89,18 @@ public class Did implements Serializable {
         if (!Did.SCHEME.equalsIgnoreCase(uri.getScheme())) {
             throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must start with 'did:' prefix.");
         }
+        
+        if (uri.getFragment() != null) {
+            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must be in form 'did:method:method-specific-id'.");
+        }
 
-        return from(uri, uri.getSchemeSpecificPart().split(":", 2));
+        final String[] parts = uri.getSchemeSpecificPart().split(":", 2);
+
+        if (parts.length != 2) {
+            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must be in form 'did:method:method-specific-id'.");
+        }
+
+        return from(uri, parts[0], parts[1]);
     }
 
     /**
@@ -110,26 +128,26 @@ public class Did implements Serializable {
             throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must start with 'did:' prefix.");
         }
 
-        return from(uri, new String[] { parts[1], parts[2] });
+        return from(uri, parts[1], parts[2]);
     }
 
-    protected static Did from(final Object uri, final String[] parts) {
-        if (parts.length != 2) {
-            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must be in form 'did:method:method-specific-id'.");
-        }
-
+    protected static Did from(final Object uri, final String method, final String specificId) {
         // check method
-        if (parts[0].length() == 0
-                || !parts[0].codePoints().allMatch(METHOD_CHAR)) {
-            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, method [" + parts[0] + "] syntax is blank or invalid.");
-        }
-        
-        // check method specific id
-        if (parts[1].length() == 0) {
-            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, method specific id [" + parts[1] + "] is blank.");
+        if (method == null
+                || method.length() == 0
+                || !method.codePoints().allMatch(METHOD_CHAR)) {
+            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, method [" + method + "] syntax is blank or invalid.");
         }
 
-        return new Did(parts[0], parts[1]);
+        // check method specific id
+        if (specificId == null
+                || specificId.length() == 0
+                // FIXME does not validate pct-encoded correctly
+                || !specificId.codePoints().allMatch(ID_CHAR.or(ch -> ch == ':' || ch == '%'))) {
+            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, method specific id [" + specificId + "] is blank.");
+        }
+
+        return new Did(method, specificId);
     }
 
     public String getMethod() {

@@ -1,6 +1,7 @@
 package com.apicatalog.did;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -19,40 +20,70 @@ import org.junit.jupiter.params.provider.MethodSource;
 @TestMethodOrder(OrderAnnotation.class)
 class DidTest {
 
-    @DisplayName("Create DID from string")
+    @DisplayName("from(String)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "validVectors" })
     void fromString(String uri, String method, String specificId) {
-        try {
+        final Did did = Did.from(uri);
 
-            final Did did = Did.from(uri);
-            
-            assertNotNull(did);
-            assertEquals(method, did.getMethod());
-            assertEquals(specificId, did.getMethodSpecificId());
-
-        } catch (IllegalArgumentException | NullPointerException e) {
-            e.printStackTrace();
-            fail(e);
-        }
+        assertNotNull(did);
+        assertFalse(did.isDidUrl());
+        assertEquals(method, did.getMethod());
+        assertEquals(specificId, did.getMethodSpecificId());
     }
 
-    @DisplayName("Create DID from URI")
+    @DisplayName("!from(String)")
+    @ParameterizedTest()
+    @MethodSource({ "negativeVectors" })
+    void fromStringNegative(String uri) {
+        try {
+            Did.from(uri);
+            fail();
+        } catch (IllegalArgumentException e) {
+            /* expected */ }
+    }
+
+    @DisplayName("from(URI)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "validVectors" })
     void fromUri(String input, String method, String specificId) {
+        final Did did = Did.from(URI.create(input));
+
+        assertNotNull(did);
+        assertFalse(did.isDidUrl());
+        assertEquals(method, did.getMethod());
+        assertEquals(specificId, did.getMethodSpecificId());
+    }
+
+    @DisplayName("toString()")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource({ "validVectors" })
+    void toString(String input, String method, String specificId) {
+        final Did did = Did.from(input);
+
+        assertNotNull(did);
+        assertEquals(input, did.toString());
+    }
+    
+    @DisplayName("!from(URI)")
+    @ParameterizedTest()
+    @MethodSource({ "negativeVectors" })
+    void fromUriNegative(String uri) {
         try {
-
-            final Did did = Did.from(URI.create(input));
-
-            assertNotNull(did);
-            assertEquals(method, did.getMethod());
-            assertEquals(specificId, did.getMethodSpecificId());
-
+            Did.from(URI.create(uri));
+            fail();
         } catch (IllegalArgumentException | NullPointerException e) {
-            e.printStackTrace();
-            fail(e);
-        }
+            /* expected */ }
+    }
+
+    @DisplayName("toUri()")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource({ "validVectors" })
+    void toUri(String input, String method, String specificId) {
+        final Did did = Did.from(URI.create(input));
+
+        assertNotNull(did);
+        assertEquals(URI.create(input), did.toUri());
     }
 
     @DisplayName("isDid(String)")
@@ -60,6 +91,13 @@ class DidTest {
     @MethodSource({ "validVectors" })
     void stringIsDid(String uri) {
         assertTrue(Did.isDid(uri));
+    }
+
+    @DisplayName("isNotDid(String)")
+    @ParameterizedTest()
+    @MethodSource({ "negativeVectors" })
+    void stringIsNotDid(String uri) {
+        assertFalse(Did.isDid(uri));
     }
 
     @DisplayName("isDid(URI)")
@@ -91,6 +129,51 @@ class DidTest {
                         "web",
                         "method:specific:identifier"
                 },
+                {
+                        "did:tdw:example.com:dids:12345",
+                        "tdw",
+                        "example.com:dids:12345"
+                },
+                {
+                        "did:tdw:12345.example.com",
+                        "tdw",
+                        "12345.example.com",
+                },
+                {
+                        "did:tdw:example.com_12345",
+                        "tdw",
+                        "example.com_12345"
+                }
         });
     }
+
+    static Stream<String> negativeVectors() {
+        return Arrays.stream(new String[] {
+                "did:example:123456/path",
+                "did:example:123456?versionId=1",
+                "did:example:123#public-key-0",
+                "did:example:123?service=agent&relativeRef=/credentials#degree",
+                "did:example:123?service=files&relativeRef=/resume.pdf",
+                "did:example:123#",
+                "did:example:123?",
+                "did:example:123/",
+                null,
+                "",
+                "https://example.com",
+                "irc:example:channel",
+                "did:example.com:channel",
+                "did:example: ",
+                "did:example:",
+                "did:example",
+                "did:",
+                "did",
+                ":example:channel",
+                " :example:channel",
+                "did::channel",
+                "did: :channel",
+                " did:method:id",
+                "did:method:id ",
+        });
+    }
+
 }
