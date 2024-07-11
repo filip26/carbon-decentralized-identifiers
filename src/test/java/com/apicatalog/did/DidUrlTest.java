@@ -71,7 +71,7 @@ class DidUrlTest {
     void uriIsDid(String uri) {
         assertTrue(DidUrl.isDidUrl(URI.create(uri)));
     }
-    
+
     @DisplayName("toString()")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "validVectors" })
@@ -162,6 +162,22 @@ class DidUrlTest {
                         "a",
                         null,
                         null,
+                        ""
+                },
+                {
+                        "did:example:a/",
+                        "example",
+                        "a",
+                        "/",
+                        null,
+                        null
+                },
+                {
+                        "did:example:a/?#",
+                        "example",
+                        "a",
+                        "/",
+                        "",
                         ""
                 }
 

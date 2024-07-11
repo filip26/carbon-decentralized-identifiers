@@ -137,25 +137,31 @@ public class DidUrl extends Did {
     public String toString() {
         final StringBuilder builder = new StringBuilder(super.toString());
 
-        if (Did.isNotBlank(path)) {
-            if (path.charAt(0) != '/') {
+        if (path != null) {
+            if (path.length() == 0 || path.charAt(0) != '/') {
                 builder.append('/');
             }
-            builder.append(path);
+            if (path.length() > 0) {
+                builder.append(path);
+            }
         }
 
-        if (Did.isNotBlank(query)) {
-            if (query.charAt(0) != '?') {
+        if (query != null) {
+            if (query.length() == 0 || query.charAt(0) != '?') {
                 builder.append('?');
             }
-            builder.append(query);
+            if (query.length() > 0) {
+                builder.append(query);                
+            }
         }
 
-        if (Did.isNotBlank(fragment)) {
-            if (fragment.charAt(0) != '#') {
+        if (fragment != null) {
+            if (fragment.length() == 0 || fragment.charAt(0) != '#') {
                 builder.append('#');
             }
-            builder.append(fragment);
+            if (fragment.length() > 0) {
+                builder.append(fragment);
+            }
         }
 
         return builder.toString();
