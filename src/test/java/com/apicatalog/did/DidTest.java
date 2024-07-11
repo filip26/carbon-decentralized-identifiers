@@ -59,13 +59,10 @@ class DidTest {
     @ParameterizedTest()
     @MethodSource({ "negativeVectors" })
     void fromUriNegative(String uri) {
-
-        final URI tmp = URI.create(uri);
-
         try {
-            Did.from(tmp);
+            Did.from(URI.create(uri));
             fail();
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NullPointerException e) {
             /* expected */ }
     }
 

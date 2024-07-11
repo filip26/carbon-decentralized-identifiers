@@ -86,6 +86,10 @@ public class Did implements Serializable {
         if (!Did.SCHEME.equalsIgnoreCase(uri.getScheme())) {
             throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must start with 'did:' prefix.");
         }
+        
+        if (uri.getFragment() != null) {
+            throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must be in form 'did:method:method-specific-id'.");
+        }
 
         final String[] parts = uri.getSchemeSpecificPart().split(":", 2);
 
