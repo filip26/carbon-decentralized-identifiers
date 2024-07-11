@@ -1,9 +1,7 @@
 package com.apicatalog.did;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Objects;
 
 public class DidUrl extends Did {
@@ -121,14 +119,6 @@ public class DidUrl extends Did {
         try {
             return new URI(SCHEME, method + ":" + specificId, path, query, fragment);
         } catch (URISyntaxException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    public URL toUrl() {
-        try {
-            return toUri().toURL();
-        } catch (MalformedURLException e) {
             throw new IllegalStateException(e);
         }
     }
