@@ -71,6 +71,16 @@ class DidUrlTest {
     void uriIsDid(String uri) {
         assertTrue(DidUrl.isDidUrl(URI.create(uri)));
     }
+    
+    @DisplayName("toString()")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource({ "validVectors" })
+    void toString(String input) {
+        final DidUrl didUrl = DidUrl.from(input);
+
+        assertNotNull(didUrl);
+        assertEquals(input, didUrl.toString());
+    }
 
     static Stream<String[]> validVectors() {
         return Arrays.stream(new String[][] {

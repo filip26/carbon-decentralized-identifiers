@@ -55,6 +55,16 @@ class DidTest {
         assertEquals(specificId, did.getMethodSpecificId());
     }
 
+    @DisplayName("toString()")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource({ "validVectors" })
+    void toString(String input, String method, String specificId) {
+        final Did did = Did.from(input);
+
+        assertNotNull(did);
+        assertEquals(input, did.toString());
+    }
+    
     @DisplayName("!from(URI)")
     @ParameterizedTest()
     @MethodSource({ "negativeVectors" })
