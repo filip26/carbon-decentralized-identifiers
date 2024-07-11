@@ -84,7 +84,7 @@ Fork and clone the project repository.
 #### Java 11+
 ```bash
 > cd carbon-decentralized-identifiers
-> mvn -f pom_jre.xml clean package
+> mvn clean package
 ```
 
 ## Resources- 
