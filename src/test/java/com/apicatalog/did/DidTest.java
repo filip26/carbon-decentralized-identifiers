@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -31,6 +32,17 @@ class DidTest {
         assertEquals(specificId, did.getMethodSpecificId());
     }
 
+    @DisplayName("!from(String)")
+    @ParameterizedTest()
+    @MethodSource({ "negativeVectors" })
+    void fromStringNegative(String uri) {
+        try {
+            Did.from(uri);
+            fail();
+        } catch (IllegalArgumentException e) {
+            /* expected */ }
+    }
+
     @DisplayName("from(URI)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "validVectors" })
@@ -41,6 +53,20 @@ class DidTest {
         assertFalse(did.isDidUrl());
         assertEquals(method, did.getMethod());
         assertEquals(specificId, did.getMethodSpecificId());
+    }
+
+    @DisplayName("!from(URI)")
+    @ParameterizedTest()
+    @MethodSource({ "negativeVectors" })
+    void fromUriNegative(String uri) {
+
+        final URI tmp = URI.create(uri);
+
+        try {
+            Did.from(tmp);
+            fail();
+        } catch (IllegalArgumentException e) {
+            /* expected */ }
     }
 
     @DisplayName("toUri()")

@@ -134,7 +134,9 @@ public class Did implements Serializable {
 
         // check method specific id
         if (specificId == null
-                || specificId.length() == 0) {
+                || specificId.length() == 0
+                // FIXME does not validate pct-encoded correctly
+                || !specificId.codePoints().allMatch(ID_CHAR.or(ch -> ch == ':' || ch == '%'))) {
             throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, method specific id [" + specificId + "] is blank.");
         }
 
