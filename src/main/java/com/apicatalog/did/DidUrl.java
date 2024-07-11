@@ -94,7 +94,20 @@ public class DidUrl extends Did {
     }
 
     public static boolean isDidUrl(final URI uri) {
-        return Did.SCHEME.equals(uri.getScheme());
+        if (!Did.SCHEME.equalsIgnoreCase(uri.getScheme())
+                || isBlank(uri.getSchemeSpecificPart())
+                || isNotBlank(uri.getAuthority())
+                || isNotBlank(uri.getUserInfo())
+                || isNotBlank(uri.getHost())) {
+            return false;
+        }
+
+        final String[] parts = uri.getSchemeSpecificPart().split(":", 2);
+
+        return parts.length == 2
+                && parts[0].length() > 0
+                && parts[1].length() > 0
+                && parts[0].codePoints().allMatch(METHOD_CHAR);
     }
 
     public static boolean isDidUrl(final String uri) {
@@ -108,10 +121,7 @@ public class DidUrl extends Did {
                 && Did.SCHEME.equalsIgnoreCase(parts[0])
                 && parts[1].length() > 0
                 && parts[2].length() > 0
-                && parts[1].codePoints().allMatch(METHOD_CHAR)
-                // FIXME does not validate pct-encoded correctly
-                && parts[2].codePoints().allMatch(ID_CHAR.or(ch -> ch == ':' || ch == '%'));
-
+                && parts[1].codePoints().allMatch(METHOD_CHAR);
     }
 
     @Override

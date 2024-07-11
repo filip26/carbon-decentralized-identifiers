@@ -47,7 +47,10 @@ public class Did implements Serializable {
         return parts.length == 2
                 && parts[0].length() > 0
                 && parts[1].length() > 0
-                && parts[0].codePoints().allMatch(METHOD_CHAR);
+                && parts[0].codePoints().allMatch(METHOD_CHAR)
+                // FIXME does not validate pct-encoded correctly
+                && parts[1].codePoints().allMatch(ID_CHAR.or(ch -> ch == ':' || ch == '%'));
+
     }
 
     public static boolean isDid(final String uri) {
