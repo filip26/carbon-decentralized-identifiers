@@ -62,7 +62,7 @@
 
 		<!-- test resources -->
 		<junit.version>5.10.3</junit.version>
-		<titanium.version>1.4.0</titanium.version>
+		<titanium.version>1.4.1</titanium.version>
 	</properties>
 	<dependencies>
 		<dependency>
