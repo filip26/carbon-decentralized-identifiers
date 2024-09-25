@@ -1,5 +1,6 @@
-package com.apicatalog.did;
+package com.apicatalog.did.resolver;
 
+import com.apicatalog.did.Did;
 import com.apicatalog.did.document.DidDocument;
 
 /**
@@ -14,6 +15,8 @@ public interface DidResolver {
      *
      * @param did To resolve
      * @return The new {@link DidDocument}
+     * 
+     * @throws IllegalArgumentException if the given DID cannot be resolved
      */
     DidDocument resolve(Did did);
 }

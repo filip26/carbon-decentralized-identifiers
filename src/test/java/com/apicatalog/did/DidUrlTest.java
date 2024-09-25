@@ -5,13 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URI;
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 @DisplayName("DID URL")
@@ -82,105 +82,80 @@ class DidUrlTest {
         assertEquals(input, didUrl.toString());
     }
 
-    static Stream<String[]> validVectors() {
-        return Arrays.stream(new String[][] {
-                {
+    static Stream<Arguments> validVectors() {
+        return Stream.of(
+                Arguments.of(
                         "did:example:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2",
                         "example",
                         "z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2",
                         null,
                         null,
-                        null,
-                },
-                {
-                        "did:key:1.1:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2",
+                        null),
+                Arguments.of("did:key:1.1:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2",
                         "key",
                         "1.1:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2",
                         null,
                         null,
-                        null,
-                },
-                {
-                        "did:web:method:specific:identifier",
+                        null),
+                Arguments.of("did:web:method:specific:identifier",
                         "web",
                         "method:specific:identifier",
                         null,
                         null,
-                        null,
-                },
-                {
-                        "did:example:123456/path",
+                        null),
+                Arguments.of("did:example:123456/path",
                         "example",
                         "123456",
                         "/path",
                         null,
-                        null
-                },
-                {
-                        "did:example:123456?versionId=1",
+                        null),
+                Arguments.of("did:example:123456?versionId=1",
                         "example",
                         "123456",
                         null,
                         "versionId=1",
-                        null
-                },
-                {
-                        "did:example:123#public-key-0",
+                        null),
+                Arguments.of("did:example:123#public-key-0",
                         "example",
                         "123",
                         null,
                         null,
-                        "public-key-0"
-                },
-                {
-                        "did:example:123?service=agent&relativeRef=/credentials#degree",
+                        "public-key-0"),
+                Arguments.of("did:example:123?service=agent&relativeRef=/credentials#degree",
                         "example",
                         "123",
                         null,
                         "service=agent&relativeRef=/credentials",
-                        "degree"
-                },
-                {
-                        "did:example:123?service=files&relativeRef=/resume.pdf",
+                        "degree"),
+                Arguments.of("did:example:123?service=files&relativeRef=/resume.pdf",
                         "example",
                         "123",
                         null,
                         "service=files&relativeRef=/resume.pdf",
-                        null
-                },
-                {
-                        "did:example:1?",
+                        null),
+                Arguments.of("did:example:1?",
                         "example",
                         "1",
                         null,
                         "",
-                        null
-                },
-                {
-                        "did:example:a#",
+                        null),
+                Arguments.of("did:example:a#",
                         "example",
                         "a",
                         null,
                         null,
-                        ""
-                },
-                {
-                        "did:example:a/",
+                        ""),
+                Arguments.of("did:example:a/",
                         "example",
                         "a",
                         "/",
                         null,
-                        null
-                },
-                {
-                        "did:example:a/?#",
+                        null),
+                Arguments.of("did:example:a/?#",
                         "example",
                         "a",
                         "/",
                         "",
-                        ""
-                }
-
-        });
+                        ""));
     }
 }

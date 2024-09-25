@@ -1,10 +1,10 @@
 package com.apicatalog.did.key;
 
 import com.apicatalog.did.Did;
-import com.apicatalog.did.DidResolver;
 import com.apicatalog.did.DidUrl;
 import com.apicatalog.did.document.DidDocument;
 import com.apicatalog.did.document.DidVerificationMethod;
+import com.apicatalog.did.resolver.DidResolver;
 import com.apicatalog.multibase.MultibaseDecoder;
 
 public class DidKeyResolver implements DidResolver {
