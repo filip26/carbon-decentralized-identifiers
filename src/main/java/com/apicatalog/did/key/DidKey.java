@@ -21,7 +21,7 @@ public class DidKey extends Did {
 
     private static final long serialVersionUID = 1343361455801198884L;
 
-    public static final String METHOD_KEY = "key";
+    public static final String METHOD_NAME = "key";
 
     public static final String DEFAULT_VERSION = "1";
 
@@ -32,7 +32,7 @@ public class DidKey extends Did {
     protected final byte[] debased;
 
     protected DidKey(String version, String specificId, Multibase base, byte[] debased) {
-        super(METHOD_KEY, specificId);
+        super(METHOD_NAME, specificId);
         this.base = base;
         this.version = version;
         this.debased = debased;
@@ -54,7 +54,7 @@ public class DidKey extends Did {
 
         final Did did = Did.from(uri);
 
-        if (!METHOD_KEY.equalsIgnoreCase(did.getMethod())) {
+        if (!METHOD_NAME.equalsIgnoreCase(did.getMethod())) {
             throw new IllegalArgumentException("The given URI [" + uri + "] is not valid DID key, does not start with 'did:key'.");
         }
 
@@ -63,7 +63,7 @@ public class DidKey extends Did {
 
     public static final DidKey from(final Did did, final MultibaseDecoder bases) {
 
-        if (!METHOD_KEY.equalsIgnoreCase(did.getMethod())) {
+        if (!METHOD_NAME.equalsIgnoreCase(did.getMethod())) {
             throw new IllegalArgumentException("The given DID method [" + did.getMethod() + "] is not 'key'. DID [" + did.toString() + "].");
         }
 
@@ -89,17 +89,17 @@ public class DidKey extends Did {
     }
 
     public static boolean isDidKey(final Did did) {
-        return METHOD_KEY.equalsIgnoreCase(did.getMethod());
+        return METHOD_NAME.equalsIgnoreCase(did.getMethod());
     }
 
     public static boolean isDidKey(final URI uri) {
         return Did.isDid(uri)
-                && uri.getSchemeSpecificPart().toLowerCase().startsWith(METHOD_KEY + ":");
+                && uri.getSchemeSpecificPart().toLowerCase().startsWith(METHOD_NAME + ":");
     }
 
     public static boolean isDidKey(final String uri) {
         return Did.isDid(uri)
-                && uri.toLowerCase().startsWith(SCHEME + ":" + METHOD_KEY + ":");
+                && uri.toLowerCase().startsWith(SCHEME + ":" + METHOD_NAME + ":");
     }
 
     public Multibase getBase() {

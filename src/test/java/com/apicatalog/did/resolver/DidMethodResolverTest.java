@@ -13,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.apicatalog.did.Did;
 import com.apicatalog.did.document.DidDocument;
+import com.apicatalog.did.key.DidKey;
 import com.apicatalog.did.key.DidKeyResolver;
 import com.apicatalog.multibase.MultibaseDecoder;
 
@@ -21,13 +22,13 @@ import com.apicatalog.multibase.MultibaseDecoder;
 class DidMethodResolverTest {
 
     static DidResolver RESOLVER = DidMethodResolver.create()
-            .add("key", new DidKeyResolver(MultibaseDecoder.getInstance()))
+            .add(DidKey.METHOD_NAME, new DidKeyResolver(MultibaseDecoder.getInstance()))
             .build();
 
     @DisplayName("resolve(did)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "validVectors" })
-    void fromString(String uri) {
+    void resolve(String uri) {
         final DidDocument doc = RESOLVER.resolve(Did.from(uri));
         assertNotNull(doc);
     }
