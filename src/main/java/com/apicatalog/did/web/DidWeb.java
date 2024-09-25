@@ -1,8 +1,7 @@
 package com.apicatalog.did.web;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.net.URISyntaxException;
 
 import com.apicatalog.did.Did;
 
@@ -23,13 +22,15 @@ public class DidWeb extends Did {
 
     protected final URI url;
     protected final String domain;
-    protected final Collection<String> path;
+    protected final String path;
+    protected final int port;
 
-    protected DidWeb(String specificId, URI url, String domain, Collection<String> path) {
+    protected DidWeb(String specificId, URI url, String domain, String path, int port) {
         super(METHOD_NAME, specificId);
         this.url = url;
         this.domain = domain;
         this.path = path;
+        this.port = port;
     }
 
     /**
@@ -65,18 +66,28 @@ public class DidWeb extends Did {
         final String[] parts = did.getMethodSpecificId().split(":");
 
         String domain = parts[0];
-        Collection<String> path = null;
+        String path = "/.well-known/did.json";
 
         if (parts.length > 1) {
-            path = new ArrayList<>(parts.length - 1);
+            StringBuilder builder = new StringBuilder(did.getMethodSpecificId().length() - domain.length());
             for (int i = 1; i < parts.length; i++) {
-                path.add(parts[i]);
+                builder.append('/').append(parts[i]);
             }
+            path = builder.append("/did.json").toString();
         }
-        
-        URI url = null; //FIXME
 
-        return new DidWeb(did.getMethodSpecificId(), url, domain, path);
+        int port = -1;
+
+        URI url;
+
+        try {
+            url = new URI("https", null, domain, port, path, null, null);
+            
+            return new DidWeb(did.getMethodSpecificId(), url, domain, path, port);
+
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     public static boolean isDidWeb(final Did did) {
@@ -97,10 +108,14 @@ public class DidWeb extends Did {
         return domain;
     }
 
-    public Collection<String> getPath() {
+    public String getPath() {
         return path;
     }
     
+    public int getPort() {
+        return port;
+    }
+
     public URI getUrl() {
         return url;
     }

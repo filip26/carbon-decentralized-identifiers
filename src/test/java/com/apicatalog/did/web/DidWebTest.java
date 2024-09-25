@@ -21,12 +21,11 @@ class DidWebTest {
     @DisplayName("of(URI)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "positiveVectors" })
-    void ofUri(String uri, String url) {
-
+    void ofUri(String uri, String url) {        
         final DidWeb didWeb = DidWeb.of(URI.create(uri));
 
         assertNotNull(didWeb);
-        assertEquals(url, didWeb.getUrl());
+        assertEquals(URI.create(url), didWeb.getUrl());
     }
 
     @DisplayName("! of(URI)")
