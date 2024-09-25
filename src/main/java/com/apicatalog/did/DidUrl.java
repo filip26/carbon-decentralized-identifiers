@@ -88,7 +88,7 @@ public class DidUrl extends Did {
             specificId = specificId.substring(0, urlPartIndex);
         }
 
-        Did did = from(uri, method, specificId);
+        Did did = of(uri, method, specificId);
 
         return new DidUrl(did, path, query, fragment);
     }

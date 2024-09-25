@@ -48,7 +48,7 @@ public class DidWeb extends Did {
      */
     public static final DidWeb of(final URI uri) {
 
-        final Did did = Did.from(uri);
+        final Did did = Did.of(uri);
 
         if (!METHOD_NAME.equalsIgnoreCase(did.getMethod())) {
             throw new IllegalArgumentException("The given URI [" + uri + "] is not valid DID key, does not start with 'did:key'.");
@@ -76,13 +76,17 @@ public class DidWeb extends Did {
             path = builder.append("/did.json").toString();
         }
 
-        int port = -1;
+        int port = domain.toLowerCase().indexOf("%3a");
 
-        URI url;
+        if (port != -1) {
+            domain = domain.substring(0, port);
+            port = Integer.valueOf(parts[0].substring(port + 3, parts[0].length()));
+
+        }
 
         try {
-            url = new URI("https", null, domain, port, path, null, null);
-            
+            URI url = new URI("https", null, domain, port, path, null, null);
+
             return new DidWeb(did.getMethodSpecificId(), url, domain, path, port);
 
         } catch (URISyntaxException e) {
@@ -111,7 +115,7 @@ public class DidWeb extends Did {
     public String getPath() {
         return path;
     }
-    
+
     public int getPort() {
         return port;
     }

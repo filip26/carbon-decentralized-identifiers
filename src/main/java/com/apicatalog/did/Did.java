@@ -71,6 +71,18 @@ public class Did implements Serializable {
     }
 
     /**
+     * Deprecated, use {@link Did#of(URI)}.
+     * 
+     * @param uri
+     * @return
+     * 
+     */
+    @Deprecated
+    public static Did from(final URI uri) {
+        return of(uri);
+    }
+    
+    /**
      * Creates a new DID instance from the given {@link URI}.
      *
      * @param uri The source URI to be transformed into DID
@@ -80,7 +92,7 @@ public class Did implements Serializable {
      *
      * @throws IllegalArgumentException If the given {@code uri} is not valid DID
      */
-    public static Did from(final URI uri) {
+    public static Did of(final URI uri) {
 
         if (uri == null) {
             throw new IllegalArgumentException("The DID must not be null.");
@@ -94,15 +106,25 @@ public class Did implements Serializable {
             throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must be in form 'did:method:method-specific-id'.");
         }
 
-        final String[] parts = uri.getSchemeSpecificPart().split(":", 2);
+        final String[] parts = uri.getRawSchemeSpecificPart().split(":", 2);
 
         if (parts.length != 2) {
             throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must be in form 'did:method:method-specific-id'.");
         }
 
-        return from(uri, parts[0], parts[1]);
+        return of(uri, parts[0], parts[1]);
     }
 
+    /**
+     * Deprecated, use {@link Did#of(String)}
+     * @param uri
+     * @return
+     */
+    @Deprecated
+    public static Did from(final String uri) {
+        return of(uri);
+    }
+    
     /**
      * Creates a new DID instance from the given URI.
      *
@@ -113,7 +135,7 @@ public class Did implements Serializable {
      *
      * @throws IllegalArgumentException If the given {@code uri} is not valid DID
      */
-    public static Did from(final String uri) {
+    public static Did of(final String uri) {
         if (uri == null || uri.length() == 0) {
             throw new IllegalArgumentException("The DID must not be null or blank string.");
         }
@@ -128,10 +150,10 @@ public class Did implements Serializable {
             throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must start with 'did:' prefix.");
         }
 
-        return from(uri, parts[1], parts[2]);
+        return of(uri, parts[1], parts[2]);
     }
 
-    protected static Did from(final Object uri, final String method, final String specificId) {
+    protected static Did of(final Object uri, final String method, final String specificId) {
         // check method
         if (method == null
                 || method.length() == 0

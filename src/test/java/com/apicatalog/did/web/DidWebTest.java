@@ -21,11 +21,15 @@ class DidWebTest {
     @DisplayName("of(URI)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "positiveVectors" })
-    void ofUri(String uri, String url) {        
+    void ofUri(String uri, URI url) {
+
         final DidWeb didWeb = DidWeb.of(URI.create(uri));
 
         assertNotNull(didWeb);
-        assertEquals(URI.create(url), didWeb.getUrl());
+        assertEquals(url, didWeb.getUrl());
+        assertEquals(url.getHost(), didWeb.getDomain());
+        assertEquals(url.getPort(), didWeb.getPort());
+        assertEquals(url.getPath(), didWeb.getPath());
     }
 
     @DisplayName("! of(URI)")
@@ -34,22 +38,19 @@ class DidWebTest {
     void ofUriFail(String uri) {
         assertThrows(IllegalArgumentException.class, () -> DidWeb.of(URI.create(uri)));
     }
-    
+
     static Stream<Arguments> positiveVectors() {
         return Stream.of(
                 Arguments.of("did:web:w3c-ccg.github.io",
-                        "https://w3c-ccg.github.io/.well-known/did.json"
-                        ),
+                        URI.create("https://w3c-ccg.github.io/.well-known/did.json")),
                 Arguments.of("did:web:w3c-ccg.github.io:user:alice",
-                        "https://w3c-ccg.github.io/user/alice/did.json"
-                        ),
+                        URI.create("https://w3c-ccg.github.io/user/alice/did.json")),
                 Arguments.of("did:web:example.com%3A3000",
-                        "https://example.com:3000"),
+                        URI.create("https://example.com:3000/.well-known/did.json")),
                 Arguments.of("did:web:example.com%3A3000:user:alice",
-                        "https://example.com:3000/user/alice/did.json"),
+                        URI.create("https://example.com:3000/user/alice/did.json")),
                 Arguments.of("did:web:example.com:u:bob",
-                        "https://example.com/u/bob/did.json")
-                );
+                        URI.create("https://example.com/u/bob/did.json")));
     }
 
     static Stream<Arguments> negativeVectors() {
