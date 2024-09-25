@@ -23,7 +23,7 @@ class DidTest {
 
     @DisplayName("from(String)")
     @ParameterizedTest(name = "{0}")
-    @MethodSource({ "validVectors" })
+    @MethodSource({ "positiveVectors" })
     void fromString(String uri, String method, String specificId) {
         final Did did = Did.from(uri);
 
@@ -46,7 +46,7 @@ class DidTest {
 
     @DisplayName("from(URI)")
     @ParameterizedTest(name = "{0}")
-    @MethodSource({ "validVectors" })
+    @MethodSource({ "positiveVectors" })
     void fromUri(String input, String method, String specificId) {
         final Did did = Did.from(URI.create(input));
 
@@ -58,7 +58,7 @@ class DidTest {
 
     @DisplayName("toString()")
     @ParameterizedTest(name = "{0}")
-    @MethodSource({ "validVectors" })
+    @MethodSource({ "positiveVectors" })
     void toString(String input, String method, String specificId) {
         final Did did = Did.from(input);
 
@@ -79,7 +79,7 @@ class DidTest {
 
     @DisplayName("toUri()")
     @ParameterizedTest(name = "{0}")
-    @MethodSource({ "validVectors" })
+    @MethodSource({ "positiveVectors" })
     void toUri(String input, String method, String specificId) {
         final Did did = Did.from(URI.create(input));
 
@@ -89,7 +89,7 @@ class DidTest {
 
     @DisplayName("isDid(String)")
     @ParameterizedTest(name = "{0}")
-    @MethodSource({ "validVectors" })
+    @MethodSource({ "positiveVectors" })
     void stringIsDid(String uri) {
         assertTrue(Did.isDid(uri));
     }
@@ -103,12 +103,12 @@ class DidTest {
 
     @DisplayName("isDid(URI)")
     @ParameterizedTest(name = "{0}")
-    @MethodSource({ "validVectors" })
+    @MethodSource({ "positiveVectors" })
     void uriIsDid(String uri) {
         assertTrue(Did.isDid(URI.create(uri)));
     }
 
-    static Stream<Arguments> validVectors() {
+    static Stream<Arguments> positiveVectors() {
         return Stream.of(
                 Arguments.of(
                         "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",

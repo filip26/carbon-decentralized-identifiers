@@ -50,8 +50,6 @@ public class DidKeyResolver implements DidResolver {
      *
      * @param didKey
      *
-     * @see <a href="https://pr-preview.s3.amazonaws.com/w3c-ccg/did-method-key/pull/51.html#signature-method-creation-algorithm">Signature Method Algorithm</a>
-     *
      * @return The new verification key
      */
     public static DidVerificationMethod createSignatureMethod(DidKey didKey) {

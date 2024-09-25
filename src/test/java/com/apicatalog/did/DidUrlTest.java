@@ -20,7 +20,7 @@ class DidUrlTest {
 
     @DisplayName("from(String)")
     @ParameterizedTest(name = "{0}")
-    @MethodSource({ "validVectors" })
+    @MethodSource({ "positiveVectors" })
     void fromString(String uri, String method, String specificId, String path, String query, String fragment) {
         final DidUrl didUrl = DidUrl.from(uri);
 
@@ -35,7 +35,7 @@ class DidUrlTest {
 
     @DisplayName("from(URI)")
     @ParameterizedTest(name = "{0}")
-    @MethodSource({ "validVectors" })
+    @MethodSource({ "positiveVectors" })
     void fromUri(String input, String method, String specificId, String path, String query, String fragment) {
         final DidUrl didUrl = DidUrl.from(URI.create(input));
 
@@ -50,7 +50,7 @@ class DidUrlTest {
 
     @DisplayName("toUri()")
     @ParameterizedTest(name = "{0}")
-    @MethodSource({ "validVectors" })
+    @MethodSource({ "positiveVectors" })
     void toUri(String input, String method, String specificId, String path, String query, String fragment) {
         final DidUrl didUrl = DidUrl.from(URI.create(input));
 
@@ -60,21 +60,21 @@ class DidUrlTest {
 
     @DisplayName("isDidUrl(String)")
     @ParameterizedTest(name = "{0}")
-    @MethodSource({ "validVectors" })
+    @MethodSource({ "positiveVectors" })
     void stringIsDid(String uri) {
         assertTrue(DidUrl.isDidUrl(uri));
     }
 
     @DisplayName("isDidUrl(URI)")
     @ParameterizedTest(name = "{0}")
-    @MethodSource({ "validVectors" })
+    @MethodSource({ "positiveVectors" })
     void uriIsDid(String uri) {
         assertTrue(DidUrl.isDidUrl(URI.create(uri)));
     }
 
     @DisplayName("toString()")
     @ParameterizedTest(name = "{0}")
-    @MethodSource({ "validVectors" })
+    @MethodSource({ "positiveVectors" })
     void toString(String input) {
         final DidUrl didUrl = DidUrl.from(input);
 
@@ -82,7 +82,7 @@ class DidUrlTest {
         assertEquals(input, didUrl.toString());
     }
 
-    static Stream<Arguments> validVectors() {
+    static Stream<Arguments> positiveVectors() {
         return Stream.of(
                 Arguments.of(
                         "did:example:z6MkicdicToW5HbxPP7zZV1H7RHvXgRMhoujWAF2n5WQkdd2",

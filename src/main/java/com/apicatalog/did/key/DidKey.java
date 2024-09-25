@@ -12,9 +12,7 @@ import com.apicatalog.multibase.MultibaseDecoder;
  * did-key-format := did:key:[version]:MULTIBASE(multiencodedKey)
  * </p>
  *
- * @see <a href=
- *      "https://pr-preview.s3.amazonaws.com/w3c-ccg/did-method-key/pull/51.html">DID
- *      method key</a>
+ * @see <a href= "https://w3c-ccg.github.io/did-method-key/">DID Key Method</a>
  *
  */
 public class DidKey extends Did {
@@ -39,16 +37,16 @@ public class DidKey extends Did {
     }
 
     /**
-     * Creates a new DID key instance from the given {@link URI}.
+     * Creates a new DID Key method instance from the given {@link URI}.
      *
-     * @param uri   The source URI to be transformed into DID key
+     * @param uri   The source URI to be transformed into {@link DidKey} instance
      * @param bases
-     * @return The new DID key
+     * @return a new instance
      *
      * @throws NullPointerException     If {@code uri} is {@code null}
      *
      * @throws IllegalArgumentException If the given {@code uri} is not valid DID
-     *                                  key
+     *                                  Key method
      */
     public static final DidKey from(final URI uri, final MultibaseDecoder bases) {
 
@@ -68,15 +66,15 @@ public class DidKey extends Did {
         }
 
         final String[] parts = did.getMethodSpecificId().split(":", 2);
-        
+
         String version = DEFAULT_VERSION;
         String encoded = parts[0];
-        
+
         if (parts.length == 2) {
             version = parts[0];
             encoded = parts[1];
         }
-        
+
         final Multibase base = bases.getBase(encoded).orElseThrow(() -> new IllegalArgumentException("Unsupported did:key base encoding. DID [" + did.toString() + "]."));
 
         final byte[] debased = base.decode(encoded);

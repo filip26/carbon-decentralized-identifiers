@@ -27,13 +27,13 @@ class DidMethodResolverTest {
 
     @DisplayName("resolve(did)")
     @ParameterizedTest(name = "{0}")
-    @MethodSource({ "validVectors" })
+    @MethodSource({ "positiveVectors" })
     void resolve(String uri) {
         final DidDocument doc = RESOLVER.resolve(Did.from(uri));
         assertNotNull(doc);
     }
 
-    static Stream<Arguments> validVectors() {
+    static Stream<Arguments> positiveVectors() {
         return Stream.of(
                 Arguments.of(
                         "did:key:z6MkpTHR8VNsBxYAAWHut2Geadd9jSwuBV8xRoAnwWsdvktH",
