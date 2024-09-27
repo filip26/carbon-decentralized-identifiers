@@ -18,11 +18,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 @TestMethodOrder(OrderAnnotation.class)
 class DidUrlTest {
 
-    @DisplayName("from(String)")
+    @DisplayName("of(String)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "positiveVectors" })
-    void fromString(String uri, String method, String specificId, String path, String query, String fragment) {
-        final DidUrl didUrl = DidUrl.from(uri);
+    void ofString(String uri, String method, String specificId, String path, String query, String fragment) {
+        final DidUrl didUrl = DidUrl.of(uri);
 
         assertNotNull(didUrl);
         assertTrue(didUrl.isDidUrl());
@@ -33,11 +33,11 @@ class DidUrlTest {
         assertEquals(fragment, didUrl.getFragment());
     }
 
-    @DisplayName("from(URI)")
+    @DisplayName("of(URI)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "positiveVectors" })
-    void fromUri(String input, String method, String specificId, String path, String query, String fragment) {
-        final DidUrl didUrl = DidUrl.from(URI.create(input));
+    void ofUri(String input, String method, String specificId, String path, String query, String fragment) {
+        final DidUrl didUrl = DidUrl.of(URI.create(input));
 
         assertNotNull(didUrl);
         assertTrue(didUrl.isDidUrl());
@@ -52,7 +52,7 @@ class DidUrlTest {
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "positiveVectors" })
     void toUri(String input, String method, String specificId, String path, String query, String fragment) {
-        final DidUrl didUrl = DidUrl.from(URI.create(input));
+        final DidUrl didUrl = DidUrl.of(URI.create(input));
 
         assertNotNull(didUrl);
         assertEquals(URI.create(input), didUrl.toUri());
@@ -76,7 +76,7 @@ class DidUrlTest {
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "positiveVectors" })
     void toString(String input) {
-        final DidUrl didUrl = DidUrl.from(input);
+        final DidUrl didUrl = DidUrl.of(input);
 
         assertNotNull(didUrl);
         assertEquals(input, didUrl.toString());

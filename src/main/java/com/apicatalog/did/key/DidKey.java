@@ -37,6 +37,17 @@ public class DidKey extends Did {
     }
 
     /**
+     * @deprecated use {@link DidKey#of(URI, MultibaseDecoder)}
+     * @param uri
+     * @param bases
+     * @return
+     */
+    @Deprecated
+    public static final DidKey from(final URI uri, final MultibaseDecoder bases) {
+        return of(uri, bases);
+    }
+    
+    /**
      * Creates a new DID Key method instance from the given {@link URI}.
      *
      * @param uri   The source URI to be transformed into {@link DidKey} instance
@@ -48,18 +59,30 @@ public class DidKey extends Did {
      * @throws IllegalArgumentException If the given {@code uri} is not valid DID
      *                                  Key method
      */
-    public static final DidKey from(final URI uri, final MultibaseDecoder bases) {
+    public static final DidKey of(final URI uri, final MultibaseDecoder bases) {
 
-        final Did did = Did.from(uri);
+        final Did did = Did.of(uri);
 
         if (!METHOD_NAME.equalsIgnoreCase(did.getMethod())) {
             throw new IllegalArgumentException("The given URI [" + uri + "] is not valid DID key, does not start with 'did:key'.");
         }
 
-        return from(did, bases);
+        return of(did, bases);
     }
 
+    /**
+     * @deprecated use {@link DidKey#of(Did, MultibaseDecoder)}
+     * @param did
+     * @param bases
+     * @return
+     */
+    @Deprecated
     public static final DidKey from(final Did did, final MultibaseDecoder bases) {
+        return of(did, bases);
+    }
+    
+    
+    public static final DidKey of(final Did did, final MultibaseDecoder bases) {
 
         if (!METHOD_NAME.equalsIgnoreCase(did.getMethod())) {
             throw new IllegalArgumentException("The given DID method [" + did.getMethod() + "] is not 'key'. DID [" + did.toString() + "].");
@@ -82,7 +105,18 @@ public class DidKey extends Did {
         return new DidKey(version, encoded, base, debased);
     }
 
+    /**
+     * @deprecated use {@link DidKey#of(byte[], Multibase)}
+     * @param base
+     * @param key
+     * @return
+     */
+    @Deprecated
     public static final DidKey create(Multibase base, byte[] key) {
+        return of(key, base);
+    }
+    
+    public static final DidKey of(byte[] key, Multibase base) {
         return new DidKey(null, base.encode(key), base, key);
     }
 

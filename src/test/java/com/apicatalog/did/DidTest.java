@@ -3,7 +3,6 @@ package com.apicatalog.did;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -21,11 +20,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 @TestMethodOrder(OrderAnnotation.class)
 class DidTest {
 
-    @DisplayName("from(String)")
+    @DisplayName("of(String)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "positiveVectors" })
-    void fromString(String uri, String method, String specificId) {
-        final Did did = Did.from(uri);
+    void ofString(String uri, String method, String specificId) {
+        final Did did = Did.of(uri);
 
         assertNotNull(did);
         assertFalse(did.isDidUrl());
@@ -33,22 +32,22 @@ class DidTest {
         assertEquals(specificId, did.getMethodSpecificId());
     }
 
-    @DisplayName("!from(String)")
+    @DisplayName("!of(String)")
     @ParameterizedTest()
     @MethodSource({ "negativeVectors" })
-    void fromStringNegative(String uri) {
+    void ofStringNegative(String uri) {
         try {
-            Did.from(uri);
+            Did.of(uri);
             fail();
         } catch (IllegalArgumentException e) {
             /* expected */ }
     }
 
-    @DisplayName("from(URI)")
+    @DisplayName("of(URI)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "positiveVectors" })
-    void fromUri(String input, String method, String specificId) {
-        final Did did = Did.from(URI.create(input));
+    void ofUri(String input, String method, String specificId) {
+        final Did did = Did.of(URI.create(input));
 
         assertNotNull(did);
         assertFalse(did.isDidUrl());
@@ -60,18 +59,18 @@ class DidTest {
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "positiveVectors" })
     void toString(String input, String method, String specificId) {
-        final Did did = Did.from(input);
+        final Did did = Did.of(input);
 
         assertNotNull(did);
         assertEquals(input, did.toString());
     }
 
-    @DisplayName("!from(URI)")
+    @DisplayName("!of(URI)")
     @ParameterizedTest()
     @MethodSource({ "negativeVectors" })
-    void fromUriNegative(String uri) {
+    void ofUriNegative(String uri) {
         try {
-            Did.from(URI.create(uri));
+            Did.of(URI.create(uri));
             fail();
         } catch (IllegalArgumentException | NullPointerException e) {
             /* expected */ }
@@ -81,7 +80,7 @@ class DidTest {
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "positiveVectors" })
     void toUri(String input, String method, String specificId) {
-        final Did did = Did.from(URI.create(input));
+        final Did did = Did.of(URI.create(input));
 
         assertNotNull(did);
         assertEquals(URI.create(input), did.toUri());

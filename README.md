@@ -73,7 +73,6 @@ Fork and clone the project repository.
 
 - [Decentralized Identifiers (DIDs) v1.0](https://www.w3.org/TR/did-core/)
 - [The did:key Method v0.7](https://w3c-ccg.github.io/did-method-key/)
-- [Decentralized Identifier Resolution v0.3](https://w3c.github.io/did-resolution/)
 - [Controller Documents 1.0](https://www.w3.org/TR/controller-document/)
 - [Copper Multicodec](https://github.com/filip26/copper-multicodec)
 - [Copper Multibase](https://github.com/filip26/copper-multibase)

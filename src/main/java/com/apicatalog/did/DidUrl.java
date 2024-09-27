@@ -19,15 +19,36 @@ public class DidUrl extends Did {
         this.fragment = fragment;
     }
 
+    /**
+     * @deprecated use {@link DidUrl#of(Did, String, String, String)}
+     * @param did
+     * @param path
+     * @param query
+     * @param fragment
+     * @return
+     */
+    @Deprecated
     public static DidUrl from(Did did, String path, String query, String fragment) {
+        return of(did, path, query, fragment);
+    }
+    
+    public static DidUrl of(Did did, String path, String query, String fragment) {
         return new DidUrl(did, path, query, fragment);
     }
 
+    /**
+     * @deprecated use {@link DidUrl#of(URI)}
+     * @param uri
+     * @return
+     */
+    @Deprecated
     public static DidUrl from(final URI uri) {
+        return of(uri);
+    }
+    
+    public static DidUrl of(final URI uri) {
 
-        if (uri == null) {
-            throw new IllegalArgumentException("The DID URL must not be null.");
-        }
+        Objects.requireNonNull(uri);
 
         if (!Did.SCHEME.equalsIgnoreCase(uri.getScheme())) {
             throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID URL, must start with 'did:' prefix.");
@@ -39,12 +60,24 @@ public class DidUrl extends Did {
             throw new IllegalArgumentException("The URI [" + uri + "] is not valid DID, must be in form 'did:method:method-specific-id'.");
         }
 
-        return from(uri, didParts[0], didParts[1], uri.getFragment());
+        return of(uri, didParts[0], didParts[1], uri.getFragment());
     }
 
+    /**
+     * @deprecated use {@link DidUrl#of(String)}
+     * @param uri
+     * @return
+     */
+    @Deprecated
     public static DidUrl from(final String uri) {
+        return of(uri);
+    }
+    
+    public static DidUrl of(final String uri) {
 
-        if (uri == null || uri.length() == 0) {
+        Objects.requireNonNull(uri);
+        
+        if (uri.length() == 0) {
             throw new IllegalArgumentException("The DID must not be null or blank string.");
         }
 
@@ -67,10 +100,10 @@ public class DidUrl extends Did {
             rest = rest.substring(0, fragmentIndex);
         }
 
-        return from(uri, parts[1], rest, fragment);
+        return of(uri, parts[1], rest, fragment);
     }
 
-    protected static DidUrl from(Object uri, final String method, final String rest, final String fragment) {
+    protected static DidUrl of(Object uri, final String method, final String rest, final String fragment) {
         String specificId = rest;
 
         String path = null;

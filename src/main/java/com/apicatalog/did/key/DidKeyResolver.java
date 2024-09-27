@@ -22,7 +22,7 @@ public class DidKeyResolver implements DidResolver {
             throw new IllegalArgumentException();
         }
 
-        final DidKey didKey = DidKey.from(did, bases);
+        final DidKey didKey = DidKey.of(did, bases);
 
         final DidDocumentBuilder builder = DidDocumentBuilder.create();
 
@@ -54,8 +54,8 @@ public class DidKeyResolver implements DidResolver {
      */
     public static DidVerificationMethod createSignatureMethod(DidKey didKey) {
         return new DidVerificationMethod(
-                    DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
-                    DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
+                    DidUrl.of(didKey, null, null, didKey.getMethodSpecificId()),
+                    DidUrl.of(didKey, null, null, didKey.getMethodSpecificId()),
                     didKey.getKey()
                     );
      }
@@ -73,8 +73,8 @@ public class DidKeyResolver implements DidResolver {
 
         // 9.
         return new DidVerificationMethod(
-                    DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
-                    DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
+                    DidUrl.of(didKey, null, null, didKey.getMethodSpecificId()),
+                    DidUrl.of(didKey, null, null, didKey.getMethodSpecificId()),
                     didKey.getKey()
                     );
     }

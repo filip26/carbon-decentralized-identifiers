@@ -25,7 +25,7 @@ class DidKeyTest {
     void fromString(DidKeyTestCase testCase) {
         try {
 
-            final DidKey didKey = DidKey.from(testCase.uri, MultibaseDecoder.getInstance());
+            final DidKey didKey = DidKey.of(testCase.uri, MultibaseDecoder.getInstance());
 
             if (testCase.negative) {
                 fail("Expected failure but got " + didKey);

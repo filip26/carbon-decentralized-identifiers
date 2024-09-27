@@ -29,7 +29,7 @@ class DidMethodResolverTest {
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "positiveVectors" })
     void resolve(String uri) {
-        final DidDocument doc = RESOLVER.resolve(Did.from(uri));
+        final DidDocument doc = RESOLVER.resolve(Did.of(uri));
         assertNotNull(doc);
     }
 
