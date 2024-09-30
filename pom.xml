@@ -61,7 +61,7 @@
 		<copper.multibase.version>1.0.0</copper.multibase.version>
 
 		<!-- test resources -->
-		<junit.version>5.11.0</junit.version>
+		<junit.version>5.11.1</junit.version>
 		<titanium.version>1.4.1</titanium.version>
 	</properties>
 	<dependencies>
