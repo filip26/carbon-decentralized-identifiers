@@ -2,7 +2,7 @@ package com.apicatalog.did.key;
 
 import java.net.URI;
 
-import com.apicatalog.controller.key.MulticodecKey;
+import com.apicatalog.controller.key.MultihashKey;
 import com.apicatalog.did.Did;
 import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multicodec.Multicodec;
@@ -17,7 +17,7 @@ import com.apicatalog.multicodec.MulticodecDecoder;
  * @see <a href= "https://w3c-ccg.github.io/did-method-key/">DID Key Method</a>
  *
  */
-public class DidKey extends Did implements MulticodecKey {
+public class DidKey extends Did implements MultihashKey {
 
     private static final long serialVersionUID = 1343361455801198884L;
 

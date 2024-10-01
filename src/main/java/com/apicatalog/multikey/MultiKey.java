@@ -3,7 +3,7 @@ package com.apicatalog.multikey;
 import java.net.URI;
 import java.time.Instant;
 
-import com.apicatalog.controller.key.Key;
+import com.apicatalog.controller.key.MultihashKey;
 import com.apicatalog.controller.method.KeyPair;
 import com.apicatalog.multicodec.Multicodec;
 
@@ -14,33 +14,32 @@ public class MultiKey implements KeyPair {
     protected final URI id;
     protected final URI controller;
 
-    protected final Key publicKey;
-    protected final Key privateKey;
+    protected final MultihashKey publicKey;
+    protected final MultihashKey privateKey;
 
     protected Instant revoked;
 
     protected MultiKey(
             URI id,
             URI controller,
-            Key publicKey,
-            Key privateKey
-            ) {
+            MultihashKey publicKey,
+            MultihashKey privateKey) {
         this.id = id;
         this.controller = controller;
         this.publicKey = publicKey;
         this.privateKey = privateKey;
     }
-    
-    public static MultiKey of(URI id, URI controller, Key publicKey) {
+
+    public static MultiKey of(URI id, URI controller, MultihashKey publicKey) {
         return of(id, controller, publicKey, null);
     }
 
-    public static MultiKey of(URI id, URI controller, Key publicKey, Key privateKey) {
+    public static MultiKey of(URI id, URI controller, MultihashKey publicKey, MultihashKey privateKey) {
         return new MultiKey(id, controller, publicKey, privateKey);
     }
 
 //    protected LinkedFragment ld;
-    
+
 //    public static MultiKey of(
 //            MulticodecDecoder decoder
 ////            LinkedFragment source
@@ -73,11 +72,6 @@ public class MultiKey implements KeyPair {
 //    }
 
     @Override
-    public Key publicKey() {
-        return publicKey;
-    }
-
-    @Override
     public URI id() {
         return id;
     }
@@ -93,7 +87,12 @@ public class MultiKey implements KeyPair {
     }
 
     @Override
-    public Key privateKey() {
+    public MultihashKey publicKey() {
+        return publicKey;
+    }
+
+    @Override
+    public MultihashKey privateKey() {
         return privateKey;
     }
 
@@ -134,7 +133,7 @@ public class MultiKey implements KeyPair {
         }
         return codec.name().toUpperCase();
     }
-    
+
     public static String typeName() {
         return TYPE_NAME;
     }
@@ -143,5 +142,5 @@ public class MultiKey implements KeyPair {
 //    public LinkedNode ld() {
 //        return ld;
 //    }
-    
+
 }
