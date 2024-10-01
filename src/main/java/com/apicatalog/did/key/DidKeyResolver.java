@@ -1,20 +1,23 @@
 package com.apicatalog.did.key;
 
+import java.net.URI;
+
+import com.apicatalog.controller.method.VerificationMethod;
 import com.apicatalog.did.Did;
 import com.apicatalog.did.DidUrl;
 import com.apicatalog.did.document.DidDocument;
-import com.apicatalog.did.document.DidVerificationMethod;
 import com.apicatalog.did.resolver.DidResolver;
-import com.apicatalog.multibase.MultibaseDecoder;
+import com.apicatalog.multicodec.MulticodecDecoder;
+import com.apicatalog.multikey.MultiKey;
 
 public class DidKeyResolver implements DidResolver {
 
-    protected final MultibaseDecoder bases;
-    
-    public DidKeyResolver(final MultibaseDecoder bases) {
-        this.bases = bases;
+    protected final MulticodecDecoder codecs;
+
+    public DidKeyResolver(MulticodecDecoder codecs) {
+        this.codecs = codecs;
     }
-    
+
     @Override
     public DidDocument resolve(final Did did) {
 
@@ -22,60 +25,21 @@ public class DidKeyResolver implements DidResolver {
             throw new IllegalArgumentException();
         }
 
-        final DidKey didKey = DidKey.of(did, bases);
+        final DidKey didKey = DidKey.of(did, codecs);
 
-        final DidDocumentBuilder builder = DidDocumentBuilder.create();
-
-        // 4.
-        DidVerificationMethod signatureMethod = DidKeyResolver.createSignatureMethod(didKey);
-        builder.add(signatureMethod);
-
-        // 5.
-        builder.add(DidKeyResolver.createEncryptionMethod(didKey));
-
-        // 6.
-        builder.id(did);
-
-        // 7.
-
-        // 8.
-
-        // 9.
-
-        return builder.build();
+        return DidDocumentBuilder.create()
+                .id(did)
+                .add(DidKeyResolver.createMethod(didKey))
+                .build();
     }
 
-    /**
-     * Creates a new verification key by expanding the given DID key.
-     *
-     * @param didKey
-     *
-     * @return The new verification key
-     */
-    public static DidVerificationMethod createSignatureMethod(DidKey didKey) {
-        return new DidVerificationMethod(
-                    DidUrl.of(didKey, null, null, didKey.getMethodSpecificId()),
-                    DidUrl.of(didKey, null, null, didKey.getMethodSpecificId()),
-                    didKey.getKey()
-                    );
-     }
+    public static VerificationMethod createMethod(final DidKey didKey) {
 
-    public static DidVerificationMethod createEncryptionMethod(final DidKey didKey) {
+        final URI uri = DidUrl.of(didKey, null, null, didKey.getMethodSpecificId()).toUri();
 
-        // 3.
-
-        // 5.
-//        String encodingType = "MultiKey";
-
-        // 6.
-
-        // 7.
-
-        // 9.
-        return new DidVerificationMethod(
-                    DidUrl.of(didKey, null, null, didKey.getMethodSpecificId()),
-                    DidUrl.of(didKey, null, null, didKey.getMethodSpecificId()),
-                    didKey.getKey()
-                    );
+        return MultiKey.of(
+                uri,
+                DidUrl.of(didKey, null, null, didKey.getMethodSpecificId()).toUri(),
+                didKey);
     }
 }

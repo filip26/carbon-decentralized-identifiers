@@ -19,16 +19,13 @@ public class DidKeyTestCase {
         testCase.negative = false;
         testCase.keyLength = length;
         testCase.version = version;
-
         return testCase;
-
     }
 
     static DidKeyTestCase create(String uri) {
         DidKeyTestCase testCase = new DidKeyTestCase();
         testCase.uri = uri != null ? URI.create(uri) : null ;
         testCase.negative = true;
-
         return testCase;
     }
     

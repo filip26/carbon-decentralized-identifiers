@@ -31,7 +31,7 @@ public class DidUrl extends Did {
     public static DidUrl from(Did did, String path, String query, String fragment) {
         return of(did, path, query, fragment);
     }
-    
+
     public static DidUrl of(Did did, String path, String query, String fragment) {
         return new DidUrl(did, path, query, fragment);
     }
@@ -45,7 +45,7 @@ public class DidUrl extends Did {
     public static DidUrl from(final URI uri) {
         return of(uri);
     }
-    
+
     public static DidUrl of(final URI uri) {
 
         Objects.requireNonNull(uri);
@@ -72,11 +72,11 @@ public class DidUrl extends Did {
     public static DidUrl from(final String uri) {
         return of(uri);
     }
-    
+
     public static DidUrl of(final String uri) {
 
         Objects.requireNonNull(uri);
-        
+
         if (uri.length() == 0) {
             throw new IllegalArgumentException("The DID must not be null or blank string.");
         }

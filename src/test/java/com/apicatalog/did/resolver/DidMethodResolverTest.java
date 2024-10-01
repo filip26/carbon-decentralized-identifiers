@@ -11,25 +11,26 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import com.apicatalog.controller.ControllerDocument;
 import com.apicatalog.did.Did;
-import com.apicatalog.did.document.DidDocument;
 import com.apicatalog.did.key.DidKey;
 import com.apicatalog.did.key.DidKeyResolver;
-import com.apicatalog.multibase.MultibaseDecoder;
+import com.apicatalog.multicodec.MulticodecDecoder;
+import com.apicatalog.multicodec.Multicodec.Tag;
 
 @DisplayName("DID Method Resolver")
 @TestMethodOrder(OrderAnnotation.class)
 class DidMethodResolverTest {
 
     static DidResolver RESOLVER = DidMethodResolver.create()
-            .add(DidKey.METHOD_NAME, new DidKeyResolver(MultibaseDecoder.getInstance()))
+            .add(DidKey.METHOD_NAME, new DidKeyResolver(MulticodecDecoder.getInstance(Tag.Key)))
             .build();
 
     @DisplayName("resolve(did)")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "positiveVectors" })
     void resolve(String uri) {
-        final DidDocument doc = RESOLVER.resolve(Did.of(uri));
+        final ControllerDocument doc = RESOLVER.resolve(Did.of(uri));
         assertNotNull(doc);
     }
 
