@@ -14,25 +14,31 @@ public class MultiKey implements KeyPair {
     protected final URI id;
     protected final URI controller;
 
-    protected Key publicKey;
-    protected Key privateKey;
+    protected final Key publicKey;
+    protected final Key privateKey;
 
     protected Instant revoked;
 
     protected MultiKey(
             URI id,
             URI controller,
-            Key publicKey
+            Key publicKey,
+            Key privateKey
             ) {
         this.id = id;
         this.controller = controller;
         this.publicKey = publicKey;
+        this.privateKey = privateKey;
     }
     
     public static MultiKey of(URI id, URI controller, Key publicKey) {
-        return new MultiKey(id, controller, publicKey);
+        return of(id, controller, publicKey, null);
     }
-    
+
+    public static MultiKey of(URI id, URI controller, Key publicKey, Key privateKey) {
+        return new MultiKey(id, controller, publicKey, privateKey);
+    }
+
 //    protected LinkedFragment ld;
     
 //    public static MultiKey of(
@@ -71,10 +77,6 @@ public class MultiKey implements KeyPair {
         return publicKey;
     }
 
-    public void publicKey(Key publicKey) {
-        this.publicKey = publicKey;
-    }
-
     @Override
     public URI id() {
         return id;
@@ -93,10 +95,6 @@ public class MultiKey implements KeyPair {
     @Override
     public Key privateKey() {
         return privateKey;
-    }
-
-    public void privateKey(Key privateKey) {
-        this.privateKey = privateKey;
     }
 
     public void revoked(Instant revoked) {
