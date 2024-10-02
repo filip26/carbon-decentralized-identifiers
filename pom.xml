@@ -61,9 +61,8 @@
 
         <jakarta.json.version>2.0.1</jakarta.json.version>
 
-        <copper.multicodec.version>1.0.1</copper.multicodec.version>
+        <copper.multicodec.version>1.1.0</copper.multicodec.version>
         <copper.multibase.version>1.0.0</copper.multibase.version>
-
 
         <!-- test resources -->
         <junit.version>5.11.1</junit.version>
