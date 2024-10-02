@@ -1,8 +1,8 @@
 package com.apicatalog.controller.method;
 
-import com.apicatalog.controller.key.Key;
+import com.apicatalog.controller.key.RawKey;
 
 public interface KeyPair extends VerificationKey {
 
-    Key privateKey();
+    RawKey privateKey();
 }

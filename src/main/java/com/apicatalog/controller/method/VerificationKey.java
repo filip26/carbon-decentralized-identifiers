@@ -1,9 +1,9 @@
 package com.apicatalog.controller.method;
 
-import com.apicatalog.controller.key.Key;
+import com.apicatalog.controller.key.RawKey;
 
 public interface VerificationKey extends VerificationMethod {
     
-    Key publicKey();
+    RawKey publicKey();
 
 }

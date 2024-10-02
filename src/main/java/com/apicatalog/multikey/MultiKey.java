@@ -3,7 +3,7 @@ package com.apicatalog.multikey;
 import java.net.URI;
 import java.time.Instant;
 
-import com.apicatalog.controller.key.MultihashKey;
+import com.apicatalog.controller.key.MulticodecKey;
 import com.apicatalog.controller.method.KeyPair;
 import com.apicatalog.multicodec.Multicodec;
 
@@ -14,27 +14,27 @@ public class MultiKey implements KeyPair {
     protected final URI id;
     protected final URI controller;
 
-    protected final MultihashKey publicKey;
-    protected final MultihashKey privateKey;
+    protected final MulticodecKey publicKey;
+    protected final MulticodecKey privateKey;
 
     protected Instant revoked;
 
     protected MultiKey(
             URI id,
             URI controller,
-            MultihashKey publicKey,
-            MultihashKey privateKey) {
+            MulticodecKey publicKey,
+            MulticodecKey privateKey) {
         this.id = id;
         this.controller = controller;
         this.publicKey = publicKey;
         this.privateKey = privateKey;
     }
 
-    public static MultiKey of(URI id, URI controller, MultihashKey publicKey) {
+    public static MultiKey of(URI id, URI controller, MulticodecKey publicKey) {
         return of(id, controller, publicKey, null);
     }
 
-    public static MultiKey of(URI id, URI controller, MultihashKey publicKey, MultihashKey privateKey) {
+    public static MultiKey of(URI id, URI controller, MulticodecKey publicKey, MulticodecKey privateKey) {
         return new MultiKey(id, controller, publicKey, privateKey);
     }
 
@@ -87,12 +87,12 @@ public class MultiKey implements KeyPair {
     }
 
     @Override
-    public MultihashKey publicKey() {
+    public MulticodecKey publicKey() {
         return publicKey;
     }
 
     @Override
-    public MultihashKey privateKey() {
+    public MulticodecKey privateKey() {
         return privateKey;
     }
 
