@@ -7,7 +7,7 @@ import com.apicatalog.controller.method.VerificationMethod;
 import com.apicatalog.did.Did;
 import com.apicatalog.did.DidUrl;
 
-public class GenericMethod implements VerificationMethod {
+public class GenericDidMethod implements VerificationMethod {
 
     DidUrl id;
     
@@ -17,7 +17,7 @@ public class GenericMethod implements VerificationMethod {
     
     Instant revoked;
     
-    public GenericMethod(
+    public GenericDidMethod(
             DidUrl id,
             String type,
             Did controller) {

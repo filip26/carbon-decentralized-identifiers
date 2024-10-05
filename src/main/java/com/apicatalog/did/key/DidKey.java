@@ -2,11 +2,11 @@ package com.apicatalog.did.key;
 
 import java.net.URI;
 
-import com.apicatalog.controller.key.MulticodecKey;
 import com.apicatalog.did.Did;
 import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multicodec.Multicodec;
 import com.apicatalog.multicodec.MulticodecDecoder;
+import com.apicatalog.multicodec.MulticodecKey;
 
 /**
  * Immutable DID Key
@@ -112,11 +112,6 @@ public class DidKey extends Did implements MulticodecKey {
         return version;
     }
 
-    @Override
-    public String type() {
-        return codec.name();
-    }
-    
     @Override
     public Multicodec codec() {
         return codec;

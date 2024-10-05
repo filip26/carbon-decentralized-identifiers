@@ -4,9 +4,8 @@ import java.net.URI;
 import java.util.Set;
 
 import com.apicatalog.controller.method.VerificationMethod;
-import com.apicatalog.did.Did;
 
-public class GenericDocument implements DidDocument {
+public class GenericDidDocument implements DidDocument {
 
     protected URI id;
 
@@ -16,17 +15,15 @@ public class GenericDocument implements DidDocument {
 
     protected Set<VerificationMethod> verificationMethod;
 
-//  protected Set<DidUrl> authentication;
-//  protected Set<DidUrl> assertionMethod;
-//  protected Set<DidUrl> keyAgreement;
-//  protected Set<DidUrl> capabilityInvocation;
-//  protected Set<DidUrl> capabilityDelegation;
+    protected Set<VerificationMethod> authentication;
+    protected Set<VerificationMethod> assertionMethod;
+    protected Set<VerificationMethod> keyAgreement;
+    protected Set<VerificationMethod> capabilityInvocation;
+    protected Set<VerificationMethod> capabilityDelegation;
 
-    
     protected Set<ServiceEndpoint> service;
     
-
-    public GenericDocument(URI id) {
+    public GenericDidDocument(URI id) {
         this.id = id;
     }
 

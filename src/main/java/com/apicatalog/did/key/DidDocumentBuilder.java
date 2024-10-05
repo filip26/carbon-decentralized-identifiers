@@ -6,7 +6,7 @@ import java.util.Set;
 import com.apicatalog.controller.method.VerificationMethod;
 import com.apicatalog.did.Did;
 import com.apicatalog.did.document.DidDocument;
-import com.apicatalog.did.document.GenericDocument;
+import com.apicatalog.did.document.GenericDidDocument;
 
 final class DidDocumentBuilder {
 
@@ -32,7 +32,7 @@ final class DidDocumentBuilder {
     }
 
     public DidDocument build() {
-        final GenericDocument doc = new GenericDocument(id != null ? id.toUri() : null);
+        final GenericDidDocument doc = new GenericDidDocument(id != null ? id.toUri() : null);
         doc.verificationMethod(verificationMethod);
         return doc;
     }

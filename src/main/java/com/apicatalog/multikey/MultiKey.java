@@ -3,9 +3,14 @@ package com.apicatalog.multikey;
 import java.net.URI;
 import java.time.Instant;
 
-import com.apicatalog.controller.key.MulticodecKey;
 import com.apicatalog.controller.method.KeyPair;
-import com.apicatalog.multicodec.Multicodec;
+import com.apicatalog.ld.Term;
+import com.apicatalog.linkedtree.LinkedFragment;
+import com.apicatalog.linkedtree.adapter.NodeAdapterError;
+import com.apicatalog.linkedtree.literal.ByteArrayValue;
+import com.apicatalog.multicodec.GenericMulticodecKey;
+import com.apicatalog.multicodec.MulticodecDecoder;
+import com.apicatalog.multicodec.MulticodecKey;
 
 public class MultiKey implements KeyPair {
 
@@ -40,36 +45,37 @@ public class MultiKey implements KeyPair {
 
 //    protected LinkedFragment ld;
 
-//    public static MultiKey of(
-//            MulticodecDecoder decoder
-////            LinkedFragment source
-//            ) throws NodeAdapterError {
-//
-//        final MultiKey multikey = new MultiKey();
-//
-//        multikey.id = source.uri();
-//        multikey.controller = source.uri(MultiKeyAdapter.CONTROLLER.uri());
+    public static MultiKey of(
+            MulticodecDecoder decoder,
+            LinkedFragment source
+            ) throws NodeAdapterError {
+
+        
+//        URI id = source.uri();
+//        URI controller = source.uri(MultiKeyAdapter.CONTROLLER.uri());
 //
 //        var x = source.literal(MultiKeyAdapter.PUBLIC_KEY.uri(), ByteArrayValue.class);
-//        multikey.publicKey = getKey(MultiKeyAdapter.PUBLIC_KEY, x.byteArrayValue(), multikey, decoder);
+//        MulticodecKey publicKey = getKey(MultiKeyAdapter.PUBLIC_KEY, x.byteArrayValue(), decoder);
 //
-////            multikey.privateKey = getKey(node, PRIVATE_KEY, multikey);
-////
-////            multikey.expiration = node.scalar(EXPIRATION).xsdDateTime();
-////            multikey.revoked = node.scalar(REVOKED).xsdDateTime();
-////
-////        } else if (node.type().exists()) {
-////            throw new DocumentError(ErrorType.Invalid, "VerificationMethodType");
-////        }
-////
-////        validate(multikey);
+//        var y = source.literal(MultiKeyAdapter.PRIVATE_KEY.uri(), ByteArrayValue.class);
+//        MulticodecKey privateKey = getKey(MultiKeyAdapter.PRIVATE_KEY, y.byteArrayValue(), decoder);
 //
-////        return new LinkableObject(id, types, properties, multikey);
-//        
+//            multikey.expiration = node.scalar(EXPIRATION).xsdDateTime();
+//            multikey.revoked = node.scalar(REVOKED).xsdDateTime();
+//
+//        } else if (node.type().exists()) {
+//            throw new DocumentError(ErrorType.Invalid, "VerificationMethodType");
+//        }
+//
+//        validate(multikey);
+
+//        return new LinkableObject(id, types, properties, multikey);
+        
 //        multikey.ld = source;
-//        
-//        return multikey;
-//    }
+        
+//        return new MultiKey(id, controller, publicKey, privateKey);
+        return null;
+    }
 
     @Override
     public URI id() {
@@ -105,42 +111,18 @@ public class MultiKey implements KeyPair {
         return revoked;
     }
 
-//    protected static final byte[] getKey(Term term, final byte[] decodedKey, MultiKey multikey, MulticodecDecoder decoder) throws NodeAdapterError {
-//
-//        if (decodedKey == null || decodedKey.length == 0) {
-//            return null;
-//        }
-//
-//        final Multicodec codec = decoder.getCodec(decodedKey)
-//                .orElseThrow(() -> new NodeAdapterError("Invalid " + term.name() + " codec"));
-//
-//        if (multikey.algorithm == null) {
-//            multikey.algorithm = getAlgorithmName(codec);
-//
-//        } else if (!multikey.algorithm.equals(getAlgorithmName(codec))) {
-//            throw new IllegalArgumentException("Invalid key pair codec [" + codec + "]");
-//        }
-//
-//        return codec.decode(decodedKey);
-//    }
+    protected static final MulticodecKey getKey(Term term, final byte[] encodedKey, MulticodecDecoder decoder) throws NodeAdapterError {
 
-    public static final String getAlgorithmName(Multicodec codec) {
-        if (codec.name().endsWith("-priv")) {
-            return codec.name().substring(0, codec.name().length() - "-priv".length()).toUpperCase();
+        if (encodedKey == null || encodedKey.length == 0) {
+            return null;
         }
-        if (codec.name().endsWith("-pub")) {
-            return codec.name().substring(0, codec.name().length() - "-pub".length()).toUpperCase();
-        }
-        return codec.name().toUpperCase();
+
+        return decoder.getCodec(encodedKey)
+                .map(codec -> new GenericMulticodecKey(codec, codec.decode(encodedKey)))
+                .orElseThrow(() -> new NodeAdapterError("Unsupported " + term.name() + " codec"));
     }
 
     public static String typeName() {
         return TYPE_NAME;
     }
-//
-//    @Override
-//    public LinkedNode ld() {
-//        return ld;
-//    }
-
 }

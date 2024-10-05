@@ -2,15 +2,9 @@ package com.apicatalog.did.document;
 
 import java.net.URI;
 
-public class ServiceEndpoint {
+public interface ServiceEndpoint {
 
-    URI id;
-    
-    String type;
-    
-    public ServiceEndpoint(URI id, String type) {
-        this.id = id;
-        this.type = type;
-    }
-    
+    URI id();
+
+    String type();
 }
