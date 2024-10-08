@@ -3,16 +3,14 @@ package com.apicatalog.multikey;
 import java.net.URI;
 import java.time.Instant;
 
-import com.apicatalog.controller.method.KeyPair;
 import com.apicatalog.ld.Term;
 import com.apicatalog.linkedtree.LinkedFragment;
 import com.apicatalog.linkedtree.adapter.NodeAdapterError;
-import com.apicatalog.linkedtree.literal.ByteArrayValue;
-import com.apicatalog.multicodec.GenericMulticodecKey;
 import com.apicatalog.multicodec.MulticodecDecoder;
-import com.apicatalog.multicodec.MulticodecKey;
+import com.apicatalog.multicodec.key.GenericMulticodecKey;
+import com.apicatalog.multicodec.key.MulticodecKey;
 
-public class MultiKey implements KeyPair {
+public class GenericMultikey implements Multikey {
 
     protected static final String TYPE_NAME = "https://w3id.org/security#Multikey";
 
@@ -24,7 +22,7 @@ public class MultiKey implements KeyPair {
 
     protected Instant revoked;
 
-    protected MultiKey(
+    protected GenericMultikey(
             URI id,
             URI controller,
             MulticodecKey publicKey,
@@ -35,17 +33,17 @@ public class MultiKey implements KeyPair {
         this.privateKey = privateKey;
     }
 
-    public static MultiKey of(URI id, URI controller, MulticodecKey publicKey) {
+    public static GenericMultikey of(URI id, URI controller, MulticodecKey publicKey) {
         return of(id, controller, publicKey, null);
     }
 
-    public static MultiKey of(URI id, URI controller, MulticodecKey publicKey, MulticodecKey privateKey) {
-        return new MultiKey(id, controller, publicKey, privateKey);
+    public static GenericMultikey of(URI id, URI controller, MulticodecKey publicKey, MulticodecKey privateKey) {
+        return new GenericMultikey(id, controller, publicKey, privateKey);
     }
 
 //    protected LinkedFragment ld;
 
-    public static MultiKey of(
+    public static GenericMultikey of(
             MulticodecDecoder decoder,
             LinkedFragment source
             ) throws NodeAdapterError {
@@ -124,5 +122,10 @@ public class MultiKey implements KeyPair {
 
     public static String typeName() {
         return TYPE_NAME;
+    }
+
+    @Override
+    public Instant expires() {
+        return null;
     }
 }

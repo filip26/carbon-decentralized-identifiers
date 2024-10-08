@@ -6,7 +6,7 @@ import com.apicatalog.did.Did;
 import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multicodec.Multicodec;
 import com.apicatalog.multicodec.MulticodecDecoder;
-import com.apicatalog.multicodec.MulticodecKey;
+import com.apicatalog.multicodec.key.MulticodecKey;
 
 /**
  * Immutable DID Key

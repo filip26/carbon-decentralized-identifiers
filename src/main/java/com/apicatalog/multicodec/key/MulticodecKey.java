@@ -1,4 +1,4 @@
-package com.apicatalog.multicodec;
+package com.apicatalog.multicodec.key;
 
 import com.apicatalog.controller.key.RawKey;
 import com.apicatalog.multicodec.Multicodec;

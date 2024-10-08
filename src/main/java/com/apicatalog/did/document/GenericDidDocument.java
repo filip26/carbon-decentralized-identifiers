@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Set;
 
 import com.apicatalog.controller.method.VerificationMethod;
+import com.apicatalog.linkedtree.type.Type;
 
 public class GenericDidDocument implements DidDocument {
 
@@ -86,6 +87,12 @@ public class GenericDidDocument implements DidDocument {
 
     @Override
     public Set<VerificationMethod> capabilityDelegation() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Type type() {
         // TODO Auto-generated method stub
         return null;
     }

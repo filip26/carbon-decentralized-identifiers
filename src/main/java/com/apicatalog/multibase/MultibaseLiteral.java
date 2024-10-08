@@ -5,9 +5,8 @@ import java.util.Objects;
 import com.apicatalog.linkedtree.LinkedLiteral;
 import com.apicatalog.linkedtree.LinkedTree;
 import com.apicatalog.linkedtree.literal.ByteArrayValue;
-import com.apicatalog.linkedtree.literal.adapter.TypedLiteralAdapter;
 import com.apicatalog.linkedtree.literal.adapter.GenericDatatypeAdapter;
-import com.apicatalog.multibase.Multibase;
+import com.apicatalog.linkedtree.literal.adapter.TypedLiteralAdapter;
 
 public record MultibaseLiteral(
         String datatype,

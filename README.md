@@ -11,7 +11,9 @@ An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.
 
 ## Features
 
-* DID, DID URL, DID Document, DID Resolver
+* DID, DID URL
+* Controller Document
+* Multikey
 * Methods
   * [did:key method v0.7](https://w3c-ccg.github.io/did-method-key/)
   * [did:web method](https://w3c-ccg.github.io/did-method-web/)

@@ -1,46 +1,36 @@
-package com.apicatalog.multikey;
+package com.apicatalog.multicodec.key;
 
-import com.apicatalog.ld.Term;
 import com.apicatalog.linkedtree.LinkedLiteral;
 import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.literal.ByteArrayValue;
 import com.apicatalog.linkedtree.literal.adapter.TypedLiteralAdapter;
-import com.apicatalog.linkedtree.orm.adapter.NativeLiteralAdapter;
+import com.apicatalog.linkedtree.orm.adapter.LiteralMapper;
 import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multibase.MultibaseLiteral;
-import com.apicatalog.multicodec.GenericMulticodecKey;
+import com.apicatalog.multicodec.Multicodec.Tag;
 import com.apicatalog.multicodec.MulticodecDecoder;
-import com.apicatalog.multicodec.MulticodecKey;
+import com.apicatalog.uvarint.UVarInt;
 
-public class MultiKeyAdapter implements NativeLiteralAdapter {
+public class MulticodecKeyMapper implements LiteralMapper {
 
-//    public static final String SECURITY_VOCAB = "https://w3id.org/security#";
-//
-//    public static final Term CONTROLLER = Term.create("controller", SECURITY_VOCAB);
-//
-//    public static final Term PUBLIC_KEY = Term.create("publicKeyMultibase", SECURITY_VOCAB);
-//    public static final Term PRIVATE_KEY = Term.create("secretKeyMultibase", SECURITY_VOCAB);
-//
-//    public static final Term EXPIRATION = Term.create("expiration", SECURITY_VOCAB);
-//    public static final Term REVOKED = Term.create("revoked", SECURITY_VOCAB);
+    static final MulticodecDecoder CODECS = MulticodecDecoder.getInstance(Tag.Key);
 
     @Override
-    public Object materialize(Class<?> type, LinkedLiteral literal) throws NodeAdapterError {
-        
+    public Object map(Class<?> type, LinkedLiteral literal) throws NodeAdapterError {
+
         if (literal instanceof ByteArrayValue byteArray) {
-            
+            return getKey(byteArray.byteArrayValue(), CODECS);
         }
-        
-        // TODO Auto-generated method stub
-        return null;
+
+        return literal;
     }
 
     @Override
-    public TypedLiteralAdapter literalAdapter() {
+    public TypedLiteralAdapter adapter() {
         return MultibaseLiteral.typeAdapter(Multibase.BASE_58_BTC);
     }
 
-    protected static final MulticodecKey getKey(Term term, final byte[] encodedKey, MulticodecDecoder decoder) throws NodeAdapterError {
+    protected static final MulticodecKey getKey(final byte[] encodedKey, MulticodecDecoder decoder) throws NodeAdapterError {
 
         if (encodedKey == null || encodedKey.length == 0) {
             return null;
@@ -48,19 +38,9 @@ public class MultiKeyAdapter implements NativeLiteralAdapter {
 
         return decoder.getCodec(encodedKey)
                 .map(codec -> new GenericMulticodecKey(codec, codec.decode(encodedKey)))
-                .orElseThrow(() -> new NodeAdapterError("Unsupported " + term.name() + " codec"));
+                .orElseThrow(() -> new NodeAdapterError("Unsupported multicodec code=" + UVarInt.decode(encodedKey) + "."));
     }
 
-//
-//    protected final MulticodecDecoder decoder;
-//
-//    public MultiKeyAdapter(MulticodecDecoder decoder) {
-//        this.decoder = decoder;
-//    }
-//
-//    protected abstract Multicodec getPublicKeyCodec(String algo, int keyLength);
-//
-//    protected abstract Multicodec getPrivateKeyCodec(String algo, int keyLength);
 //
 //    /**
 //     * Custom multikey validation.

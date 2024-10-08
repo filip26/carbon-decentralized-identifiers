@@ -23,7 +23,8 @@
     <name>Carbon DIDs</name>
 
     <description>
-        Decentralized Identifiers (DIDs) API, did:key, did:web
+        Decentralized Identifiers (DIDs) API, did:key, did:web,
+        Controller Document, Multikey
     </description>
 
     <licenses>

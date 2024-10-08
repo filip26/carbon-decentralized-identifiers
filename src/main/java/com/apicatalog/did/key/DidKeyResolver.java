@@ -8,7 +8,7 @@ import com.apicatalog.did.DidUrl;
 import com.apicatalog.did.document.DidDocument;
 import com.apicatalog.did.resolver.DidResolver;
 import com.apicatalog.multicodec.MulticodecDecoder;
-import com.apicatalog.multikey.MultiKey;
+import com.apicatalog.multikey.GenericMultikey;
 
 public class DidKeyResolver implements DidResolver {
 
@@ -37,7 +37,7 @@ public class DidKeyResolver implements DidResolver {
 
         final URI uri = DidUrl.of(didKey, null, null, didKey.getMethodSpecificId()).toUri();
 
-        return MultiKey.of(
+        return GenericMultikey.of(
                 uri,
                 DidUrl.of(didKey, null, null, didKey.getMethodSpecificId()).toUri(),
                 didKey);
