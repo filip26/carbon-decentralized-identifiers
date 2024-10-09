@@ -8,7 +8,6 @@ import com.apicatalog.linkedtree.orm.Id;
 import com.apicatalog.linkedtree.orm.Literal;
 import com.apicatalog.linkedtree.orm.Term;
 import com.apicatalog.linkedtree.orm.Vocab;
-import com.apicatalog.linkedtree.type.Type;
 import com.apicatalog.linkedtree.xsd.XsdDateTimeAdapter;
 
 /**

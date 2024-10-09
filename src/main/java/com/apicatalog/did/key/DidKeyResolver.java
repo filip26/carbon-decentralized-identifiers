@@ -27,10 +27,9 @@ public class DidKeyResolver implements DidResolver {
 
         final DidKey didKey = DidKey.of(did, codecs);
 
-        return DidDocumentBuilder.create()
-                .id(did)
-                .add(DidKeyResolver.createMethod(didKey))
-                .build();
+        return DidKeyDocument.of(
+                did != null ? did.toUri() : null,
+                DidKeyResolver.createMethod(didKey));
     }
 
     public static VerificationMethod createMethod(final DidKey didKey) {
