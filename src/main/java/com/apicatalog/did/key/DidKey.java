@@ -78,7 +78,7 @@ public class DidKey extends Did implements MulticodecKey {
         }
         
         if (!Multibase.BASE_58_BTC.isEncoded(encoded)) {
-            throw new IllegalArgumentException("Unsupported did:key base encoding. DID [" + did.toString() + "].");
+            throw new IllegalArgumentException("Unsupported did:key base encoding, expected base58btc. DID [" + did.toString() + "].");
         }
 
         final byte[] debased = Multibase.BASE_58_BTC.decode(encoded);
@@ -120,5 +120,14 @@ public class DidKey extends Did implements MulticodecKey {
     @Override
     public byte[] raw() {
         return raw;
+    }
+    
+    /**
+     * Use {@link DidKey#raw()} + {@link DidKey#codec}
+     * @return
+     */
+    @Deprecated
+    public byte[] getKey() {
+        return codec.encode(raw);
     }
 }
