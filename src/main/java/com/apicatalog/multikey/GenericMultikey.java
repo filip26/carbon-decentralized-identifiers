@@ -45,10 +45,8 @@ public class GenericMultikey implements Multikey {
 
     public static GenericMultikey of(
             MulticodecDecoder decoder,
-            LinkedFragment source
-            ) throws NodeAdapterError {
+            LinkedFragment source) throws NodeAdapterError {
 
-        
 //        URI id = source.uri();
 //        URI controller = source.uri(MultiKeyAdapter.CONTROLLER.uri());
 //
@@ -68,9 +66,9 @@ public class GenericMultikey implements Multikey {
 //        validate(multikey);
 
 //        return new LinkableObject(id, types, properties, multikey);
-        
+
 //        multikey.ld = source;
-        
+
 //        return new MultiKey(id, controller, publicKey, privateKey);
         return null;
     }

@@ -4,9 +4,10 @@ import java.util.Objects;
 
 import com.apicatalog.linkedtree.LinkedLiteral;
 import com.apicatalog.linkedtree.LinkedTree;
+import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.literal.ByteArrayValue;
-import com.apicatalog.linkedtree.literal.adapter.GenericDatatypeAdapter;
-import com.apicatalog.linkedtree.literal.adapter.TypedLiteralAdapter;
+import com.apicatalog.linkedtree.literal.adapter.GenericLiteralAdapter;
+import com.apicatalog.linkedtree.literal.adapter.DataTypeAdapter;
 
 public record MultibaseLiteral(
         String datatype,
@@ -24,11 +25,12 @@ public record MultibaseLiteral(
         return TYPE;
     }
 
-    public static TypedLiteralAdapter typeAdapter(final Multibase base) {
-        return new GenericDatatypeAdapter(
-                TYPE,
-                (value, root) -> MultibaseLiteral.of(base, value, root));
-    }
+//    public static DataTypeAdapter typeAdapter(final Multibase base) {
+//        return new GenericLiteralAdapter(
+//                TYPE,
+//                MultibaseLiteral.class,
+//                (value, root) -> MultibaseLiteral.of(base, value, root));
+//    }
 
     @Override
     public int hashCode() {
