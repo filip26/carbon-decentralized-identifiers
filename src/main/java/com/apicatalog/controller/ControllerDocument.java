@@ -6,6 +6,7 @@ import java.util.Set;
 import com.apicatalog.controller.method.VerificationMethod;
 import com.apicatalog.linkedtree.orm.Fragment;
 import com.apicatalog.linkedtree.orm.Id;
+import com.apicatalog.linkedtree.orm.Term;
 import com.apicatalog.linkedtree.orm.Vocab;
 import com.apicatalog.linkedtree.type.Type;
 
@@ -22,13 +23,14 @@ public interface ControllerDocument {
      * @return a selector of document types, never <code>null</code>.
      */
     Type type();
-    
+
     Set<URI> controller();
 
     Set<VerificationMethod> verificationMethod();
 
     Set<URI> alsoKnownAs();
 
+    @Term("authenticationMethod")
     Set<VerificationMethod> authentication();
 
     Set<VerificationMethod> assertionMethod();

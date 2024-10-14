@@ -4,10 +4,7 @@ import java.util.Objects;
 
 import com.apicatalog.linkedtree.LinkedLiteral;
 import com.apicatalog.linkedtree.LinkedTree;
-import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.literal.ByteArrayValue;
-import com.apicatalog.linkedtree.literal.adapter.GenericLiteralAdapter;
-import com.apicatalog.linkedtree.literal.adapter.DataTypeAdapter;
 
 public record MultibaseLiteral(
         String datatype,
@@ -17,8 +14,8 @@ public record MultibaseLiteral(
 
     static final String TYPE = "https://w3id.org/security#multibase";
 
-    public static MultibaseLiteral of(Multibase base, String value, LinkedTree root) {
-        return new MultibaseLiteral(TYPE, value, base.decode(value), root);
+    public static MultibaseLiteral of(MultibaseDecoder bases, String value, LinkedTree root) {
+        return new MultibaseLiteral(TYPE, value, bases.decode(value), root);
     }
 
     public static String typeName() {

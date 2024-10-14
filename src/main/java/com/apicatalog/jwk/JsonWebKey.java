@@ -1,15 +1,13 @@
 package com.apicatalog.jwk;
 
-import com.apicatalog.controller.method.KeyPair;
-import com.apicatalog.linkedtree.json.JsonLiteral;
+import com.apicatalog.controller.method.VerificationMethod;
 import com.apicatalog.linkedtree.orm.Fragment;
-import com.apicatalog.linkedtree.orm.Literal;
 import com.apicatalog.linkedtree.orm.Term;
 import com.apicatalog.linkedtree.orm.Vocab;
 
 @Fragment
 @Vocab("https://w3id.org/security#")
-public interface JsonWebKey extends KeyPair {
+public interface JsonWebKey extends VerificationMethod {
 
     static final String TYPE = "https://w3id.org/security#JsonWebKey";
 
@@ -19,10 +17,8 @@ public interface JsonWebKey extends KeyPair {
     }
 
     @Term("publicKeyJwk")
-    @Override
     JwkLiteral publicKey();
 
     @Term("secretKeyJwk")
-    @Override
     JwkLiteral privateKey();
 }
