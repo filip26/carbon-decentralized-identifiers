@@ -14,7 +14,6 @@ import com.apicatalog.linkedtree.orm.Vocab;
  *      document properties</a>
  */
 @Fragment(generic = true)
-@Vocab("https://w3id.org/security#")
 public interface DidDocument extends ControllerDocument {
 
     @Override
