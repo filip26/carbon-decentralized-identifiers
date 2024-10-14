@@ -1,8 +1,7 @@
 {
   "@context": [
     "https://www.w3.org/ns/did/v1",
-    "https://w3id.org/security/multikey/v1",
-    "https://w3id.org/security/suites/secp256k1-2019/v1"
+    "https://w3id.org/security/multikey/v1"
   ],
   "id": "did:plc:7l2pjkp6si2qk6niu2tzloed",
   "alsoKnownAs": [

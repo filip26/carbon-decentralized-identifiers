@@ -22,7 +22,6 @@ public interface VerificationMethod {
     @Id
     URI id();
 
-    //TODO Type
     String type();
 
     URI controller();

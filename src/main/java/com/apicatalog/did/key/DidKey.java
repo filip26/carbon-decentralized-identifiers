@@ -118,12 +118,12 @@ public class DidKey extends Did implements MulticodecKey {
     }
 
     @Override
-    public byte[] raw() {
+    public byte[] rawBytes() {
         return raw;
     }
     
     /**
-     * Use {@link DidKey#raw()} + {@link DidKey#codec}
+     * Use {@link DidKey#rawBytes()} + {@link DidKey#codec}
      * @return
      */
     @Deprecated

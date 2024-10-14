@@ -37,7 +37,7 @@ class DidKeyDocument implements DidDocument {
         return Collections.emptySet();
     }
     
-    public Set<VerificationMethod> verificationMethod() {
+    public Set<VerificationMethod> verification() {
         return method;
     }
     
@@ -55,7 +55,7 @@ class DidKeyDocument implements DidDocument {
     }
 
     @Override
-    public Set<VerificationMethod> assertionMethod() {
+    public Set<VerificationMethod> assertion() {
         return method;
     }
 

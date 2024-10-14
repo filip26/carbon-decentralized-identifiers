@@ -22,13 +22,6 @@ public record MultibaseLiteral(
         return TYPE;
     }
 
-//    public static DataTypeAdapter typeAdapter(final Multibase base) {
-//        return new GenericLiteralAdapter(
-//                TYPE,
-//                MultibaseLiteral.class,
-//                (value, root) -> MultibaseLiteral.of(base, value, root));
-//    }
-
     @Override
     public int hashCode() {
         return Objects.hash(datatype, lexicalValue);
@@ -43,7 +36,7 @@ public record MultibaseLiteral(
         if (getClass() != obj.getClass())
             return false;
         MultibaseLiteral other = (MultibaseLiteral) obj;
-        return Objects.equals(datatype, other.datatype) && Objects.equals(lexicalValue, other.lexicalValue);
+        return Objects.equals(datatype, other.datatype) && Objects.equals(byteArrayValue, other.byteArrayValue);
     }
 
     @Override

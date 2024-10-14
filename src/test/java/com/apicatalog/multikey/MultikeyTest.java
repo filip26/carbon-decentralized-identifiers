@@ -59,7 +59,7 @@ class MultikeyTest {
         assertNull(doc.revoked());
         assertEquals(KeyCodec.ED25519_PUBLIC_KEY, doc.publicKey().codec());
         assertEquals(KeyCodec.ED25519_PUBLIC_KEY.name(), doc.publicKey().type());
-        assertArrayEquals(KeyCodec.ED25519_PUBLIC_KEY.decode(Multibase.BASE_58_BTC.decode("z6MkmM42vxfqZQsv4ehtTjFFxQ4sQKS2w6WR7emozFAn5cxu")), doc.publicKey().raw());
+        assertArrayEquals(KeyCodec.ED25519_PUBLIC_KEY.decode(Multibase.BASE_58_BTC.decode("z6MkmM42vxfqZQsv4ehtTjFFxQ4sQKS2w6WR7emozFAn5cxu")), doc.publicKey().rawBytes());
     }
 
     @Test
@@ -88,7 +88,7 @@ class MultikeyTest {
         assertNull(doc.revoked());
         assertEquals(KeyCodec.P256_PUBLIC_KEY, doc.publicKey().codec());
         assertEquals(KeyCodec.P256_PUBLIC_KEY.name(), doc.publicKey().type());
-        assertArrayEquals(KeyCodec.P256_PUBLIC_KEY.decode(Multibase.BASE_58_BTC.decode("zDnaerx9CtbPJ1q36T5Ln5wYt3MQYeGRG5ehnPAmxcf5mDZpv")), doc.publicKey().raw());
+        assertArrayEquals(KeyCodec.P256_PUBLIC_KEY.decode(Multibase.BASE_58_BTC.decode("zDnaerx9CtbPJ1q36T5Ln5wYt3MQYeGRG5ehnPAmxcf5mDZpv")), doc.publicKey().rawBytes());
     }
 
     @Test
@@ -118,11 +118,11 @@ class MultikeyTest {
 
         assertEquals(KeyCodec.P256_PUBLIC_KEY, doc.publicKey().codec());
         assertEquals(KeyCodec.P256_PUBLIC_KEY.name(), doc.publicKey().type());
-        assertArrayEquals(KeyCodec.P256_PUBLIC_KEY.decode(Multibase.BASE_58_BTC.decode("zDnaerx9CtbPJ1q36T5Ln5wYt3MQYeGRG5ehnPAmxcf5mDZpv")), doc.publicKey().raw());
+        assertArrayEquals(KeyCodec.P256_PUBLIC_KEY.decode(Multibase.BASE_58_BTC.decode("zDnaerx9CtbPJ1q36T5Ln5wYt3MQYeGRG5ehnPAmxcf5mDZpv")), doc.publicKey().rawBytes());
 
         assertEquals(KeyCodec.P256_PRIVATE_KEY, doc.privateKey().codec());
         assertEquals(KeyCodec.P256_PRIVATE_KEY.name(), doc.privateKey().type());
-        assertArrayEquals(KeyCodec.P256_PRIVATE_KEY.decode(Multibase.BASE_58_BTC.decode("z42twTcNeSYcnqg1FLuSFs2bsGH3ZqbRHFmvS9XMsYhjxvHN")), doc.privateKey().raw());
+        assertArrayEquals(KeyCodec.P256_PRIVATE_KEY.decode(Multibase.BASE_58_BTC.decode("z42twTcNeSYcnqg1FLuSFs2bsGH3ZqbRHFmvS9XMsYhjxvHN")), doc.privateKey().rawBytes());
     }
 
     static final JsonDocument resource(String name) throws IOException, URISyntaxException {

@@ -4,7 +4,6 @@ import java.net.URI;
 import java.time.Instant;
 
 import com.apicatalog.ld.Term;
-import com.apicatalog.linkedtree.LinkedFragment;
 import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.multicodec.MulticodecDecoder;
 import com.apicatalog.multicodec.key.GenericMulticodecKey;
@@ -21,6 +20,7 @@ public class GenericMultikey implements Multikey {
     protected final MulticodecKey privateKey;
 
     protected Instant revoked;
+    protected Instant expires;
 
     protected GenericMultikey(
             URI id,
@@ -39,38 +39,6 @@ public class GenericMultikey implements Multikey {
 
     public static GenericMultikey of(URI id, URI controller, MulticodecKey publicKey, MulticodecKey privateKey) {
         return new GenericMultikey(id, controller, publicKey, privateKey);
-    }
-
-//    protected LinkedFragment ld;
-
-    public static GenericMultikey of(
-            MulticodecDecoder decoder,
-            LinkedFragment source) throws NodeAdapterError {
-
-//        URI id = source.uri();
-//        URI controller = source.uri(MultiKeyAdapter.CONTROLLER.uri());
-//
-//        var x = source.literal(MultiKeyAdapter.PUBLIC_KEY.uri(), ByteArrayValue.class);
-//        MulticodecKey publicKey = getKey(MultiKeyAdapter.PUBLIC_KEY, x.byteArrayValue(), decoder);
-//
-//        var y = source.literal(MultiKeyAdapter.PRIVATE_KEY.uri(), ByteArrayValue.class);
-//        MulticodecKey privateKey = getKey(MultiKeyAdapter.PRIVATE_KEY, y.byteArrayValue(), decoder);
-//
-//            multikey.expiration = node.scalar(EXPIRATION).xsdDateTime();
-//            multikey.revoked = node.scalar(REVOKED).xsdDateTime();
-//
-//        } else if (node.type().exists()) {
-//            throw new DocumentError(ErrorType.Invalid, "VerificationMethodType");
-//        }
-//
-//        validate(multikey);
-
-//        return new LinkableObject(id, types, properties, multikey);
-
-//        multikey.ld = source;
-
-//        return new MultiKey(id, controller, publicKey, privateKey);
-        return null;
     }
 
     @Override
@@ -124,6 +92,10 @@ public class GenericMultikey implements Multikey {
 
     @Override
     public Instant expires() {
-        return null;
+        return expires;
+    }
+
+    public void expires(Instant expires) {
+        this.expires = expires;
     }
 }

@@ -30,7 +30,7 @@ class DidKeyTest {
     void ofString(URI uri, int keyLength, String version, Multicodec codec) {
         final DidKey didKey = DidKey.of(uri, CODECS);
         assertEquals(version, didKey.version());
-        assertEquals(keyLength, didKey.raw().length);
+        assertEquals(keyLength, didKey.rawBytes().length);
         assertEquals(codec, didKey.codec());
     }
 

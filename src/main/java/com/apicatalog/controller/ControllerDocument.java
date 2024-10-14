@@ -26,18 +26,23 @@ public interface ControllerDocument {
 
     Set<URI> controller();
 
-    Set<VerificationMethod> verificationMethod();
+    @Term("verificationMethod")
+    Set<VerificationMethod> verification();
 
     Set<URI> alsoKnownAs();
 
     @Term("authenticationMethod")
     Set<VerificationMethod> authentication();
 
-    Set<VerificationMethod> assertionMethod();
+    @Term("assertionMethod")
+    Set<VerificationMethod> assertion();
 
+    @Term("keyAgreementMethod")
     Set<VerificationMethod> keyAgreement();
 
+    @Term("capabilityInvocationMethod")
     Set<VerificationMethod> capabilityInvocation();
 
+    @Term("capabilityDelegationMethod")
     Set<VerificationMethod> capabilityDelegation();
 }

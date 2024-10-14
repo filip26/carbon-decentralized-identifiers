@@ -6,7 +6,7 @@ import com.apicatalog.linkedtree.orm.Fragment;
 import com.apicatalog.linkedtree.orm.Id;
 import com.apicatalog.linkedtree.type.Type;
 
-@Fragment
+@Fragment(generic = true)
 public interface ServiceEndpoint {
 
     @Id

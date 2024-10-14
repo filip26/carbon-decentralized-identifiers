@@ -59,9 +59,9 @@ class ControllerDocTest {
         assertEquals(1, doc.controller().size());
         assertEquals(URI.create("https://controller.example/1"), doc.controller().iterator().next());
 
-        assertEquals(3, doc.verificationMethod().size());
+        assertEquals(3, doc.verification().size());
 
-        Iterator<VerificationMethod> mit = doc.verificationMethod().iterator();
+        Iterator<VerificationMethod> mit = doc.verification().iterator();
         
         VerificationMethod method1 = mit.next();
         VerificationMethod method2 = mit.next();
@@ -70,7 +70,7 @@ class ControllerDocTest {
         assertTrue(method2 instanceof Multikey);
         
         assertTrue(doc.alsoKnownAs().isEmpty());
-        assertTrue(doc.assertionMethod().isEmpty());
+        assertTrue(doc.assertion().isEmpty());
         assertTrue(doc.authentication().isEmpty());
         assertTrue(doc.capabilityDelegation().isEmpty());
         assertTrue(doc.capabilityInvocation().isEmpty());
