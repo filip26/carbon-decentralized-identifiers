@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Set;
 
 import com.apicatalog.controller.ControllerDocument;
+import com.apicatalog.linkedtree.orm.Context;
 import com.apicatalog.linkedtree.orm.Fragment;
 import com.apicatalog.linkedtree.orm.Vocab;
 
@@ -14,6 +15,7 @@ import com.apicatalog.linkedtree.orm.Vocab;
  *      document properties</a>
  */
 @Fragment(generic = true)
+@Context("https://www.w3.org/ns/did/v1")
 public interface DidDocument extends ControllerDocument {
 
     @Override

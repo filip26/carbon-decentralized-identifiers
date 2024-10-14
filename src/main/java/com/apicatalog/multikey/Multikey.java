@@ -1,6 +1,7 @@
 package com.apicatalog.multikey;
 
 import com.apicatalog.controller.method.KeyPair;
+import com.apicatalog.linkedtree.orm.Context;
 import com.apicatalog.linkedtree.orm.Fragment;
 import com.apicatalog.linkedtree.orm.Literal;
 import com.apicatalog.linkedtree.orm.Mapper;
@@ -12,6 +13,7 @@ import com.apicatalog.multicodec.key.MulticodecKeyMapper;
 
 @Fragment
 @Vocab("https://w3id.org/security#")
+@Context("https://w3id.org/security/multikey/v1")
 public interface Multikey extends KeyPair {
 
     static final String TYPE = "https://w3id.org/security#Multikey";
