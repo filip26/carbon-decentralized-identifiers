@@ -5,6 +5,8 @@ import com.apicatalog.linkedtree.orm.Fragment;
 import com.apicatalog.linkedtree.orm.Term;
 import com.apicatalog.linkedtree.orm.Vocab;
 
+import jakarta.json.JsonValue;
+
 @Fragment
 @Vocab("https://w3id.org/security#")
 public interface JsonWebKey extends VerificationMethod {
@@ -17,8 +19,8 @@ public interface JsonWebKey extends VerificationMethod {
     }
 
     @Term("publicKeyJwk")
-    JwkLiteral publicKey();
+    JsonValue publicKey();
 
     @Term("secretKeyJwk")
-    JwkLiteral privateKey();
+    JsonValue privateKey();
 }
