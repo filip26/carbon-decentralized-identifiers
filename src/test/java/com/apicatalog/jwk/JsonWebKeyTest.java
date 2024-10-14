@@ -25,12 +25,12 @@ import com.apicatalog.linkedtree.orm.mapper.TreeMapping;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 
-@DisplayName("Multikey")
+@DisplayName("JsonWebKey")
 @TestMethodOrder(OrderAnnotation.class)
 class JsonWebKeyTest {
 
     @Test
-    void read1() throws NodeAdapterError, IOException, URISyntaxException, TreeBuilderError, JsonLdError {
+    void read() throws NodeAdapterError, IOException, URISyntaxException, TreeBuilderError, JsonLdError {
 
         TreeMapping mapping = TreeMapping
                 .createBuilder()
@@ -50,17 +50,17 @@ class JsonWebKeyTest {
         assertEquals(URI.create("https://controller.example/#key-1"), doc.id());
         assertEquals(JsonWebKey.TYPE, doc.type());
         assertEquals(URI.create("https://controller.example/1"), doc.controller());
-        
+
         assertEquals(Instant.parse("2025-12-06T15:41:46Z"), doc.expires());
         assertEquals(Instant.parse("2024-10-06T15:41:46Z"), doc.revoked());
-        
+
         assertEquals(
-                "{\"kid\":\"key-1\",\"kty\":\"EC\",\"crv\":\"P-384\",\"alg\":\"ES384\",\"x\":\"1F14JSzKbwxO-Heqew5HzEt-0NZXAjCu8w-RiuV8_9tMiXrSZdjsWqi4y86OFb5d\",\"y\":\"dnd8yoq-NOJcBuEYgdVVMmSxonXg-DU90d7C4uPWb_Lkd4WIQQEH0DyeC2KUDMIU\"}"
-                , doc.publicKey().toString());
+                "{\"kid\":\"key-1\",\"kty\":\"EC\",\"crv\":\"P-384\",\"alg\":\"ES384\",\"x\":\"1F14JSzKbwxO-Heqew5HzEt-0NZXAjCu8w-RiuV8_9tMiXrSZdjsWqi4y86OFb5d\",\"y\":\"dnd8yoq-NOJcBuEYgdVVMmSxonXg-DU90d7C4uPWb_Lkd4WIQQEH0DyeC2KUDMIU\"}",
+                doc.publicKey().toString());
         assertEquals(
-                "{\"kty\":\"EC\",\"crv\":\"P-384\",\"alg\":\"ES384\",\"d\":\"fGwges0SX1mj4eZamUCL4qtZijy9uT15fI4gKTuRvre4Kkoju2SHM4rlFOeKVraH\",\"x\":\"1F14JSzKbwxO-Heqew5HzEt-0NZXAjCu8w-RiuV8_9tMiXrSZdjsWqi4y86OFb5d\",\"y\":\"dnd8yoq-NOJcBuEYgdVVMmSxonXg-DU90d7C4uPWb_Lkd4WIQQEH0DyeC2KUDMIU\"}"
-                , doc.privateKey().toString());
-        
+                "{\"kty\":\"EC\",\"crv\":\"P-384\",\"alg\":\"ES384\",\"d\":\"fGwges0SX1mj4eZamUCL4qtZijy9uT15fI4gKTuRvre4Kkoju2SHM4rlFOeKVraH\",\"x\":\"1F14JSzKbwxO-Heqew5HzEt-0NZXAjCu8w-RiuV8_9tMiXrSZdjsWqi4y86OFb5d\",\"y\":\"dnd8yoq-NOJcBuEYgdVVMmSxonXg-DU90d7C4uPWb_Lkd4WIQQEH0DyeC2KUDMIU\"}",
+                doc.privateKey().toString());
+
     }
 
     static final JsonDocument resource(String name) throws IOException, URISyntaxException {
