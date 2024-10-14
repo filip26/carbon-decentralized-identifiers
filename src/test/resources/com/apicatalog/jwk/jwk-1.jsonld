@@ -1,5 +1,5 @@
 {
-  "@context": "https://www.w3.org/ns/controller/v1",
+  "@context": "https://w3id.org/security/jwk/v1",
   "id": "https://controller.example/#key-1",
   "type": "JsonWebKey",
   "controller": "https://controller.example/1",
