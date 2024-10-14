@@ -40,6 +40,7 @@ class ControllerDocTest {
                 .createBuilder()
                 .scan(Multikey.class)
                 .scan(JsonWebKey.class)
+                .scan(VerificationMethod.class)
                 .scan(ControllerDocument.class)
                 .build();
 

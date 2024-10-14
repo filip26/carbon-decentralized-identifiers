@@ -20,6 +20,7 @@ import com.apicatalog.jsonld.JsonLd;
 import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.jsonld.document.JsonDocument;
 import com.apicatalog.jwk.JsonWebKey;
+import com.apicatalog.linkedtree.Linkable;
 import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.builder.TreeBuilderError;
 import com.apicatalog.linkedtree.jsonld.io.JsonLdTreeReader;
@@ -41,6 +42,7 @@ class VerificationMethodTest {
                 .createBuilder()
                 .scan(JsonWebKey.class)
                 .scan(Multikey.class)
+                .scan(VerificationMethod.class)
                 .build();
 
         JsonLdTreeReader reader = JsonLdTreeReader.of(mapping);
@@ -77,6 +79,7 @@ class VerificationMethodTest {
                 .createBuilder()
                 .scan(JsonWebKey.class)
                 .scan(Multikey.class)
+                .scan(VerificationMethod.class)
                 .build();
 
         JsonLdTreeReader reader = JsonLdTreeReader.of(mapping);
@@ -98,6 +101,30 @@ class VerificationMethodTest {
         assertEquals(KeyCodec.P256_PUBLIC_KEY, ((Multikey)doc).publicKey().codec());
         assertEquals(KeyCodec.P256_PUBLIC_KEY.name(), ((Multikey)doc).publicKey().type());
         assertArrayEquals(KeyCodec.P256_PUBLIC_KEY.decode(Multibase.BASE_58_BTC.decode("zDnaerx9CtbPJ1q36T5Ln5wYt3MQYeGRG5ehnPAmxcf5mDZpv")), ((Multikey)doc).publicKey().rawBytes());
+    }
+    
+    @Test
+    void read3() throws NodeAdapterError, IOException, URISyntaxException, TreeBuilderError, JsonLdError {
+
+        TreeMapping mapping = TreeMapping
+                .createBuilder()
+                .scan(VerificationMethod.class)
+                .build();
+
+        JsonLdTreeReader reader = JsonLdTreeReader.of(mapping);
+
+        JsonArray input = JsonLd.expand(resource("../../jwk/jwk-1.jsonld")).get();
+
+        VerificationMethod doc = reader.read(
+                VerificationMethod.class,
+                List.of("https://www.w3.org/ns/controller/v1"),
+                input);
+
+        assertNotNull(doc);
+        assertTrue(doc instanceof Linkable);
+        assertEquals(URI.create("https://controller.example/#key-1"), doc.id());
+        assertEquals(JsonWebKey.TYPE, ((Linkable)doc).ld().asFragment().type().iterator().next());
+        assertEquals(URI.create("https://controller.example/1"), doc.controller());
     }
     
     static final JsonDocument resource(String name) throws IOException, URISyntaxException {

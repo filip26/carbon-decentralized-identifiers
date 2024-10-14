@@ -44,6 +44,7 @@ class DidDocumentTest {
         TreeMapping mapping = TreeMapping
                 .createBuilder()
                 .scan(Multikey.class)
+                .scan(VerificationMethod.class)
                 .scan(DidDocument.class)
                 .build();
 
@@ -98,6 +99,7 @@ class DidDocumentTest {
                 .createBuilder()
                 .scan(Multikey.class)
                 .scan(JsonWebKey.class)
+                .scan(VerificationMethod.class)
                 .scan(DidDocument.class)
                 .build();
 
