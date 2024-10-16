@@ -4,34 +4,45 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import com.apicatalog.TestCase;
 import com.apicatalog.jsonld.JsonLd;
 import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.jsonld.document.JsonDocument;
+import com.apicatalog.jsonld.json.JsonLdComparison;
 import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.builder.TreeBuilderError;
 import com.apicatalog.linkedtree.jsonld.io.JsonLdTreeReader;
+import com.apicatalog.linkedtree.jsonld.io.JsonLdTreeWriter;
 import com.apicatalog.linkedtree.orm.mapper.TreeMapping;
 import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multicodec.codec.KeyCodec;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 
 @DisplayName("Multikey")
 @TestMethodOrder(OrderAnnotation.class)
 class MultikeyTest {
+
+    static JsonLdTreeWriter WRITER = new JsonLdTreeWriter();
 
     @Test
     void read1() throws NodeAdapterError, IOException, URISyntaxException, TreeBuilderError, JsonLdError {
@@ -43,7 +54,7 @@ class MultikeyTest {
 
         JsonLdTreeReader reader = JsonLdTreeReader.of(mapping);
 
-        JsonArray input = JsonLd.expand(resource("multikey-1.jsonld")).get();
+        JsonArray input = JsonLd.expand(TestCase.resource("multikey/multikey-1.jsonld")).get();
 
         Multikey doc = reader.read(
                 Multikey.class,
@@ -72,7 +83,7 @@ class MultikeyTest {
 
         JsonLdTreeReader reader = JsonLdTreeReader.of(mapping);
 
-        JsonArray input = JsonLd.expand(resource("multikey-3.jsonld")).get();
+        JsonArray input = JsonLd.expand(TestCase.resource("multikey/multikey-3.jsonld")).get();
 
         Multikey doc = reader.read(
                 Multikey.class,
@@ -101,7 +112,7 @@ class MultikeyTest {
 
         JsonLdTreeReader reader = JsonLdTreeReader.of(mapping);
 
-        JsonArray input = JsonLd.expand(resource("multikey-4.jsonld")).get();
+        JsonArray input = JsonLd.expand(TestCase.resource("multikey/multikey-4.jsonld")).get();
 
         Multikey doc = reader.read(
                 Multikey.class,
@@ -125,9 +136,43 @@ class MultikeyTest {
         assertArrayEquals(KeyCodec.P256_PRIVATE_KEY.decode(Multibase.BASE_58_BTC.decode("z42twTcNeSYcnqg1FLuSFs2bsGH3ZqbRHFmvS9XMsYhjxvHN")), doc.privateKey().rawBytes());
     }
 
-    static final JsonDocument resource(String name) throws IOException, URISyntaxException {
-        try (var reader = Json.createReader(MultikeyTest.class.getResourceAsStream(name))) {
-            return JsonDocument.of(reader.readObject());
+    @DisplayName("Read/Write")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource({ "testResources" })
+    void readWrite(String name, JsonObject doc) throws TreeBuilderError, NodeAdapterError, JsonLdError {
+
+        TreeMapping mapping = TreeMapping
+                .createBuilder()
+                .scan(Multikey.class)
+                .build();
+
+        JsonLdTreeReader reader = JsonLdTreeReader.of(mapping);
+
+        JsonArray input = JsonLd.expand(JsonDocument.of(doc)).get();
+
+        var tree = reader.read(input);
+
+        assertNotNull(tree);
+
+        var output = WRITER.write(tree);
+
+        assertNotNull(output);
+
+        JsonObject compacted = JsonLd.compact(JsonDocument.of(output),
+                JsonDocument.of(
+                Json.createArrayBuilder().add(
+                "https://w3id.org/security/multikey/v1").build())
+                
+                ).get();
+        if (!JsonLdComparison.equals(compacted, doc)) {
+            assertTrue(TestCase.compareJson(name, tree, compacted, doc));
+            fail();
         }
+
     }
+
+    static final Stream<Object[]> testResources() throws IOException, URISyntaxException {
+        return TestCase.resources("multikey", ".jsonld");
+    }
+
 }

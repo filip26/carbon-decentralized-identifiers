@@ -1,5 +1,5 @@
 {
-  "@context": "https://www.w3.org/ns/controller/v1",
+  "@context": "https://w3id.org/security/multikey/v1",
   "id": "https://controller.example/123456789abcdefghi#keys-1",
   "type": "Multikey",
   "controller": "https://controller.example/123456789abcdefghi",
