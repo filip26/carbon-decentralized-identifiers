@@ -1,6 +1,6 @@
-package com.apicatalog.controller.method;
+package com.apicatalog.controller.key;
 
-public interface RawKey {
+public interface RawKeyBytes {
 
     String type();
 

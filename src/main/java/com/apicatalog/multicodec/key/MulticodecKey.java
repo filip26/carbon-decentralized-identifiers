@@ -1,9 +1,9 @@
 package com.apicatalog.multicodec.key;
 
-import com.apicatalog.controller.method.RawKey;
+import com.apicatalog.controller.key.RawKeyBytes;
 import com.apicatalog.multicodec.Multicodec;
 
-public interface MulticodecKey extends RawKey {
+public interface MulticodecKey extends RawKeyBytes {
 
     Multicodec codec();
 
