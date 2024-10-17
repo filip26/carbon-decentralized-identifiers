@@ -4,13 +4,12 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import com.apicatalog.linkedtree.LinkedLiteral;
-import com.apicatalog.linkedtree.LinkedTree;
 import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.literal.adapter.DataTypeAdapter;
 
-public class MultibaseLiteralAdapter implements DataTypeAdapter {
+public class MultibaseAdapter implements DataTypeAdapter {
 
-    MultibaseDecoder decoder = MultibaseDecoder.getInstance();
+    protected MultibaseDecoder decoder = MultibaseDecoder.getInstance();
 
     @Override
     public void setup(String[] params) throws NodeAdapterError {
@@ -31,8 +30,8 @@ public class MultibaseLiteralAdapter implements DataTypeAdapter {
     }
 
     @Override
-    public LinkedLiteral materialize(String source, LinkedTree root) throws NodeAdapterError {
-        return MultibaseLiteral.of(decoder, source, root);        
+    public LinkedLiteral materialize(String source) throws NodeAdapterError {
+        return MultibaseLiteral.of(decoder, source);
     }
 
     @Override
@@ -44,5 +43,4 @@ public class MultibaseLiteralAdapter implements DataTypeAdapter {
     public Class<? extends LinkedLiteral> typeInterface() {
         return MultibaseLiteral.class;
     }
-
 }

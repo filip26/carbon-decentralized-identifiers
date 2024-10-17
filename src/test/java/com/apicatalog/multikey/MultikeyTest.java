@@ -26,6 +26,7 @@ import com.apicatalog.jsonld.JsonLd;
 import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.jsonld.document.JsonDocument;
 import com.apicatalog.jsonld.json.JsonLdComparison;
+import com.apicatalog.linkedtree.Linkable;
 import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.builder.TreeBuilderError;
 import com.apicatalog.linkedtree.jsonld.io.JsonLdTreeReader;
@@ -150,11 +151,15 @@ class MultikeyTest {
 
         JsonArray input = JsonLd.expand(JsonDocument.of(doc)).get();
 
-        var tree = reader.read(input);
+        var multikey = reader.read(Multikey.class, input);
+        
+        assertNotNull(multikey.id());
+        assertNotNull(multikey.controller());
+        assertEquals(Multikey.TYPE, multikey.type());
+        assertNotNull(multikey.publicKey().rawBytes());
+        assertNotNull(multikey.publicKey().codec());
 
-        assertNotNull(tree);
-
-        var output = WRITER.write(tree);
+        var output = WRITER.write(((Linkable)multikey).ld().asFragment().root());
 
         assertNotNull(output);
 
@@ -165,7 +170,7 @@ class MultikeyTest {
                 
                 ).get();
         if (!JsonLdComparison.equals(compacted, doc)) {
-            assertTrue(TestCase.compareJson(name, tree, compacted, doc));
+            assertTrue(TestCase.compareJson(name, ((Linkable)multikey).ld(), compacted, doc));
             fail();
         }
 

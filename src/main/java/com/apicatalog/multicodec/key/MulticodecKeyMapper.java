@@ -23,7 +23,7 @@ public class MulticodecKeyMapper implements LiteralMapper<ByteArrayValue, Multic
         }
 
         return decoder.getCodec(encodedKey)
-                .map(codec -> new GenericMulticodecKey(codec, codec.decode(encodedKey)))
+                .map(codec -> new MulticodecKeyLiteral(null, null, codec, codec.decode(encodedKey))) //FIXME
                 .orElseThrow(() -> new NodeAdapterError("Unsupported multicodec code=" + UVarInt.decode(encodedKey) + "."));
     }
 }

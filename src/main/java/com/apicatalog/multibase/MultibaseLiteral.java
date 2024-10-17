@@ -3,19 +3,17 @@ package com.apicatalog.multibase;
 import java.util.Objects;
 
 import com.apicatalog.linkedtree.LinkedLiteral;
-import com.apicatalog.linkedtree.LinkedTree;
 import com.apicatalog.linkedtree.literal.ByteArrayValue;
 
 public record MultibaseLiteral(
         String datatype,
         String lexicalValue,
-        byte[] byteArrayValue,
-        LinkedTree root) implements LinkedLiteral, ByteArrayValue {
+        byte[] byteArrayValue) implements LinkedLiteral, ByteArrayValue {
 
     static final String TYPE = "https://w3id.org/security#multibase";
 
-    public static MultibaseLiteral of(MultibaseDecoder bases, String value, LinkedTree root) {
-        return new MultibaseLiteral(TYPE, value, bases.decode(value), root);
+    public static MultibaseLiteral of(MultibaseDecoder bases, String value) {
+        return new MultibaseLiteral(TYPE, value, bases.decode(value));
     }
 
     public static String typeName() {

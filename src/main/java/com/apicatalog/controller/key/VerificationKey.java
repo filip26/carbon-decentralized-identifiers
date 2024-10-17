@@ -4,6 +4,6 @@ import com.apicatalog.controller.method.VerificationMethod;
 
 public interface VerificationKey extends VerificationMethod {
     
-    RawKeyBytes publicKey();
+    RawByteKey publicKey();
 
 }

@@ -1,0 +1,35 @@
+package com.apicatalog.multicodec.key;
+
+import com.apicatalog.linkedtree.LinkedLiteral;
+import com.apicatalog.linkedtree.adapter.NodeAdapterError;
+import com.apicatalog.multibase.MultibaseAdapter;
+import com.apicatalog.multibase.MultibaseLiteral;
+import com.apicatalog.multicodec.Multicodec.Tag;
+import com.apicatalog.multicodec.MulticodecDecoder;
+import com.apicatalog.uvarint.UVarInt;
+
+public class MulticodecKeyAdapter extends MultibaseAdapter {
+
+    protected static final MulticodecDecoder CODECS = MulticodecDecoder.getInstance(Tag.Key);
+
+    @Override
+    public LinkedLiteral materialize(String source) throws NodeAdapterError {
+        return getKey(source, decoder.decode(source));
+    }
+
+    @Override
+    public Class<? extends LinkedLiteral> typeInterface() {
+        return MulticodecKeyLiteral.class;
+    }
+
+    protected static final MulticodecKeyLiteral getKey(String source, final byte[] encodedKey) throws NodeAdapterError {
+
+        if (encodedKey == null || encodedKey.length == 0) {
+            return null;
+        }
+
+        return CODECS.getCodec(encodedKey)
+                .map(codec -> new MulticodecKeyLiteral(source, MultibaseLiteral.typeName(), codec, codec.decode(encodedKey)))
+                .orElseThrow(() -> new NodeAdapterError("Unsupported multicodec code=" + UVarInt.decode(encodedKey) + "."));
+    }
+}

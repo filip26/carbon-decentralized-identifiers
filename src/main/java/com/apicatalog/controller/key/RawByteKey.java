@@ -1,6 +1,6 @@
 package com.apicatalog.controller.key;
 
-public interface RawKeyBytes {
+public interface RawByteKey {
 
     String type();
 

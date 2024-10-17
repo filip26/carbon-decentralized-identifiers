@@ -3,15 +3,9 @@ package com.apicatalog.multikey;
 import java.net.URI;
 import java.time.Instant;
 
-import com.apicatalog.ld.Term;
-import com.apicatalog.linkedtree.adapter.NodeAdapterError;
-import com.apicatalog.multicodec.MulticodecDecoder;
-import com.apicatalog.multicodec.key.GenericMulticodecKey;
 import com.apicatalog.multicodec.key.MulticodecKey;
 
 public class GenericMultikey implements Multikey {
-
-    protected static final String TYPE_NAME = "https://w3id.org/security#Multikey";
 
     protected final URI id;
     protected final URI controller;
@@ -48,7 +42,7 @@ public class GenericMultikey implements Multikey {
 
     @Override
     public String type() {
-        return TYPE_NAME;
+        return Multikey.TYPE;
     }
 
     @Override
@@ -73,21 +67,6 @@ public class GenericMultikey implements Multikey {
     @Override
     public Instant revoked() {
         return revoked;
-    }
-
-    protected static final MulticodecKey getKey(Term term, final byte[] encodedKey, MulticodecDecoder decoder) throws NodeAdapterError {
-
-        if (encodedKey == null || encodedKey.length == 0) {
-            return null;
-        }
-
-        return decoder.getCodec(encodedKey)
-                .map(codec -> new GenericMulticodecKey(codec, codec.decode(encodedKey)))
-                .orElseThrow(() -> new NodeAdapterError("Unsupported " + term.name() + " codec"));
-    }
-
-    public static String typeName() {
-        return TYPE_NAME;
     }
 
     @Override
