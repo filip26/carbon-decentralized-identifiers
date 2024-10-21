@@ -6,7 +6,6 @@ import java.util.Collection;
 import com.apicatalog.linkedtree.orm.Fragment;
 import com.apicatalog.linkedtree.orm.Id;
 import com.apicatalog.linkedtree.orm.Term;
-import com.apicatalog.linkedtree.orm.Vocab;
 import com.apicatalog.linkedtree.type.Type;
 
 @Fragment(generic = true)
@@ -17,7 +16,6 @@ public interface Service {
 
     Type type();
 
-    @Term("serviceEndpoint")
-    @Vocab("https://www.w3.org/ns/did#")
+    @Term(value =  "serviceEndpoint", vocab = "https://www.w3.org/ns/did#")
     Collection<ServiceEndpoint> endpoint();
 }
