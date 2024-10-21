@@ -1,4 +1,4 @@
-package com.apicatalog.did.document;
+package com.apicatalog.controller;
 
 import java.net.URI;
 
@@ -13,4 +13,5 @@ public interface ServiceEndpoint {
     URI id();
 
     Type type();
+
 }

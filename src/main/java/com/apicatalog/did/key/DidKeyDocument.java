@@ -4,9 +4,9 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.Set;
 
+import com.apicatalog.controller.Service;
 import com.apicatalog.controller.method.VerificationMethod;
 import com.apicatalog.did.document.DidDocument;
-import com.apicatalog.did.document.ServiceEndpoint;
 import com.apicatalog.linkedtree.type.Type;
 
 class DidKeyDocument implements DidDocument {
@@ -45,7 +45,7 @@ class DidKeyDocument implements DidDocument {
         return Collections.emptySet();
     }
     
-    public Set<ServiceEndpoint> service() {
+    public Set<Service> service() {
         return Collections.emptySet();
     }
 

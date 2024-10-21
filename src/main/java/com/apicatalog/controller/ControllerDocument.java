@@ -31,6 +31,7 @@ public interface ControllerDocument {
     @Term("verificationMethod")
     Set<VerificationMethod> verification();
 
+    @Vocab("https://www.w3.org/ns/activitystreams#")
     Set<URI> alsoKnownAs();
 
     @Term("authenticationMethod")
@@ -47,4 +48,7 @@ public interface ControllerDocument {
 
     @Term("capabilityDelegationMethod")
     Set<VerificationMethod> capabilityDelegation();
+    
+    @Vocab("https://www.w3.org/ns/did#")
+    Set<Service> service();
 }

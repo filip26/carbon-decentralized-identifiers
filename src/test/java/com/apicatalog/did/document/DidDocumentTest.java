@@ -18,6 +18,7 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import com.apicatalog.controller.Service;
 import com.apicatalog.controller.method.VerificationMethod;
 import com.apicatalog.jsonld.JsonLd;
 import com.apicatalog.jsonld.JsonLdError;
@@ -82,9 +83,11 @@ class DidDocumentTest {
 
         assertEquals(1, doc.service().size());
 
-        ServiceEndpoint endpoint = doc.service().iterator().next();
-        assertEquals(URI.create("#atproto_pds"), endpoint.id());
-        assertTrue(endpoint.type().contains("AtprotoPersonalDataServer"));
+        Service service = doc.service().iterator().next();
+        assertEquals(URI.create("#atproto_pds"), service.id());
+        assertTrue(service.type().contains("AtprotoPersonalDataServer"));
+        assertEquals(1, service.endpoint().size());
+        assertEquals(URI.create("https://enoki.us-east.host.bsky.network"), service.endpoint().iterator().next().id());
 
         assertTrue(doc.assertion().isEmpty());
         assertTrue(doc.authentication().isEmpty());
