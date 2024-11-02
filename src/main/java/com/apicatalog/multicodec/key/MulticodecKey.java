@@ -1,6 +1,5 @@
 package com.apicatalog.multicodec.key;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import com.apicatalog.controller.key.RawByteKey;
@@ -18,11 +17,8 @@ public interface MulticodecKey extends RawByteKey {
     static boolean equals(MulticodecKey k1, MulticodecKey k2) {
         if (k1 == null || k2 == null) {
             return k1 == k2;
-
         }
         return Objects.equals(k1.codec(), k2.codec())
-                && Objects.equals(k1.type(), k2.type())
-                && Arrays.equals(k1.rawBytes(), k2.rawBytes());
+                && RawByteKey.equals(k1, k2);
     }
-
 }

@@ -3,7 +3,6 @@ package com.apicatalog.multikey;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -11,12 +10,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -61,6 +58,13 @@ class MultikeyTest {
                     KeyCodec.ED25519_PUBLIC_KEY,
                     KeyCodec.ED25519_PUBLIC_KEY.decode(Multibase.BASE_58_BTC.decode("z6MkmM42vxfqZQsv4ehtTjFFxQ4sQKS2w6WR7emozFAn5cxu"))));
 
+    static Multikey MULTIKEY_3 = GenericMultikey.of(
+            URI.create("https://controller.example/123#keys-2"),
+            URI.create("https://controller.example/123"),
+            new GenericMulticodecKey(
+                    KeyCodec.P256_PUBLIC_KEY,
+                    KeyCodec.P256_PUBLIC_KEY.decode(Multibase.BASE_58_BTC.decode("zDnaerx9CtbPJ1q36T5Ln5wYt3MQYeGRG5ehnPAmxcf5mDZpv"))));
+
     static Multikey MULTIKEY_4 = GenericMultikey.of(
             URI.create("https://controller.example/#keys-4"),
             URI.create("https://controller.example/4"),
@@ -72,28 +76,6 @@ class MultikeyTest {
                     KeyCodec.P256_PRIVATE_KEY.decode(Multibase.BASE_58_BTC.decode("z42twTcNeSYcnqg1FLuSFs2bsGH3ZqbRHFmvS9XMsYhjxvHN"))))
             .expires(Instant.parse("2025-12-06T15:41:46Z"))
             .revoked(Instant.parse("2024-10-06T15:41:46Z"));
-
-    @Test
-    void read3() throws NodeAdapterError, IOException, URISyntaxException, TreeBuilderError, JsonLdError {
-
-        JsonArray input = JsonLd.expand(TestCase.resource("multikey/multikey-3.jsonld")).get();
-
-        Multikey doc = READER.read(
-                Multikey.class,
-                List.of("https://www.w3.org/ns/controller/v1"),
-                input);
-
-        assertNotNull(doc);
-        assertEquals(URI.create("https://controller.example/123#keys-2"), doc.id());
-        assertEquals(Multikey.TYPE, doc.type());
-        assertEquals(URI.create("https://controller.example/123"), doc.controller());
-        assertNull(doc.privateKey());
-        assertNull(doc.expires());
-        assertNull(doc.revoked());
-        assertEquals(KeyCodec.P256_PUBLIC_KEY, doc.publicKey().codec());
-        assertEquals(KeyCodec.P256_PUBLIC_KEY.name(), doc.publicKey().type());
-        assertArrayEquals(KeyCodec.P256_PUBLIC_KEY.decode(Multibase.BASE_58_BTC.decode("zDnaerx9CtbPJ1q36T5Ln5wYt3MQYeGRG5ehnPAmxcf5mDZpv")), doc.publicKey().rawBytes());
-    }
 
     @DisplayName("Read")
     @ParameterizedTest(name = "{0}")
@@ -130,25 +112,26 @@ class MultikeyTest {
         assertTrue(Multikey.equals(expected, multikey));
     }
 
-    @Test
-    void writeInstance() throws IOException, URISyntaxException {
+    @DisplayName("Compact")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource({ "resources" })
+    void compact(String name, Multikey input) throws IOException, URISyntaxException {
 
-        var compacted = WRITER.compacted(MULTIKEY_4);
+        var compacted = WRITER.compacted(input);
         assertNotNull(compacted);
 
-        var name = "multikey-4.jsonld";
-        var doc = TestCase.resource("multikey/multikey-4.jsonld").getJsonContent().orElseThrow();
+        var expected = TestCase.resource("multikey/" + name).getJsonContent().orElseThrow();
 
-        if (!JsonLdComparison.equals(compacted, doc)) {
-            assertTrue(TestCase.compareJson(name, null, compacted, doc));
+        if (!JsonLdComparison.equals(compacted, expected)) {
+            assertTrue(TestCase.compareJson(name, null, compacted, expected));
             fail();
         }
     }
 
-    @DisplayName("Compacted Write")
+    @DisplayName("Read & Compact")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "testResources" })
-    void writeCompacted(String name, JsonObject doc) throws TreeBuilderError, NodeAdapterError, JsonLdError {
+    void readCompact(String name, JsonObject doc) throws TreeBuilderError, NodeAdapterError, JsonLdError {
 
         JsonArray input = JsonLd.expand(JsonDocument.of(doc)).get();
 
@@ -170,6 +153,7 @@ class MultikeyTest {
     static final Stream<Object[]> resources() {
         return Stream.of(new Object[][] {
                 new Object[] { "multikey-1.jsonld", MULTIKEY_1 },
+                new Object[] { "multikey-3.jsonld", MULTIKEY_3 },
                 new Object[] { "multikey-4.jsonld", MULTIKEY_4 },
         });
     }
