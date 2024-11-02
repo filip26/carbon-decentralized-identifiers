@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DisplayName;
@@ -19,14 +20,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.apicatalog.TestCase;
-import com.apicatalog.jsonld.JsonLd;
 import com.apicatalog.jsonld.JsonLdError;
-import com.apicatalog.jsonld.document.JsonDocument;
 import com.apicatalog.jsonld.json.JsonLdComparison;
 import com.apicatalog.linkedtree.Linkable;
 import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.builder.TreeBuilderError;
-import com.apicatalog.linkedtree.jsonld.io.JsonLdTreeReader;
+import com.apicatalog.linkedtree.jsonld.io.JsonLdReader;
 import com.apicatalog.linkedtree.jsonld.io.JsonLdWriter;
 import com.apicatalog.linkedtree.orm.mapper.TreeMapping;
 import com.apicatalog.multibase.Multibase;
@@ -34,8 +33,8 @@ import com.apicatalog.multicodec.codec.KeyCodec;
 import com.apicatalog.multicodec.key.GenericMulticodecKey;
 import com.apicatalog.multicodec.key.MulticodecKey;
 
-import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonValue;
 
 @DisplayName("Multikey")
 @TestMethodOrder(OrderAnnotation.class)
@@ -46,10 +45,15 @@ class MultikeyTest {
             .scan(Multikey.class)
             .build();
 
-    static JsonLdTreeReader READER = JsonLdTreeReader.of(MAPPING);
+    static JsonLdReader READER = JsonLdReader.of(MAPPING);
 
     static JsonLdWriter WRITER = new JsonLdWriter()
-            .scan(Multikey.class);
+            .scan(Multikey.class)
+            // context reducer definitions
+            .context("https://www.w3.org/ns/controller/v1",
+                        List.of("https://w3id.org/security/jwk/v1",
+                                "https://w3id.org/security/multikey/v1"));
+            
 
     static Multikey MULTIKEY_1 = GenericMultikey.of(
             URI.create("https://controller.example/123456789abcdefghi#keys-1"),
@@ -82,7 +86,7 @@ class MultikeyTest {
     @MethodSource({ "resources" })
     void read(String name, Multikey expected) throws NodeAdapterError, IOException, URISyntaxException, TreeBuilderError, JsonLdError {
 
-        JsonArray input = JsonLd.expand(TestCase.resource("multikey/" + name)).get();
+        JsonObject input = TestCase.resource("multikey/" + name).getJsonContent().map(JsonValue::asJsonObject).orElseThrow();
 
         Multikey multikey = READER.read(Multikey.class, input);
 
@@ -133,9 +137,7 @@ class MultikeyTest {
     @MethodSource({ "testResources" })
     void readAndCompact(String name, JsonObject doc) throws TreeBuilderError, NodeAdapterError, JsonLdError {
 
-        JsonArray input = JsonLd.expand(JsonDocument.of(doc)).get();
-
-        var multikey = READER.read(Multikey.class, input);
+        var multikey = READER.read(Multikey.class, doc);
 
         var compacted = WRITER.compacted(multikey);
         assertEquals(Multikey.TYPE, multikey.type());

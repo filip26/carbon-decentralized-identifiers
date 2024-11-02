@@ -13,7 +13,7 @@ import jakarta.json.JsonValue;
 
 @Fragment
 @Vocab("https://w3id.org/security#")
-@Context("https://w3id.org/security/jwk/v1")
+@Context(value = "https://w3id.org/security/jwk/v1", override = true)
 public interface JsonWebKey extends VerificationMethod {
 
     static final String TYPE = "https://w3id.org/security#JsonWebKey";

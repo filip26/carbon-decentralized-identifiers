@@ -19,7 +19,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.apicatalog.TestCase;
-import com.apicatalog.jsonld.JsonLd;
 import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.jsonld.document.JsonDocument;
 import com.apicatalog.jsonld.json.JsonLdComparison;
@@ -27,12 +26,11 @@ import com.apicatalog.linkedtree.Linkable;
 import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.builder.TreeBuilderError;
 import com.apicatalog.linkedtree.jsonld.JsonLdKeyword;
-import com.apicatalog.linkedtree.jsonld.io.JsonLdTreeReader;
+import com.apicatalog.linkedtree.jsonld.io.JsonLdReader;
 import com.apicatalog.linkedtree.jsonld.io.JsonLdWriter;
 import com.apicatalog.linkedtree.orm.mapper.TreeMapping;
 
 import jakarta.json.Json;
-import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonStructure;
 import jakarta.json.JsonValue;
@@ -47,7 +45,7 @@ class JsonWebKeyTest {
             .scan(JsonWebKey.class)
             .build();
 
-    static JsonLdTreeReader READER = JsonLdTreeReader.of(MAPPING);
+    static JsonLdReader READER = JsonLdReader.of(MAPPING);
 
     static JsonLdWriter WRITER = new JsonLdWriter()
             .scan(JsonWebKey.class);
@@ -79,16 +77,9 @@ class JsonWebKeyTest {
 
         JsonObject resource = resource(name).getJsonContent().map(JsonStructure::asJsonObject).orElseThrow();
 
-        if (!resource.containsKey(JsonLdKeyword.CONTEXT)) {
-            resource = Json.createObjectBuilder(resource)
-                    .add(JsonLdKeyword.CONTEXT, "https://w3id.org/security/jwk/v1").build();
-        }
-
-        JsonArray input = JsonLd.expand(JsonDocument.of(resource)).get();
-
         JsonWebKey jwk = READER.read(
                 JsonWebKey.class,
-                input);
+                resource);
 
         assertNotNull(jwk);
         assertEquals(expected.id(), jwk.id());
@@ -125,22 +116,17 @@ class JsonWebKeyTest {
     @DisplayName("Read & Compact")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "testResources" })
-    void readAndCompact(String name, JsonObject doc) throws TreeBuilderError, NodeAdapterError, JsonLdError {
+    void readAndCompact(String name, JsonObject expected) throws TreeBuilderError, NodeAdapterError, JsonLdError {
 
-        JsonObject expected = doc;
-
-        if (!expected.containsKey(JsonLdKeyword.CONTEXT)) {
-            expected = Json.createObjectBuilder(expected)
-                    .add(JsonLdKeyword.CONTEXT, "https://w3id.org/security/jwk/v1").build();
-        }
-
-        JsonArray input = JsonLd.expand(JsonDocument.of(expected)).get();
-
-        var jwk = READER.read(JsonWebKey.class, input);
+        var jwk = READER.read(JsonWebKey.class, expected);
 
         var compacted = WRITER.compacted(jwk);
         assertEquals(JsonWebKey.TYPE, jwk.type());
 
+        if (!expected.containsKey(JsonLdKeyword.CONTEXT)) {
+            compacted = Json.createObjectBuilder(compacted).remove(JsonLdKeyword.CONTEXT).build();
+        }
+        
         if (!JsonLdComparison.equals(compacted, expected)) {
             assertTrue(TestCase.compareJson(name, ((Linkable) jwk).ld(), compacted, expected));
             fail();

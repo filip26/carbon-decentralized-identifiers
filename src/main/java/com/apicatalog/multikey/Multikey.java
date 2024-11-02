@@ -16,7 +16,7 @@ import com.apicatalog.multicodec.key.MulticodecKeyAdapter;
 
 @Fragment
 @Vocab("https://w3id.org/security#")
-@Context("https://w3id.org/security/multikey/v1")
+@Context(value =  "https://w3id.org/security/multikey/v1", override = true)
 public interface Multikey extends KeyPair {
 
     static final String TYPE = "https://w3id.org/security#Multikey";

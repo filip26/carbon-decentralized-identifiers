@@ -4,6 +4,7 @@ import java.net.URI;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.apicatalog.linkedtree.orm.Context;
 import com.apicatalog.linkedtree.orm.Fragment;
 import com.apicatalog.linkedtree.orm.Id;
 import com.apicatalog.linkedtree.orm.Literal;
@@ -19,6 +20,7 @@ import com.apicatalog.linkedtree.xsd.XsdDateTimeAdapter;
  */
 @Fragment(generic = true)
 @Vocab("https://w3id.org/security#")
+@Context("https://www.w3.org/ns/controller/v1")
 public interface VerificationMethod {
 
     @Id
@@ -36,14 +38,14 @@ public interface VerificationMethod {
     @Term(value = "expiration", compact = false)
     Instant expires();
 
-    static boolean equals(VerificationMethod k1, VerificationMethod k2) {
-        if (k1 == null || k2 == null) {
-            return k1 == k2;
+    static boolean equals(VerificationMethod method1, VerificationMethod method2) {
+        if (method1 == null || method2 == null) {
+            return method1 == method2;
         }
-        return Objects.equals(k1.id(), k2.id())
-                && Objects.equals(k1.type(), k2.type())
-                && Objects.equals(k1.controller(), k2.controller())
-                && Objects.equals(k1.expires(), k2.expires())
-                && Objects.equals(k1.revoked(), k2.revoked());
+        return Objects.equals(method1.id(), method2.id())
+                && Objects.equals(method1.type(), method2.type())
+                && Objects.equals(method1.controller(), method2.controller())
+                && Objects.equals(method1.expires(), method2.expires())
+                && Objects.equals(method1.revoked(), method2.revoked());
     }
 }
