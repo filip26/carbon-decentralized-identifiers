@@ -5,25 +5,33 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import com.apicatalog.TestCase;
 import com.apicatalog.jsonld.JsonLd;
 import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.jsonld.document.JsonDocument;
+import com.apicatalog.jsonld.json.JsonLdComparison;
 import com.apicatalog.jwk.JsonWebKey;
 import com.apicatalog.linkedtree.Linkable;
 import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.builder.TreeBuilderError;
 import com.apicatalog.linkedtree.jsonld.io.JsonLdTreeReader;
+import com.apicatalog.linkedtree.jsonld.io.JsonLdWriter;
 import com.apicatalog.linkedtree.orm.mapper.TreeMapping;
 import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multicodec.codec.KeyCodec;
@@ -31,6 +39,7 @@ import com.apicatalog.multikey.Multikey;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 
 @TestMethodOrder(OrderAnnotation.class)
 class VerificationMethodTest {
@@ -127,6 +136,42 @@ class VerificationMethodTest {
         assertEquals(URI.create("https://controller.example/1"), doc.controller());
     }
     
+    @DisplayName("Compacted Write")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource({ "multikeys", "jwks" })
+    void writeCompactedGeneric(String name, JsonObject doc) throws TreeBuilderError, NodeAdapterError, JsonLdError {
+
+        TreeMapping mapping = TreeMapping
+                .createBuilder()
+                .scan(VerificationMethod.class)
+                .build();
+
+        JsonLdTreeReader reader = JsonLdTreeReader.of(mapping);
+
+        JsonArray input = JsonLd.expand(JsonDocument.of(doc)).get();
+
+        var method = reader.read(VerificationMethod.class, input);
+        assertNotNull(method.type());
+        assertEquals(Multikey.TYPE, method.type());
+        
+        JsonLdWriter writer = new JsonLdWriter().scan(VerificationMethod.class);
+
+        var compacted = writer.compacted(method);
+
+        if (!JsonLdComparison.equals(compacted, doc)) {
+            assertTrue(TestCase.compareJson(name, ((Linkable)method).ld(), compacted, doc));
+            fail();
+        }
+    }
+
+    static final Stream<Object[]> multikeys() throws IOException, URISyntaxException {
+        return TestCase.resources("multikey", ".jsonld");
+    }
+
+    static final Stream<Object[]> jwks() throws IOException, URISyntaxException {
+        return TestCase.resources("jwk", ".jsonld");
+    }
+
     static final JsonDocument resource(String name) throws IOException, URISyntaxException {
         try (var reader = Json.createReader(VerificationMethodTest.class.getResourceAsStream(name))) {
             return JsonDocument.of(reader.readObject());

@@ -9,7 +9,7 @@ import com.apicatalog.linkedtree.orm.Fragment;
 import com.apicatalog.linkedtree.orm.Id;
 import com.apicatalog.linkedtree.orm.Term;
 import com.apicatalog.linkedtree.orm.Vocab;
-import com.apicatalog.linkedtree.type.Type;
+import com.apicatalog.linkedtree.type.FragmentType;
 
 @Fragment(generic = true)
 @Vocab("https://w3id.org/security#")
@@ -24,7 +24,7 @@ public interface ControllerDocument {
      * 
      * @return a selector of document types, never <code>null</code>.
      */
-    Type type();
+    FragmentType type();
 
     Set<URI> controller();
 

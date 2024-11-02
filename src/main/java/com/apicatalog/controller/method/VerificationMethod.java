@@ -7,6 +7,7 @@ import com.apicatalog.linkedtree.orm.Fragment;
 import com.apicatalog.linkedtree.orm.Id;
 import com.apicatalog.linkedtree.orm.Literal;
 import com.apicatalog.linkedtree.orm.Term;
+import com.apicatalog.linkedtree.orm.Type;
 import com.apicatalog.linkedtree.orm.Vocab;
 import com.apicatalog.linkedtree.xsd.XsdDateTimeAdapter;
 
@@ -22,6 +23,7 @@ public interface VerificationMethod {
     @Id
     URI id();
 
+    @Type
     String type();
 
     URI controller();
@@ -30,6 +32,6 @@ public interface VerificationMethod {
     Instant revoked();
 
     @Literal(XsdDateTimeAdapter.class)
-    @Term("expiration")
+    @Term(value = "expiration", compact = false)
     Instant expires();
 }

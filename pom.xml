@@ -62,7 +62,7 @@
 
         <jakarta.json.version>2.0.1</jakarta.json.version>
 
-        <linked-tree.version>0.0.13-SNAPSHOT</linked-tree.version>
+        <linked-tree.version>0.0.68-SNAPSHOT</linked-tree.version>
         <copper.multicodec.version>1.1.0</copper.multicodec.version>
         <copper.multibase.version>1.0.0</copper.multibase.version>
 

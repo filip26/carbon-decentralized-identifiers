@@ -22,6 +22,7 @@ import com.apicatalog.jsonld.document.JsonDocument;
 import com.apicatalog.jwk.JsonWebKey;
 import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.builder.TreeBuilderError;
+import com.apicatalog.linkedtree.jsonld.io.JsonLdWriter;
 import com.apicatalog.linkedtree.jsonld.io.JsonLdTreeReader;
 import com.apicatalog.linkedtree.orm.mapper.TreeMapping;
 import com.apicatalog.multikey.Multikey;
@@ -32,6 +33,16 @@ import jakarta.json.JsonArray;
 @DisplayName("Controller Document")
 @TestMethodOrder(OrderAnnotation.class)
 class ControllerDocTest {
+
+    static JsonLdWriter WRITER = new JsonLdWriter()
+            .scan(ControllerDocument.class)
+            .scan(Multikey.class)
+            .scan(JsonWebKey.class)
+            .scan(VerificationMethod.class)
+            // context reducer definitions
+            .context("https://www.w3.org/ns/controller/v1",
+                        List.of("https://w3id.org/security/jwk/v1",
+                                "https://w3id.org/security/multikey/v1"));
 
     @Test
     void read() throws NodeAdapterError, IOException, URISyntaxException, TreeBuilderError, JsonLdError {

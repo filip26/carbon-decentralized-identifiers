@@ -2,33 +2,46 @@ package com.apicatalog.jwk;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import com.apicatalog.TestCase;
 import com.apicatalog.jsonld.JsonLd;
 import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.jsonld.document.JsonDocument;
+import com.apicatalog.jsonld.json.JsonLdComparison;
+import com.apicatalog.linkedtree.Linkable;
 import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.builder.TreeBuilderError;
+import com.apicatalog.linkedtree.jsonld.io.JsonLdWriter;
 import com.apicatalog.linkedtree.jsonld.io.JsonLdTreeReader;
 import com.apicatalog.linkedtree.orm.mapper.TreeMapping;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 
 @DisplayName("JsonWebKey")
 @TestMethodOrder(OrderAnnotation.class)
 class JsonWebKeyTest {
 
+    static JsonLdWriter WRITER = new JsonLdWriter()
+            .scan(JsonWebKey.class);
+    
     @Test
     void read() throws NodeAdapterError, IOException, URISyntaxException, TreeBuilderError, JsonLdError {
 
@@ -68,4 +81,34 @@ class JsonWebKeyTest {
             return JsonDocument.of(reader.readObject());
         }
     }
+    
+    @DisplayName("Read/Write")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource({ "testResources" })
+    void readWrite(String name, JsonObject doc) throws TreeBuilderError, NodeAdapterError, JsonLdError {
+
+        TreeMapping mapping = TreeMapping
+                .createBuilder()
+                .scan(JsonWebKey.class)
+                .build();
+
+        JsonLdTreeReader reader = JsonLdTreeReader.of(mapping);
+
+        JsonArray input = JsonLd.expand(JsonDocument.of(doc)).get();
+
+        var jwk = reader.read(JsonWebKey.class, input);
+        
+        var compacted = WRITER.compacted(jwk);
+
+        if (!JsonLdComparison.equals(compacted, doc)) {
+            assertTrue(TestCase.compareJson(name, ((Linkable)jwk).ld(), compacted, doc));
+            fail();
+        }
+
+    }
+
+    static final Stream<Object[]> testResources() throws IOException, URISyntaxException {
+        return TestCase.resources("jwk", ".jsonld");
+    }
+
 }

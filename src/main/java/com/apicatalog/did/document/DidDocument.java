@@ -11,7 +11,7 @@ import com.apicatalog.linkedtree.orm.Fragment;
  *      document properties</a>
  */
 @Fragment(generic = true)
-@Context("https://www.w3.org/ns/did/v1")
+@Context(value =  "https://www.w3.org/ns/did/v1", override = true)
 public interface DidDocument extends ControllerDocument {
 
 }

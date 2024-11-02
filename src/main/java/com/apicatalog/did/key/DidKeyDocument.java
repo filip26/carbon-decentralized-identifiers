@@ -7,7 +7,7 @@ import java.util.Set;
 import com.apicatalog.controller.Service;
 import com.apicatalog.controller.method.VerificationMethod;
 import com.apicatalog.did.document.DidDocument;
-import com.apicatalog.linkedtree.type.Type;
+import com.apicatalog.linkedtree.type.FragmentType;
 
 class DidKeyDocument implements DidDocument {
 
@@ -75,7 +75,7 @@ class DidKeyDocument implements DidDocument {
     }
 
     @Override
-    public Type type() {
-        return Type.empty();
+    public FragmentType type() {
+        return FragmentType.empty();
     }
 }

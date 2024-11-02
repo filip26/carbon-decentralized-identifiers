@@ -60,8 +60,9 @@ public class GenericMultikey implements Multikey {
         return privateKey;
     }
 
-    public void revoked(Instant revoked) {
+    public GenericMultikey revoked(Instant revoked) {
         this.revoked = revoked;
+        return this;
     }
 
     @Override
@@ -74,7 +75,8 @@ public class GenericMultikey implements Multikey {
         return expires;
     }
 
-    public void expires(Instant expires) {
+    public GenericMultikey expires(Instant expires) {
         this.expires = expires;
+        return this;
     }
 }
