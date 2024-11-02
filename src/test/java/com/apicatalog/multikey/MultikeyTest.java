@@ -131,7 +131,7 @@ class MultikeyTest {
     @DisplayName("Read & Compact")
     @ParameterizedTest(name = "{0}")
     @MethodSource({ "testResources" })
-    void readCompact(String name, JsonObject doc) throws TreeBuilderError, NodeAdapterError, JsonLdError {
+    void readAndCompact(String name, JsonObject doc) throws TreeBuilderError, NodeAdapterError, JsonLdError {
 
         JsonArray input = JsonLd.expand(JsonDocument.of(doc)).get();
 
