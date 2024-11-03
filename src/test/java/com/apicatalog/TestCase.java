@@ -50,10 +50,11 @@ public class TestCase {
 
         write(testCase, result, expected, null);
 
-        final StringWriter stringWriter = new StringWriter();
-        (new DictionaryWriter(new PrintWriter(stringWriter))).print(data);
-        System.out.print(stringWriter.toString());
-
+        if (data != null) {
+            final StringWriter stringWriter = new StringWriter();
+            (new DictionaryWriter(new PrintWriter(stringWriter))).print(data);
+            System.out.print(stringWriter.toString());
+        }
         fail("Expected " + expected + ", but was" + result);
         return false;
     }

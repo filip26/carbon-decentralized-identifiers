@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Set;
 
 import com.apicatalog.controller.method.VerificationMethod;
+import com.apicatalog.linkedtree.orm.Compaction;
 import com.apicatalog.linkedtree.orm.Context;
 import com.apicatalog.linkedtree.orm.Fragment;
 import com.apicatalog.linkedtree.orm.Id;
@@ -29,26 +30,34 @@ public interface ControllerDocument {
     Set<URI> controller();
 
     @Term("verificationMethod")
+    @Compaction(keepArray = true)
     Set<VerificationMethod> verification();
 
     @Vocab("https://www.w3.org/ns/activitystreams#")
+    @Compaction(keepArray = true)
     Set<URI> alsoKnownAs();
 
-    @Term("authenticationMethod")
+    @Term(value = "authenticationMethod", compact = false)
+    @Compaction(keepArray = true)
     Set<VerificationMethod> authentication();
 
     @Term("assertionMethod")
+    @Compaction(keepArray = true)
     Set<VerificationMethod> assertion();
 
-    @Term("keyAgreementMethod")
+    @Term(value = "keyAgreementMethod", compact = false)
+    @Compaction(keepArray = true)
     Set<VerificationMethod> keyAgreement();
 
-    @Term("capabilityInvocationMethod")
+    @Term(value = "capabilityInvocationMethod", compact = false)
+    @Compaction(keepArray = true)
     Set<VerificationMethod> capabilityInvocation();
 
-    @Term("capabilityDelegationMethod")
+    @Term(value = "capabilityDelegationMethod", compact = false)
+    @Compaction(keepArray = true)
     Set<VerificationMethod> capabilityDelegation();
-    
+
     @Vocab("https://www.w3.org/ns/did#")
+    @Compaction(keepArray = true)
     Set<Service> service();
 }

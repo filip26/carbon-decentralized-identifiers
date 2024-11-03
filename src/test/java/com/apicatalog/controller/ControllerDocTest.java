@@ -14,17 +14,16 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.apicatalog.TestCase;
 import com.apicatalog.controller.method.VerificationMethod;
 import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.jsonld.json.JsonLdComparison;
 import com.apicatalog.jwk.JsonWebKey;
-import com.apicatalog.linkedtree.Linkable;
 import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.builder.TreeBuilderError;
 import com.apicatalog.linkedtree.jsonld.io.JsonLdReader;
@@ -102,7 +101,7 @@ class ControllerDocTest {
         var compacted = WRITER.compacted(doc);
 
         if (!JsonLdComparison.equals(compacted, expected)) {
-            assertTrue(TestCase.compareJson(name, ((Linkable) doc).ld(), compacted, expected));
+            assertTrue(TestCase.compareJson(name, null, compacted, expected));
             fail();
         }
     }
