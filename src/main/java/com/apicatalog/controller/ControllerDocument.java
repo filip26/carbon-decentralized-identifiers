@@ -27,10 +27,11 @@ public interface ControllerDocument {
      */
     FragmentType type();
 
+    @Compaction(order = 10)
     Set<URI> controller();
 
     @Term("verificationMethod")
-    @Compaction(keepArray = true)
+    @Compaction(keepArray = true, order = 20)
     Set<VerificationMethod> verification();
 
     @Vocab("https://www.w3.org/ns/activitystreams#")

@@ -4,6 +4,7 @@ import java.net.URI;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.apicatalog.linkedtree.orm.Compaction;
 import com.apicatalog.linkedtree.orm.Context;
 import com.apicatalog.linkedtree.orm.Fragment;
 import com.apicatalog.linkedtree.orm.Id;
@@ -29,13 +30,16 @@ public interface VerificationMethod {
     @Type
     String type();
 
+    @Compaction(order = 10)
     URI controller();
 
     @Literal(XsdDateTimeAdapter.class)
+    @Compaction(order = 20)
     Instant revoked();
 
     @Literal(XsdDateTimeAdapter.class)
     @Term(value = "expiration", compact = false)
+    @Compaction(order = 30)
     Instant expires();
 
     static boolean equals(VerificationMethod method1, VerificationMethod method2) {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.apicatalog.controller.key.KeyPair;
 import com.apicatalog.controller.method.VerificationMethod;
+import com.apicatalog.linkedtree.orm.Compaction;
 import com.apicatalog.linkedtree.orm.Context;
 import com.apicatalog.linkedtree.orm.Fragment;
 import com.apicatalog.linkedtree.orm.Literal;
@@ -28,11 +29,13 @@ public interface Multikey extends KeyPair {
 
     @Term("publicKeyMultibase")
     @Literal(value = MulticodecKeyAdapter.class, params = { "base58btc", "base64url" })
+    @Compaction(order = 40)
     @Override
     MulticodecKey publicKey();
 
     @Term("secretKeyMultibase")
     @Literal(value = MulticodecKeyAdapter.class, params = { "base58btc", "base64url" })
+    @Compaction(order = 50)
     @Override
     MulticodecKey privateKey();
 

@@ -3,6 +3,7 @@ package com.apicatalog.jwk;
 import java.util.Objects;
 
 import com.apicatalog.controller.method.VerificationMethod;
+import com.apicatalog.linkedtree.orm.Compaction;
 import com.apicatalog.linkedtree.orm.Context;
 import com.apicatalog.linkedtree.orm.Fragment;
 import com.apicatalog.linkedtree.orm.Term;
@@ -25,9 +26,11 @@ public interface JsonWebKey extends VerificationMethod {
     }
 
     @Term("publicKeyJwk")
+    @Compaction(order = 40)
     JsonValue publicKey();
 
     @Term("secretKeyJwk")
+    @Compaction(order = 50)
     JsonValue privateKey();
 
     static boolean equals(JsonWebKey k1, JsonWebKey k2) {

@@ -29,12 +29,7 @@ An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.
 <dependency>
     <groupId>com.apicatalog</groupId>
     <artifactId>carbon-did</artifactId>
-    <version>0.6.0</version>
-</dependency>
-<dependency>
-    <groupId>com.apicatalog</groupId>
-    <artifactId>copper-multibase</artifactId>
-    <version>0.5.0</version>
+    <version>0.9.0</version>
 </dependency>
 ```
 
