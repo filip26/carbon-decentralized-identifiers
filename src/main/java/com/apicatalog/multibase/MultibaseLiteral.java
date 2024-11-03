@@ -8,12 +8,16 @@ import com.apicatalog.linkedtree.literal.ByteArrayValue;
 public record MultibaseLiteral(
         String datatype,
         String lexicalValue,
+        Multibase base,
         byte[] byteArrayValue) implements LinkedLiteral, ByteArrayValue {
 
     static final String TYPE = "https://w3id.org/security#multibase";
 
     public static MultibaseLiteral of(MultibaseDecoder bases, String value) {
-        return new MultibaseLiteral(TYPE, value, bases.decode(value));
+        
+        Multibase base = bases.getBase(value).orElseThrow(IllegalArgumentException::new);
+        
+        return new MultibaseLiteral(TYPE, value, base, base.decode(value));
     }
 
     public static String typeName() {

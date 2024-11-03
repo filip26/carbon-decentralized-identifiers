@@ -3,11 +3,14 @@ package com.apicatalog.multicodec.key;
 import java.util.Objects;
 
 import com.apicatalog.controller.key.RawByteKey;
+import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multicodec.Multicodec;
 
 public interface MulticodecKey extends RawByteKey {
 
     Multicodec codec();
+
+    Multibase base();
 
     @Override
     default String type() {

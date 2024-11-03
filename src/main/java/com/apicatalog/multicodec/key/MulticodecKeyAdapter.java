@@ -16,7 +16,10 @@ public class MulticodecKeyAdapter extends MultibaseAdapter implements DataTypeNo
 
     @Override
     public LinkedLiteral materialize(String source) throws NodeAdapterError {
-        return getKey(source, decoder.decode(source));
+        
+        Multibase base = decoder.getBase(source).orElseThrow(IllegalArgumentException::new);
+
+        return getKey(source, base, decoder.decode(source));
     }
 
     @Override
@@ -24,14 +27,14 @@ public class MulticodecKeyAdapter extends MultibaseAdapter implements DataTypeNo
         return MulticodecKeyLiteral.class;
     }
 
-    protected static final MulticodecKeyLiteral getKey(String source, final byte[] encodedKey) throws NodeAdapterError {
+    protected static final MulticodecKeyLiteral getKey(String source, Multibase base, final byte[] encodedKey) throws NodeAdapterError {
 
         if (encodedKey == null || encodedKey.length == 0) {
             return null;
         }
 
         return CODECS.getCodec(encodedKey)
-                .map(codec -> new MulticodecKeyLiteral(source, MultibaseLiteral.typeName(), codec, codec.decode(encodedKey)))
+                .map(codec -> new MulticodecKeyLiteral(source, MultibaseLiteral.typeName(), codec, base, codec.decode(encodedKey)))
                 .orElseThrow(() -> new NodeAdapterError("Unsupported multicodec code=" + UVarInt.decode(encodedKey) + "."));
     }
 

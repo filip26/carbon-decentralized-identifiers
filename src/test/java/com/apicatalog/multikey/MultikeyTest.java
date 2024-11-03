@@ -61,6 +61,7 @@ class MultikeyTest {
             URI.create("https://controller.example/123456789abcdefghi"),
             new GenericMulticodecKey(
                     KeyCodec.ED25519_PUBLIC_KEY,
+                    Multibase.BASE_58_BTC,
                     KeyCodec.ED25519_PUBLIC_KEY.decode(Multibase.BASE_58_BTC.decode("z6MkmM42vxfqZQsv4ehtTjFFxQ4sQKS2w6WR7emozFAn5cxu"))));
 
     static Multikey MULTIKEY_3 = GenericMultikey.of(
@@ -68,6 +69,7 @@ class MultikeyTest {
             URI.create("https://controller.example/123"),
             new GenericMulticodecKey(
                     KeyCodec.P256_PUBLIC_KEY,
+                    Multibase.BASE_58_BTC,
                     KeyCodec.P256_PUBLIC_KEY.decode(Multibase.BASE_58_BTC.decode("zDnaerx9CtbPJ1q36T5Ln5wYt3MQYeGRG5ehnPAmxcf5mDZpv"))));
 
     static Multikey MULTIKEY_4 = GenericMultikey.of(
@@ -75,9 +77,11 @@ class MultikeyTest {
             URI.create("https://controller.example/4"),
             new GenericMulticodecKey(
                     KeyCodec.P256_PUBLIC_KEY,
+                    Multibase.BASE_58_BTC,
                     KeyCodec.P256_PUBLIC_KEY.decode(Multibase.BASE_58_BTC.decode("zDnaerx9CtbPJ1q36T5Ln5wYt3MQYeGRG5ehnPAmxcf5mDZpv"))),
             new GenericMulticodecKey(
                     KeyCodec.P256_PRIVATE_KEY,
+                    Multibase.BASE_58_BTC,
                     KeyCodec.P256_PRIVATE_KEY.decode(Multibase.BASE_58_BTC.decode("z42twTcNeSYcnqg1FLuSFs2bsGH3ZqbRHFmvS9XMsYhjxvHN"))))
             .expires(Instant.parse("2025-12-06T15:41:46Z"))
             .revoked(Instant.parse("2024-10-06T15:41:46Z"));

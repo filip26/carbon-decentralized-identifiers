@@ -130,4 +130,9 @@ public class DidKey extends Did implements MulticodecKey {
     public byte[] getKey() {
         return codec.encode(raw);
     }
+
+    @Override
+    public Multibase base() {
+        return Multibase.BASE_58_BTC;
+    }
 }
