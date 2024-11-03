@@ -5,57 +5,75 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import com.apicatalog.TestCase;
+import com.apicatalog.controller.ControllerDocumentLoader;
 import com.apicatalog.controller.Service;
+import com.apicatalog.controller.ServiceEndpoint;
 import com.apicatalog.controller.method.VerificationMethod;
-import com.apicatalog.jsonld.JsonLd;
 import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.jsonld.document.JsonDocument;
+import com.apicatalog.jsonld.json.JsonLdComparison;
 import com.apicatalog.jwk.JsonWebKey;
 import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.builder.TreeBuilderError;
-import com.apicatalog.linkedtree.jsonld.io.JsonLdTreeReader;
+import com.apicatalog.linkedtree.jsonld.io.JsonLdReader;
+import com.apicatalog.linkedtree.jsonld.io.JsonLdWriter;
 import com.apicatalog.linkedtree.orm.mapper.TreeMapping;
 import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multicodec.codec.KeyCodec;
 import com.apicatalog.multikey.Multikey;
 
 import jakarta.json.Json;
-import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonValue;
 
 @DisplayName("DID Document")
 @TestMethodOrder(OrderAnnotation.class)
 class DidDocumentTest {
 
+    static TreeMapping MAPPING = TreeMapping
+            .createBuilder()
+            .scan(Multikey.class)
+            .scan(JsonWebKey.class)
+            .scan(DidDocument.class)
+            .scan(VerificationMethod.class)
+            .scan(Service.class)
+            .scan(ServiceEndpoint.class)
+            .build();
+
+    static JsonLdReader READER = JsonLdReader.of(MAPPING, ControllerDocumentLoader.resources());
+
+    static JsonLdWriter WRITER = new JsonLdWriter()
+            .scan(Multikey.class)
+            .scan(JsonWebKey.class)
+            .scan(DidDocument.class)
+            .scan(VerificationMethod.class)
+            .scan(Service.class)
+            .scan(ServiceEndpoint.class);
+    
     @Test
     void read1() throws NodeAdapterError, IOException, URISyntaxException, TreeBuilderError, JsonLdError {
 
-        TreeMapping mapping = TreeMapping
-                .createBuilder()
-                .scan(Multikey.class)
-                .scan(VerificationMethod.class)
-                .scan(DidDocument.class)
-                .build();
+        JsonObject input = resource("bsky-ex.jsonld").getJsonContent().map(JsonValue::asJsonObject).orElseThrow();
 
-        JsonLdTreeReader reader = JsonLdTreeReader.of(mapping);
-
-        JsonArray input = JsonLd.expand(resource("bsky-ex.jsonld")).get();
-
-        DidDocument doc = reader.read(
+        DidDocument doc = READER.read(
                 DidDocument.class,
-                List.of("https://www.w3.org/ns/did/v1"),
                 input);
 
         assertNotNull(doc);
@@ -98,21 +116,10 @@ class DidDocumentTest {
     @Test
     void read2() throws NodeAdapterError, IOException, URISyntaxException, TreeBuilderError, JsonLdError {
 
-        TreeMapping mapping = TreeMapping
-                .createBuilder()
-                .scan(Multikey.class)
-                .scan(JsonWebKey.class)
-                .scan(VerificationMethod.class)
-                .scan(DidDocument.class)
-                .build();
+        JsonObject input = resource("doc-1.jsonld").getJsonContent().map(JsonValue::asJsonObject).orElseThrow();
 
-        JsonLdTreeReader reader = JsonLdTreeReader.of(mapping);
-
-        JsonArray input = JsonLd.expand(resource("doc-1.jsonld")).get();
-
-        DidDocument doc = reader.read(
+        DidDocument doc = READER.read(
                 DidDocument.class,
-                List.of("https://www.w3.org/ns/did/v1", "https://w3id.org/security/jwk/v1"),
                 input);
 
         assertNotNull(doc);
@@ -196,6 +203,27 @@ class DidDocumentTest {
         assertTrue(doc.capabilityDelegation().isEmpty());
         assertTrue(doc.capabilityInvocation().isEmpty());
     }
+    
+
+    @DisplayName("Read & Compact")
+    @ParameterizedTest(name = "{0}")
+    @MethodSource({ "testResources" })
+    void readAndCompact(String name, JsonObject expected) throws TreeBuilderError, NodeAdapterError, JsonLdError {
+
+        var doc = READER.read(DidDocument.class, expected);
+
+        var compacted = WRITER.compacted(doc);
+
+        if (!JsonLdComparison.equals(compacted, expected)) {
+            assertTrue(TestCase.compareJson(name, null, compacted, expected));
+            fail();
+        }
+    }
+
+    static final Stream<Object[]> testResources() throws IOException, URISyntaxException {
+        return TestCase.resources("did/document", ".jsonld");
+    }
+
 
     static final JsonDocument resource(String name) throws IOException, URISyntaxException {
         try (var reader = Json.createReader(DidDocumentTest.class.getResourceAsStream(name))) {

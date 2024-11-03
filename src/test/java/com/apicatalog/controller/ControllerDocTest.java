@@ -42,8 +42,10 @@ class ControllerDocTest {
             .createBuilder()
             .scan(Multikey.class)
             .scan(JsonWebKey.class)
-            .scan(VerificationMethod.class)
             .scan(ControllerDocument.class)
+            .scan(VerificationMethod.class)
+            .scan(Service.class)
+            .scan(ServiceEndpoint.class)
             .build();
 
     static JsonLdReader READER = JsonLdReader.of(MAPPING, ControllerDocumentLoader.resources());
@@ -53,6 +55,8 @@ class ControllerDocTest {
             .scan(Multikey.class)
             .scan(JsonWebKey.class)
             .scan(VerificationMethod.class)
+            .scan(Service.class)
+            .scan(ServiceEndpoint.class)
             // context reducer definitions
             .context("https://www.w3.org/ns/controller/v1",
                     List.of("https://w3id.org/security/jwk/v1",
