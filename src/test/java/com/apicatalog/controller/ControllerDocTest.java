@@ -16,24 +16,32 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import com.apicatalog.controller.method.VerificationMethod;
-import com.apicatalog.jsonld.JsonLd;
 import com.apicatalog.jsonld.JsonLdError;
-import com.apicatalog.jsonld.document.JsonDocument;
 import com.apicatalog.jwk.JsonWebKey;
 import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.builder.TreeBuilderError;
+import com.apicatalog.linkedtree.jsonld.io.JsonLdReader;
 import com.apicatalog.linkedtree.jsonld.io.JsonLdWriter;
-import com.apicatalog.linkedtree.jsonld.io.JsonLdTreeReader;
 import com.apicatalog.linkedtree.orm.mapper.TreeMapping;
 import com.apicatalog.multikey.Multikey;
 
 import jakarta.json.Json;
-import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
 
 @DisplayName("Controller Document")
 @TestMethodOrder(OrderAnnotation.class)
 class ControllerDocTest {
 
+    static TreeMapping MAPPING = TreeMapping
+            .createBuilder()
+            .scan(Multikey.class)
+            .scan(JsonWebKey.class)
+            .scan(VerificationMethod.class)
+            .scan(ControllerDocument.class)
+            .build();
+
+    static JsonLdReader READER = JsonLdReader.of(MAPPING, ControllerDocumentLoader.resources());
+    
     static JsonLdWriter WRITER = new JsonLdWriter()
             .scan(ControllerDocument.class)
             .scan(Multikey.class)
@@ -47,21 +55,10 @@ class ControllerDocTest {
     @Test
     void read() throws NodeAdapterError, IOException, URISyntaxException, TreeBuilderError, JsonLdError {
 
-        TreeMapping mapping = TreeMapping
-                .createBuilder()
-                .scan(Multikey.class)
-                .scan(JsonWebKey.class)
-                .scan(VerificationMethod.class)
-                .scan(ControllerDocument.class)
-                .build();
+        JsonObject input = resource("doc-1.jsonld");
 
-        JsonLdTreeReader reader = JsonLdTreeReader.of(mapping);
-
-        JsonArray input = JsonLd.expand(resource("doc-1.jsonld")).get();
-
-        ControllerDocument doc = reader.read(
+        ControllerDocument doc = READER.read(
                 ControllerDocument.class,
-                List.of("https://www.w3.org/ns/controller/v1"),
                 input);
 
         assertNotNull(doc);
@@ -89,9 +86,9 @@ class ControllerDocTest {
 
     }
 
-    static final JsonDocument resource(String name) throws IOException, URISyntaxException {
+    static final JsonObject resource(String name) throws IOException, URISyntaxException {
         try (var reader = Json.createReader(ControllerDocTest.class.getResourceAsStream(name))) {
-            return JsonDocument.of(reader.readObject());
+            return reader.readObject();
         }
     }
 }

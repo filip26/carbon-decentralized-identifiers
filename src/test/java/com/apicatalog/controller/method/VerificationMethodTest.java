@@ -41,7 +41,7 @@ class VerificationMethodTest {
 
     @DisplayName("Read")
     @ParameterizedTest(name = "{0}")
-    @MethodSource({ "multikeys", "jwks" })
+    @MethodSource({ "multikeys", "jwks", "custom" })
     void readAndCompact(String name, JsonObject doc) throws TreeBuilderError, NodeAdapterError, JsonLdError {
 
         var method = READER.read(VerificationMethod.class, doc);
@@ -49,7 +49,10 @@ class VerificationMethodTest {
         assertNotNull(method);
         assertNotNull(method.id());
         assertNotNull(method.type());
-        assertNotNull(method.controller());
+        
+        if (!"Test".equals(method.type())) {
+            assertNotNull(method.controller());
+        }
     }
 
     static final Stream<Object[]> multikeys() throws IOException, URISyntaxException {
@@ -58,5 +61,9 @@ class VerificationMethodTest {
 
     static final Stream<Object[]> jwks() throws IOException, URISyntaxException {
         return TestCase.resources("jwk", ".jsonld");
+    }
+    
+    static final Stream<Object[]> custom() throws IOException, URISyntaxException {
+        return TestCase.resources("controller/method", ".jsonld");
     }
 }
