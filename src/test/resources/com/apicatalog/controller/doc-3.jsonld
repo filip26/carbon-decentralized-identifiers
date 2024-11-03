@@ -3,7 +3,7 @@
   "id": "https://controller.example/123",
   "verificationMethod": [
     {
-      "id": "https://jsonwebkey.example/issuer/123#key-1",
+      "id": "https://jsonwebkey.example/123#key-1",
       "type": "JsonWebKey",
       "controller": "https://jsonwebkey.example/issuer/123",
       "publicKeyJwk": {
@@ -14,7 +14,7 @@
       }
     },
     {
-      "id": "https://jsonwebkey.example/issuer/123#key-2",
+      "id": "https://jsonwebkey.example/123#key-2",
       "type": "JsonWebKey",
       "controller": "https://jsonwebkey.example/issuer/123",
       "publicKeyJwk": {
@@ -25,7 +25,7 @@
       }
     },
     {
-      "id": "https://jsonwebkey.example/issuer/123#key-3",
+      "id": "https://jsonwebkey.example/123#key-3",
       "type": "JsonWebKey",
       "controller": "https://jsonwebkey.example/issuer/123",
       "publicKeyJwk": {
@@ -36,17 +36,17 @@
     }
   ],
   "authentication": [
-    "https://controller.example/123#key-1"
+    "https://jsonwebkey.example/123#key-1"
   ],
   "assertionMethod": [
-    "https://controller.example/123#key-2",
-    "https://controller.example/123#key-3",
-    "https://controller.example/123#key-2"
+    "https://jsonwebkey.example/123#key-2",
+    "https://jsonwebkey.example/123#key-3",
+    "https://jsonwebkey.example/123#key-2"
   ],
   "capabilityDelegation": [
-    "https://controller.example/123#key-2"
+    "https://jsonwebkey.example/123#key-2"
   ],
   "capabilityInvocation": [
-    "https://controller.example/123#key-2"
+    "https://jsonwebkey.example/123#key-2"
   ]
 }
