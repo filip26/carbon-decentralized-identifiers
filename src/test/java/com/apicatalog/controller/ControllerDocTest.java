@@ -80,13 +80,33 @@ class ControllerDocTest {
 
         VerificationMethod method1 = mit.next();
         VerificationMethod method2 = mit.next();
-
+        VerificationMethod method3 = mit.next();
+        
         assertTrue(method1 instanceof JsonWebKey);
         assertTrue(method2 instanceof Multikey);
 
+        assertEquals(URI.create("https://controller.example/123456789abcdefghi#keys-2"), method3.id());
+        assertEquals("https://example.com/superkey", method3.type());
+        
         assertTrue(doc.alsoKnownAs().isEmpty());
-        assertTrue(doc.assertion().isEmpty());
-        assertTrue(doc.authentication().isEmpty());
+        
+        assertEquals(2, doc.assertion().size());
+        
+        Iterator<VerificationMethod> ait = doc.assertion().iterator();
+        
+        VerificationMethod assertion1 = ait.next();
+        VerificationMethod assertion2 = ait.next();
+        assertNotNull(assertion1);
+        assertNotNull(assertion2);
+        assertTrue(assertion1 instanceof JsonWebKey);
+        assertTrue(assertion2 instanceof Multikey);
+        
+        assertEquals(1, doc.authentication().size());
+
+        VerificationMethod authentication = doc.authentication().iterator().next();
+        assertNotNull(authentication);
+        assertTrue(authentication instanceof Multikey);
+        
         assertTrue(doc.capabilityDelegation().isEmpty());
         assertTrue(doc.capabilityInvocation().isEmpty());
     }

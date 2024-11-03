@@ -4,7 +4,7 @@
   "controller": "https://controller.example/1",
   "verificationMethod": [
     {
-      "id": "https://controller.example/123#_Qq0UL2Fq651Q0Fjd6TvnYE-faHiOpRlPVQcY_-tA4A",
+      "id": "#jsonwebkey",
       "type": "JsonWebKey",
       "controller": "https://controller.example/123456789abcdefghi",
       "publicKeyJwk": {
@@ -15,7 +15,7 @@
       }
     },
     {
-      "id": "https://controller.example/123456789abcdefghi#keys-1",
+      "id": "#multikey",
       "type": "Multikey",
       "controller": "https://controller.example/123456789abcdefghi",
       "publicKeyMultibase": "z6MkmM42vxfqZQsv4ehtTjFFxQ4sQKS2w6WR7emozFAn5cxu"
@@ -24,5 +24,12 @@
       "id": "https://controller.example/123456789abcdefghi#keys-2",
       "type": "https://example.com/superkey"
     }
+  ],
+  "authentication": [
+    "#multikey"
+  ],
+  "assertionMethod": [
+    "#jsonwebkey",
+    "#multikey"
   ]
 }
