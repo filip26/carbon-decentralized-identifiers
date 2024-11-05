@@ -29,7 +29,7 @@ import com.apicatalog.linkedtree.builder.TreeBuilderError;
 import com.apicatalog.linkedtree.jsonld.JsonLdKeyword;
 import com.apicatalog.linkedtree.jsonld.io.JsonLdReader;
 import com.apicatalog.linkedtree.jsonld.io.JsonLdWriter;
-import com.apicatalog.linkedtree.orm.mapper.TreeMapping;
+import com.apicatalog.linkedtree.orm.mapper.TreeReaderMapping;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -41,7 +41,7 @@ import jakarta.json.stream.JsonParser;
 @TestMethodOrder(OrderAnnotation.class)
 class JsonWebKeyTest {
 
-    static TreeMapping MAPPING = TreeMapping
+    static TreeReaderMapping MAPPING = TreeReaderMapping
             .createBuilder()
             .scan(JsonWebKey.class)
             .build();

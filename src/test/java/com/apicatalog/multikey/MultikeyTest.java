@@ -28,7 +28,7 @@ import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.builder.TreeBuilderError;
 import com.apicatalog.linkedtree.jsonld.io.JsonLdReader;
 import com.apicatalog.linkedtree.jsonld.io.JsonLdWriter;
-import com.apicatalog.linkedtree.orm.mapper.TreeMapping;
+import com.apicatalog.linkedtree.orm.mapper.TreeReaderMapping;
 import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multicodec.codec.KeyCodec;
 import com.apicatalog.multicodec.key.GenericMulticodecKey;
@@ -41,7 +41,7 @@ import jakarta.json.JsonValue;
 @TestMethodOrder(OrderAnnotation.class)
 class MultikeyTest {
 
-    static TreeMapping MAPPING = TreeMapping
+    static TreeReaderMapping MAPPING = TreeReaderMapping
             .createBuilder()
             .scan(Multikey.class)
             .build();

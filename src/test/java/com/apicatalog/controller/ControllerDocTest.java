@@ -28,7 +28,7 @@ import com.apicatalog.linkedtree.adapter.NodeAdapterError;
 import com.apicatalog.linkedtree.builder.TreeBuilderError;
 import com.apicatalog.linkedtree.jsonld.io.JsonLdReader;
 import com.apicatalog.linkedtree.jsonld.io.JsonLdWriter;
-import com.apicatalog.linkedtree.orm.mapper.TreeMapping;
+import com.apicatalog.linkedtree.orm.mapper.TreeReaderMapping;
 import com.apicatalog.multikey.Multikey;
 
 import jakarta.json.Json;
@@ -38,7 +38,7 @@ import jakarta.json.JsonObject;
 @TestMethodOrder(OrderAnnotation.class)
 class ControllerDocTest {
 
-    static TreeMapping MAPPING = TreeMapping
+    static TreeReaderMapping MAPPING = TreeReaderMapping
             .createBuilder()
             .scan(Multikey.class)
             .scan(JsonWebKey.class)
