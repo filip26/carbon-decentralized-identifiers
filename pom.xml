@@ -5,12 +5,14 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.apicatalog</groupId>
-    <artifactId>carbon-did</artifactId>
+    <artifactId>
+        carbon-did</artifactId>
 
     <version>0.9.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <url>https://github.com/filip26/carbon-decentralized-identifiers</url>
+    <url>
+        https://github.com/filip26/carbon-decentralized-identifiers</url>
     <scm>
         <connection>
             scm:git:git://github.com/filip26/carbon-decentralized-identifiers.git</connection>
@@ -20,7 +22,8 @@
             https://github.com/filip26/carbon-decentralized-identifiers/tree/main</url>
     </scm>
 
-    <name>Carbon DIDs</name>
+    <name>Carbon
+        DIDs</name>
 
     <description>
         Decentralized Identifiers (DIDs) API, did:key, did:web,
@@ -50,7 +53,8 @@
         </developer>
     </developers>
 
-    <inceptionYear>2022</inceptionYear>
+    <inceptionYear>
+        2022</inceptionYear>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -67,7 +71,8 @@
         <copper.multibase.version>1.0.0</copper.multibase.version>
 
         <!-- test resources -->
-        <junit.version>5.11.1</junit.version>
+        <junit.version>5.11.3</junit.version>
+        <titanium.version>1.4.1</titanium.version>
     </properties>
     <dependencies>
         <dependency>
@@ -76,19 +81,16 @@
             <version>${jakarta.json.version}</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>com.apicatalog</groupId>
             <artifactId>linked-tree</artifactId>
             <version>${linked-tree.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.apicatalog</groupId>
             <artifactId>copper-multibase</artifactId>
             <version>${copper.multibase.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.apicatalog</groupId>
             <artifactId>copper-multicodec</artifactId>
@@ -102,14 +104,6 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>jakarta.json</artifactId>
-            <version>${jakarta.json.version}</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -134,7 +128,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.10.0</version>
+                <version>3.11.1</version>
                 <configuration>
                     <doclint>all,-missing</doclint>
                 </configuration>
@@ -169,11 +163,11 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>3.5.2</version>
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>3.5.2</version>
             </plugin>
         </plugins>
     </build>
@@ -196,9 +190,6 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
-                                <configuration>
-                                    <signer>bc</signer>
-                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
