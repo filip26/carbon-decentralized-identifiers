@@ -1,5 +1,5 @@
 # Carbon DID
-An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.org/TR/did-core/) in Java.
+An implementation of the Decentralized Identifiers (DIDs) in Java.
 
 
 [![Java 17 CI](https://github.com/filip26/carbon-decentralized-identifiers/actions/workflows/java17-build.yml/badge.svg)](https://github.com/filip26/carbon-decentralized-identifiers/actions/workflows/java17-build.yml)
@@ -11,13 +11,14 @@ An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.
 
 ## Features
 
-* DID, DID URL, DID Document, Controller Document
-* Verification Methods
-  * Multikey
-  * JsonWebKey
+* DID, DID URL, DID Document
 * DID Methods
   * [did:key method v0.7](https://w3c-ccg.github.io/did-method-key/)
   * [did:web method](https://w3c-ccg.github.io/did-method-web/)
+* Controller Document
+* Verification Methods
+  * Multikey
+  * JsonWebKey
 
 ## Installation
 
@@ -70,8 +71,9 @@ Fork and clone the project repository.
 ## Resources
 
 - [Decentralized Identifiers (DIDs) v1.0](https://www.w3.org/TR/did-core/)
-- [The did:key Method v0.7](https://w3c-ccg.github.io/did-method-key/)
 - [Controller Documents 1.0](https://www.w3.org/TR/controller-document/)
+- [The did:key Method v0.7](https://w3c-ccg.github.io/did-method-key/)
+- [The did:web Method Draft](https://w3c-ccg.github.io/did-method-web/)
 - [Copper Multicodec](https://github.com/filip26/copper-multicodec)
 - [Copper Multibase](https://github.com/filip26/copper-multibase)
 
