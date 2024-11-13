@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.apicatalog.controller.ControllerDocument;
 import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.jsonld.document.Document;
 import com.apicatalog.jsonld.document.JsonDocument;
@@ -53,7 +54,11 @@ public class ControllerContextLoader implements DocumentLoader {
     }
 
     protected static JsonDocument get(final String name) {
-        try (final InputStream is = ControllerContextLoader.class.getResourceAsStream(name)) {
+        return get(ControllerDocument.class, name);
+    }
+
+    protected static JsonDocument get(Class<?> root, final String name) {
+        try (final InputStream is = root.getResourceAsStream(name)) {
             return JsonDocument.of(is);
 
         } catch (IOException | JsonLdError e) {
