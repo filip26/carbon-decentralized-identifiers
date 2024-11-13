@@ -13,7 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.apicatalog.TestCase;
-import com.apicatalog.controller.ControllerDocumentLoader;
+import com.apicatalog.controller.loader.ControllerContextLoader;
 import com.apicatalog.jsonld.JsonLdError;
 import com.apicatalog.jwk.JsonWebKey;
 import com.apicatalog.linkedtree.adapter.NodeAdapterError;
@@ -35,7 +35,7 @@ class VerificationMethodTest {
             .scan(VerificationMethod.class)
             .build();
 
-    static JsonLdReader READER = JsonLdReader.of(MAPPING, ControllerDocumentLoader.resources());
+    static JsonLdReader READER = JsonLdReader.of(MAPPING, ControllerContextLoader.resources());
 
     static JsonLdWriter WRITER = new JsonLdWriter().scan(VerificationMethod.class);
 

@@ -1,4 +1,4 @@
-package com.apicatalog.controller;
+package com.apicatalog.controller.loader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,15 +13,15 @@ import com.apicatalog.jsonld.document.JsonDocument;
 import com.apicatalog.jsonld.loader.DocumentLoader;
 import com.apicatalog.jsonld.loader.DocumentLoaderOptions;
 
-public class ControllerDocumentLoader implements DocumentLoader {
+public class ControllerContextLoader implements DocumentLoader {
 
-    protected static final ControllerDocumentLoader INSTANCE = new ControllerDocumentLoader(null);
+    protected static final ControllerContextLoader INSTANCE = new ControllerContextLoader(null);
 
     protected static final Map<String, Document> staticCache = defaultValues();
 
     protected final DocumentLoader defaultLoader;
 
-    public ControllerDocumentLoader(final DocumentLoader defaultLoader) {
+    public ControllerContextLoader(final DocumentLoader defaultLoader) {
         this.defaultLoader = defaultLoader;
     }
 
@@ -53,7 +53,7 @@ public class ControllerDocumentLoader implements DocumentLoader {
     }
 
     protected static JsonDocument get(final String name) {
-        try (final InputStream is = ControllerDocumentLoader.class.getResourceAsStream(name)) {
+        try (final InputStream is = ControllerContextLoader.class.getResourceAsStream(name)) {
             return JsonDocument.of(is);
 
         } catch (IOException | JsonLdError e) {
@@ -62,7 +62,7 @@ public class ControllerDocumentLoader implements DocumentLoader {
         return null;
     }
 
-    public static ControllerDocumentLoader resources() {
+    public static ControllerContextLoader resources() {
         return INSTANCE;
     }
 }
