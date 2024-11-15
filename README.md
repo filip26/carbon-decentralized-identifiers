@@ -13,8 +13,8 @@ An implementation of the Decentralized Identifiers (DIDs) in Java.
 
 * DID, DID URL, DID Document
 * DID Methods
-  * [did:key method v0.7](https://w3c-ccg.github.io/did-method-key/)
-  * [did:web method](https://w3c-ccg.github.io/did-method-web/)
+  * did:key
+  * did:web
 * Controller Document
 * Verification Methods
   * Multikey
@@ -85,4 +85,3 @@ Fork and clone the project repository.
 
 ## Commercial Support
 Commercial support is available at filip26@gmail.com
-

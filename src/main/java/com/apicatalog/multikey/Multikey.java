@@ -5,15 +5,17 @@ import java.util.List;
 
 import com.apicatalog.controller.key.KeyPair;
 import com.apicatalog.controller.method.VerificationMethod;
+import com.apicatalog.linkedtree.orm.Adapter;
 import com.apicatalog.linkedtree.orm.Compaction;
 import com.apicatalog.linkedtree.orm.Context;
 import com.apicatalog.linkedtree.orm.Fragment;
-import com.apicatalog.linkedtree.orm.Literal;
+import com.apicatalog.linkedtree.orm.Mapper;
 import com.apicatalog.linkedtree.orm.Term;
 import com.apicatalog.linkedtree.orm.Type;
 import com.apicatalog.linkedtree.orm.Vocab;
+import com.apicatalog.multibase.MultibaseAdapter;
 import com.apicatalog.multicodec.key.MulticodecKey;
-import com.apicatalog.multicodec.key.MulticodecKeyAdapter;
+import com.apicatalog.multicodec.key.MulticodecKeyMapper;
 
 @Fragment
 @Vocab("https://w3id.org/security#")
@@ -28,13 +30,15 @@ public interface Multikey extends KeyPair {
     }
 
     @Term("publicKeyMultibase")
-    @Literal(value = MulticodecKeyAdapter.class, params = { "base58btc", "base64url" })
+    @Adapter(MultibaseAdapter.class)
+    @Mapper(MulticodecKeyMapper.class)
     @Compaction(order = 40)
     @Override
     MulticodecKey publicKey();
 
     @Term("secretKeyMultibase")
-    @Literal(value = MulticodecKeyAdapter.class, params = { "base58btc", "base64url" })
+    @Adapter(MultibaseAdapter.class)
+    @Mapper(MulticodecKeyMapper.class)
     @Compaction(order = 50)
     @Override
     MulticodecKey privateKey();

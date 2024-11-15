@@ -4,11 +4,11 @@ import java.net.URI;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.apicatalog.linkedtree.orm.Adapter;
 import com.apicatalog.linkedtree.orm.Compaction;
 import com.apicatalog.linkedtree.orm.Context;
 import com.apicatalog.linkedtree.orm.Fragment;
 import com.apicatalog.linkedtree.orm.Id;
-import com.apicatalog.linkedtree.orm.Literal;
 import com.apicatalog.linkedtree.orm.Term;
 import com.apicatalog.linkedtree.orm.Type;
 import com.apicatalog.linkedtree.orm.Vocab;
@@ -33,11 +33,11 @@ public interface VerificationMethod {
     @Compaction(order = 10)
     URI controller();
 
-    @Literal(XsdDateTimeAdapter.class)
+    @Adapter(XsdDateTimeAdapter.class)
     @Compaction(order = 20)
     Instant revoked();
 
-    @Literal(XsdDateTimeAdapter.class)
+    @Adapter(XsdDateTimeAdapter.class)
     @Term(value = "expiration", compact = false)
     @Compaction(order = 30)
     Instant expires();
