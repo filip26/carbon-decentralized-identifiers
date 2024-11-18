@@ -49,7 +49,9 @@ class ControllerDocTest {
             .scan(ServiceEndpoint.class)
             .build();
 
-    static JsonLdReader READER = JsonLdReader.of(MAPPING, ControllerContextLoader.resources());
+    static JsonLdReader READER = JsonLdReader.of(
+            MAPPING,
+            ControllerContextLoader.resources());
 
     static JsonLdWriter WRITER = new JsonLdWriter()
             .scan(ControllerDocument.class)
@@ -86,34 +88,60 @@ class ControllerDocTest {
         VerificationMethod method1 = mit.next();
         VerificationMethod method2 = mit.next();
         VerificationMethod method3 = mit.next();
-        
+
         assertTrue(method1 instanceof JsonWebKey);
         assertTrue(method2 instanceof Multikey);
 
         assertEquals(URI.create("https://controller.example/123456789abcdefghi#keys-2"), method3.id());
         assertEquals("https://example.com/superkey", method3.type());
-        
+
         assertTrue(doc.alsoKnownAs().isEmpty());
-        
+
         assertEquals(2, doc.assertion().size());
-        
+
         Iterator<VerificationMethod> ait = doc.assertion().iterator();
-        
+
         VerificationMethod assertion1 = ait.next();
         VerificationMethod assertion2 = ait.next();
         assertNotNull(assertion1);
         assertNotNull(assertion2);
         assertTrue(assertion1 instanceof JsonWebKey);
         assertTrue(assertion2 instanceof Multikey);
-        
+
         assertEquals(1, doc.authentication().size());
 
         VerificationMethod authentication = doc.authentication().iterator().next();
         assertNotNull(authentication);
         assertTrue(authentication instanceof Multikey);
-        
+
         assertTrue(doc.capabilityDelegation().isEmpty());
         assertTrue(doc.capabilityInvocation().isEmpty());
+    }
+
+    @Test
+    void readRefs() throws NodeAdapterError, IOException, URISyntaxException, TreeBuilderError, JsonLdError {
+
+        JsonObject input = resource("minimal-controller-doc.jsonld");
+
+        ControllerDocument doc = READER.read(
+                ControllerDocument.class,
+                input,
+                URI.create("https://controller.example/123"));
+
+        assertNotNull(doc);
+        assertEquals(URI.create("https://controller.example/123"), doc.id());
+        assertTrue(doc.type().isEmpty());
+
+        assertEquals(0, doc.controller().size());
+        assertEquals(1, doc.verification().size());
+        assertEquals(1, doc.authentication().size());
+
+        VerificationMethod vm = doc.verification().iterator().next();
+        VerificationMethod am = doc.authentication().iterator().next();
+
+        assertEquals(vm.id(), am.id());
+        assertEquals(vm.type(), am.type());
+        assertEquals(vm.controller(), am.controller());
     }
 
     @DisplayName("Read & Compact")
