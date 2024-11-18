@@ -3,6 +3,7 @@ package com.apicatalog.did.key;
 import java.net.URI;
 
 import com.apicatalog.did.Did;
+import com.apicatalog.did.DidUrl;
 import com.apicatalog.multibase.Multibase;
 import com.apicatalog.multicodec.Multicodec;
 import com.apicatalog.multicodec.MulticodecDecoder;
@@ -108,6 +109,16 @@ public class DidKey extends Did implements MulticodecKey {
                 && uri.toLowerCase().startsWith(SCHEME + ":" + METHOD_NAME + ":");
     }
 
+    public static boolean isDidKeyUrl(final URI uri) {
+        return DidUrl.isDidUrl(uri)
+                && uri.getSchemeSpecificPart().toLowerCase().startsWith(METHOD_NAME + ":");
+    }
+
+    public static boolean isDidKeyUrl(final String uri) {
+        return DidUrl.isDidUrl(uri)
+                && uri.toLowerCase().startsWith(SCHEME + ":" + METHOD_NAME + ":");
+    }
+    
     public String version() {
         return version;
     }
