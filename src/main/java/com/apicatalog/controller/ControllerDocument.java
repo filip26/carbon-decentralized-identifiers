@@ -60,5 +60,5 @@ public interface ControllerDocument {
 
     @Vocab("https://www.w3.org/ns/did#")
     @Compaction(keepArray = true)
-    Set<Service> service();
+    Set<Service> service();    
 }
