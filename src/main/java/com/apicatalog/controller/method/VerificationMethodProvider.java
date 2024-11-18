@@ -66,14 +66,8 @@ public class VerificationMethodProvider {
             if (methods == null || methods.isEmpty()) {
                 throw new IllegalArgumentException("INVALID_VERIFICATION_METHOD");
             }
-            System.out.println(">>>> " + methodId);
-methods.stream().forEach(m -> {
- System.out.println("- " + m);
- System.out.println(m.id());
- System.out.println(methodId.equals(m.id()));
-});
 
-            VerificationMethod method = methods.stream()
+            final VerificationMethod method = methods.stream()
                     .filter(m -> methodId.equals(m.id()))
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("INVALID_VERIFICATION_METHOD"));

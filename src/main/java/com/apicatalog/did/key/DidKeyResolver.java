@@ -43,7 +43,7 @@ public class DidKeyResolver implements DidResolver, ControllerResolver {
 
         return GenericMultikey.of(
                 uri,
-                DidUrl.of(didKey, null, null, didKey.getMethodSpecificId()).toUri(),
+                didKey.toUri(),
                 didKey);
     }
 
