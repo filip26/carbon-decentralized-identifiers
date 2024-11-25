@@ -3,10 +3,19 @@ package com.apicatalog.controller.method;
 import java.net.URI;
 import java.time.Instant;
 
-public record GenericMethodUri(
-        URI id
-        ) implements VerificationMethod {
+public class GenericMethodUri implements VerificationMethod {
 
+    protected final URI id;
+    
+    public GenericMethodUri(URI id) {
+        this.id = id;
+    }
+    
+    @Override
+    public URI id() {
+        return id;
+    }
+    
     @Override
     public String type() {
         return null;

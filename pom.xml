@@ -8,7 +8,7 @@
     <artifactId>
         carbon-did</artifactId>
 
-    <version>0.9.0-SNAPSHOT</version>
+    <version>0.10.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <url>
@@ -73,6 +73,7 @@
         <!-- test resources -->
         <junit.version>5.11.3</junit.version>
         <titanium.version>1.4.1</titanium.version>
+
     </properties>
     <dependencies>
         <dependency>
@@ -110,6 +111,14 @@
             <version>${jakarta.json.version}</version>
             <scope>test</scope>
         </dependency>
+        
+        <!-- REMOVE-->
+                <dependency>
+            <groupId>com.apicatalog</groupId>
+            <artifactId>titanium-json-ld</artifactId>
+            <version>${titanium.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
