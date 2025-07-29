@@ -1,8 +1,8 @@
 # Carbon DID
-An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.org/TR/did-core/) in Java.
+An implementation of the Decentralized Identifiers (DIDs) in Java.
 
 
-[![Java 11 CI](https://github.com/filip26/carbon-decentralized-identifiers/actions/workflows/java11-push.yml/badge.svg)](https://github.com/filip26/carbon-decentralized-identifiers/actions/workflows/java11-push.yml)
+[![Java 17 CI](https://github.com/filip26/carbon-decentralized-identifiers/actions/workflows/java17-build.yml/badge.svg)](https://github.com/filip26/carbon-decentralized-identifiers/actions/workflows/java17-build.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/dd79aafc6eb14ed18f2217de62585ba7)](https://app.codacy.com/gh/filip26/carbon-decentralized-identifiers/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/dd79aafc6eb14ed18f2217de62585ba7)](https://app.codacy.com/gh/filip26/carbon-decentralized-identifiers/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
 [![Maven Central](https://img.shields.io/maven-central/v/com.apicatalog/carbon-did.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:com.apicatalog%20AND%20a:carbon-did)
@@ -12,8 +12,13 @@ An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.
 ## Features
 
 * DID, DID URL, DID Document
-* Methods
-  * [did:key method v0.7](https://w3c-ccg.github.io/did-method-key/)
+* DID Methods
+  * did:key
+  * did:web
+* Controller Document
+* Verification Methods
+  * Multikey
+  * JsonWebKey
 
 ## Installation
 
@@ -25,12 +30,7 @@ An implementation of the [Decentralized Identifiers (DIDs) v1.0](https://www.w3.
 <dependency>
     <groupId>com.apicatalog</groupId>
     <artifactId>carbon-did</artifactId>
-    <version>0.6.0</version>
-</dependency>
-<dependency>
-    <groupId>com.apicatalog</groupId>
-    <artifactId>copper-multibase</artifactId>
-    <version>0.5.0</version>
+    <version>0.9.0</version>
 </dependency>
 ```
 
@@ -62,15 +62,18 @@ All PR's welcome!
 
 Fork and clone the project repository.
 
-#### Java 11+
+#### Java 17
 ```bash
 > cd carbon-decentralized-identifiers
 > mvn clean package
 ```
 
-## Resources- 
+## Resources
+
 - [Decentralized Identifiers (DIDs) v1.0](https://www.w3.org/TR/did-core/)
+- [Controller Documents 1.0](https://www.w3.org/TR/controller-document/)
 - [The did:key Method v0.7](https://w3c-ccg.github.io/did-method-key/)
+- [The did:web Method Draft](https://w3c-ccg.github.io/did-method-web/)
 - [Copper Multicodec](https://github.com/filip26/copper-multicodec)
 - [Copper Multibase](https://github.com/filip26/copper-multibase)
 
@@ -82,4 +85,3 @@ Fork and clone the project repository.
 
 ## Commercial Support
 Commercial support is available at filip26@gmail.com
-

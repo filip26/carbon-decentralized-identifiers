@@ -3,8 +3,11 @@ package com.apicatalog.did.key;
 import java.net.URI;
 
 import com.apicatalog.did.Did;
+import com.apicatalog.did.DidUrl;
 import com.apicatalog.multibase.Multibase;
-import com.apicatalog.multibase.MultibaseDecoder;
+import com.apicatalog.multicodec.Multicodec;
+import com.apicatalog.multicodec.MulticodecDecoder;
+import com.apicatalog.multicodec.key.MulticodecKey;
 
 /**
  * Immutable DID Key
@@ -12,105 +15,135 @@ import com.apicatalog.multibase.MultibaseDecoder;
  * did-key-format := did:key:[version]:MULTIBASE(multiencodedKey)
  * </p>
  *
- * @see <a href=
- *      "https://pr-preview.s3.amazonaws.com/w3c-ccg/did-method-key/pull/51.html">DID
- *      method key</a>
+ * @see <a href= "https://w3c-ccg.github.io/did-method-key/">DID Key Method</a>
  *
  */
-public class DidKey extends Did {
+public class DidKey extends Did implements MulticodecKey {
 
     private static final long serialVersionUID = 1343361455801198884L;
 
-    public static final String METHOD_KEY = "key";
+    public static final String METHOD_NAME = "key";
 
     public static final String DEFAULT_VERSION = "1";
 
     protected final String version;
 
-    protected final Multibase base;
+    protected final Multicodec codec;
+    
+    protected final byte[] raw;
 
-    protected final byte[] debased;
-
-    protected DidKey(String version, String specificId, Multibase base, byte[] debased) {
-        super(METHOD_KEY, specificId);
-        this.base = base;
+    protected DidKey(String version, String specificId, Multicodec codec, byte[] raw) {
+        super(METHOD_NAME, specificId);
         this.version = version;
-        this.debased = debased;
+        this.codec = codec;
+        this.raw = raw;
     }
 
     /**
-     * Creates a new DID key instance from the given {@link URI}.
+     * Creates a new DID Key method instance from the given {@link URI}.
      *
-     * @param uri   The source URI to be transformed into DID key
-     * @param bases
-     * @return The new DID key
+     * @param uri   The source URI to be transformed into {@link DidKey} instance
+     * @param codecs
+     * @return a new instance
      *
      * @throws NullPointerException     If {@code uri} is {@code null}
      *
      * @throws IllegalArgumentException If the given {@code uri} is not valid DID
-     *                                  key
+     *                                  Key method
      */
-    public static final DidKey from(final URI uri, final MultibaseDecoder bases) {
+    public static final DidKey of(final URI uri, final MulticodecDecoder codecs) {
 
-        final Did did = Did.from(uri);
+        final Did did = Did.of(uri);
 
-        if (!METHOD_KEY.equalsIgnoreCase(did.getMethod())) {
+        if (!METHOD_NAME.equalsIgnoreCase(did.getMethod())) {
             throw new IllegalArgumentException("The given URI [" + uri + "] is not valid DID key, does not start with 'did:key'.");
         }
 
-        return from(did, bases);
+        return of(did, codecs);
     }
 
-    public static final DidKey from(final Did did, final MultibaseDecoder bases) {
+    public static final DidKey of(final Did did, final MulticodecDecoder codecs) {
 
-        if (!METHOD_KEY.equalsIgnoreCase(did.getMethod())) {
+        if (!METHOD_NAME.equalsIgnoreCase(did.getMethod())) {
             throw new IllegalArgumentException("The given DID method [" + did.getMethod() + "] is not 'key'. DID [" + did.toString() + "].");
         }
 
         final String[] parts = did.getMethodSpecificId().split(":", 2);
-        
+
         String version = DEFAULT_VERSION;
         String encoded = parts[0];
-        
+
         if (parts.length == 2) {
             version = parts[0];
             encoded = parts[1];
         }
         
-        final Multibase base = bases.getBase(encoded).orElseThrow(() -> new IllegalArgumentException("Unsupported did:key base encoding. DID [" + did.toString() + "]."));
+        if (!Multibase.BASE_58_BTC.isEncoded(encoded)) {
+            throw new IllegalArgumentException("Unsupported did:key base encoding, expected base58btc. DID [" + did.toString() + "].");
+        }
 
-        final byte[] debased = base.decode(encoded);
+        final byte[] debased = Multibase.BASE_58_BTC.decode(encoded);
 
-        return new DidKey(version, encoded, base, debased);
+        Multicodec codec = codecs.getCodec(debased).orElseThrow(() -> new IllegalArgumentException("Unsupported did:key codec. DID [" + did.toString() + "]."));
+
+        final byte[] raw = codec.decode(debased);
+        
+        return new DidKey(version, encoded, codec, raw);
     }
-
-    public static final DidKey create(Multibase base, byte[] key) {
-        return new DidKey(null, base.encode(key), base, key);
+    
+    public static final DidKey of(byte[] key, Multicodec codec) {
+        return new DidKey(null, Multibase.BASE_58_BTC.encode(key), codec, key);
     }
 
     public static boolean isDidKey(final Did did) {
-        return METHOD_KEY.equalsIgnoreCase(did.getMethod());
+        return METHOD_NAME.equalsIgnoreCase(did.getMethod());
     }
 
     public static boolean isDidKey(final URI uri) {
         return Did.isDid(uri)
-                && uri.getSchemeSpecificPart().toLowerCase().startsWith(METHOD_KEY + ":");
+                && uri.getSchemeSpecificPart().toLowerCase().startsWith(METHOD_NAME + ":");
     }
 
     public static boolean isDidKey(final String uri) {
         return Did.isDid(uri)
-                && uri.toLowerCase().startsWith(SCHEME + ":" + METHOD_KEY + ":");
+                && uri.toLowerCase().startsWith(SCHEME + ":" + METHOD_NAME + ":");
     }
 
-    public Multibase getBase() {
-        return base;
+    public static boolean isDidKeyUrl(final URI uri) {
+        return DidUrl.isDidUrl(uri)
+                && uri.getSchemeSpecificPart().toLowerCase().startsWith(METHOD_NAME + ":");
     }
 
-    public byte[] getKey() {
-        return debased;
+    public static boolean isDidKeyUrl(final String uri) {
+        return DidUrl.isDidUrl(uri)
+                && uri.toLowerCase().startsWith(SCHEME + ":" + METHOD_NAME + ":");
     }
-
-    public String getVersion() {
+    
+    public String version() {
         return version;
+    }
+
+    @Override
+    public Multicodec codec() {
+        return codec;
+    }
+
+    @Override
+    public byte[] rawBytes() {
+        return raw;
+    }
+    
+    /**
+     * Use {@link DidKey#rawBytes()} + {@link DidKey#codec}
+     * @return
+     */
+    @Deprecated
+    public byte[] getKey() {
+        return codec.encode(raw);
+    }
+
+    @Override
+    public Multibase base() {
+        return Multibase.BASE_58_BTC;
     }
 }

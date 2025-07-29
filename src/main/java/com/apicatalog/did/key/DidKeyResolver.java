@@ -1,83 +1,59 @@
 package com.apicatalog.did.key;
 
+import java.net.URI;
+import java.util.Objects;
+
+import com.apicatalog.controller.ControllerDocument;
+import com.apicatalog.controller.method.VerificationMethod;
+import com.apicatalog.controller.resolver.ControllerResolver;
 import com.apicatalog.did.Did;
-import com.apicatalog.did.DidResolver;
 import com.apicatalog.did.DidUrl;
 import com.apicatalog.did.document.DidDocument;
-import com.apicatalog.did.document.DidVerificationMethod;
-import com.apicatalog.multibase.MultibaseDecoder;
+import com.apicatalog.did.resolver.DidResolver;
+import com.apicatalog.multicodec.MulticodecDecoder;
+import com.apicatalog.multikey.GenericMultikey;
 
-public class DidKeyResolver implements DidResolver {
+public class DidKeyResolver implements DidResolver, ControllerResolver {
 
-    protected final MultibaseDecoder bases;
-    
-    public DidKeyResolver(final MultibaseDecoder bases) {
-        this.bases = bases;
+    protected final MulticodecDecoder codecs;
+
+    public DidKeyResolver(MulticodecDecoder codecs) {
+        this.codecs = codecs;
     }
-    
+
     @Override
     public DidDocument resolve(final Did did) {
 
+        Objects.nonNull(did);
+        
         if (!DidKey.isDidKey(did)) {
             throw new IllegalArgumentException();
         }
 
-        final DidKey didKey = DidKey.from(did, bases);
+        final DidKey didKey = DidKey.of(did, codecs);
 
-        final DidDocumentBuilder builder = DidDocumentBuilder.create();
-
-        // 4.
-        DidVerificationMethod signatureMethod = DidKeyResolver.createSignatureMethod(didKey);
-        builder.add(signatureMethod);
-
-        // 5.
-        builder.add(DidKeyResolver.createEncryptionMethod(didKey));
-
-        // 6.
-        builder.id(did);
-
-        // 7.
-
-        // 8.
-
-        // 9.
-
-        return builder.build();
+        return DidKeyDocument.of(
+                did != null ? did.toUri() : null,
+                DidKeyResolver.createMethod(didKey));
     }
 
-    /**
-     * Creates a new verification key by expanding the given DID key.
-     *
-     * @param didKey
-     *
-     * @see <a href="https://pr-preview.s3.amazonaws.com/w3c-ccg/did-method-key/pull/51.html#signature-method-creation-algorithm">Signature Method Algorithm</a>
-     *
-     * @return The new verification key
-     */
-    public static DidVerificationMethod createSignatureMethod(DidKey didKey) {
-        return new DidVerificationMethod(
-                    DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
-                    DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
-                    didKey.getKey()
-                    );
-     }
+    public static VerificationMethod createMethod(final DidKey didKey) {
 
-    public static DidVerificationMethod createEncryptionMethod(final DidKey didKey) {
+        final URI uri = DidUrl.of(didKey, null, null, didKey.getMethodSpecificId()).toUri();
 
-        // 3.
+        return GenericMultikey.of(
+                uri,
+                didKey.toUri(),
+                didKey);
+    }
 
-        // 5.
-//        String encodingType = "MultiKey";
+    @Override
+    public boolean isAccepted(URI id) {
+        return DidKey.isDidKey(id);
+    }
 
-        // 6.
-
-        // 7.
-
-        // 9.
-        return new DidVerificationMethod(
-                    DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
-                    DidUrl.from(didKey, null, null, didKey.getMethodSpecificId()),
-                    didKey.getKey()
-                    );
+    @Override
+    public ControllerDocument resolve(URI id) {
+        return resolve(Did.of(id));
     }
 }
