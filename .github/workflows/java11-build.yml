@@ -3,6 +3,9 @@
 
 name: Java 11 PR
 
+permissions:
+  contents: read
+
 on:
   pull_request:
     branches: [ main ]
