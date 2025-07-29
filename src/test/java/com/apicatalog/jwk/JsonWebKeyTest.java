@@ -98,7 +98,7 @@ class JsonWebKeyTest {
     @MethodSource({ "resources" })
     void compact(String name, JsonWebKey input) throws IOException, URISyntaxException {
 
-        var compacted = WRITER.compacted(input);
+        var compacted = WRITER.compact(input);
         assertNotNull(compacted);
 
         JsonObject expected = resource(name).getJsonContent().map(JsonStructure::asJsonObject).orElseThrow();
@@ -121,7 +121,7 @@ class JsonWebKeyTest {
 
         var jwk = READER.read(JsonWebKey.class, expected);
 
-        var compacted = WRITER.compacted(jwk);
+        var compacted = WRITER.compact(jwk);
         assertEquals(JsonWebKey.TYPE, jwk.type());
 
         if (!expected.containsKey(JsonLdKeyword.CONTEXT)) {

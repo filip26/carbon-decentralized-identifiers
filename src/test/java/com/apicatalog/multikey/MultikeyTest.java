@@ -126,7 +126,7 @@ class MultikeyTest {
     @MethodSource({ "resources" })
     void compact(String name, Multikey input) throws IOException, URISyntaxException {
 
-        var compacted = WRITER.compacted(input);
+        var compacted = WRITER.compact(input);
         assertNotNull(compacted);
 
         var expected = TestCase.resource("multikey/" + name).getJsonContent().orElseThrow();
@@ -144,7 +144,7 @@ class MultikeyTest {
 
         var multikey = READER.read(Multikey.class, doc);
 
-        var compacted = WRITER.compacted(multikey);
+        var compacted = WRITER.compact(multikey);
         assertEquals(Multikey.TYPE, multikey.type());
 
         if (!JsonLdComparison.equals(compacted, doc)) {

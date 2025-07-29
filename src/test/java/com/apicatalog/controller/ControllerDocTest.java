@@ -151,7 +151,7 @@ class ControllerDocTest {
 
         var doc = READER.read(ControllerDocument.class, expected);
 
-        var compacted = WRITER.compacted(doc);
+        var compacted = WRITER.compact(doc);
 
         if (!JsonLdComparison.equals(compacted, expected)) {
             assertTrue(TestCase.compareJson(name, null, compacted, expected));

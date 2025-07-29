@@ -16,4 +16,8 @@ public record GenericMulticodecKey(
         Objects.requireNonNull(base);
         Objects.requireNonNull(rawBytes);
     }
+    
+    public static MulticodecKey of(Multicodec codec, Multibase base, String encoded) {
+        return new GenericMulticodecKey(codec, base, codec.decode(base.decode(encoded)));
+    }
 }

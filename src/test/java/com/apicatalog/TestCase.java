@@ -12,8 +12,8 @@ import java.util.Collections;
 import java.util.stream.Stream;
 
 import com.apicatalog.jsonld.document.JsonDocument;
+import com.apicatalog.jsonld.json.JsonLdComparison;
 import com.apicatalog.linkedtree.LinkedNode;
-import com.apicatalog.linkedtree.jsonld.JsonLdComparison;
 import com.apicatalog.linkedtree.writer.DictionaryWriter;
 
 import jakarta.json.Json;
